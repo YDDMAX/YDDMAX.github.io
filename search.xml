@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[架构的八荣八耻和20个能力]]></title>
+    <url>%2F2017%2F06%2F03%2F%E6%9E%B6%E6%9E%84%E7%9A%84%E5%85%AB%E8%8D%A3%E5%85%AB%E8%80%BB%E5%92%8C20%E4%B8%AA%E8%83%BD%E5%8A%9B%2F</url>
+    <content type="text"><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[聚石塔]]></title>
     <url>%2F2017%2F06%2F03%2F%E8%81%9A%E7%9F%B3%E5%A1%94%2F</url>
     <content type="text"><![CDATA[遵循互联网架构“八荣八耻”，解析EWS高质量架构6个维度的20个能力，本文简单介绍了聚石塔和EWS。 聚石塔是阿里为卖家系统提供的云计算环境，该云环境在全球提供了相应的负载均衡、安全、计算、存储等解决方案。卖家利用聚石塔的基础设施和服务可以快速搭建一套性能优越、扩容简单、资源弹性伸缩、容灾强、支持多活的系统，聚石塔的功能是赋能商家。EWS(Enterprise Workstation)，是聚石塔中的企业工作站，下图是EWS的系统总架构图。]]></content>
