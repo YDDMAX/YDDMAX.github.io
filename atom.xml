@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://YDDMAX.github.io/"/>
-  <updated>2017-06-03T12:13:04.059Z</updated>
+  <updated>2017-06-03T12:21:15.792Z</updated>
   <id>http://YDDMAX.github.io/</id>
   
   <author>
@@ -20,19 +20,19 @@
     <link href="http://YDDMAX.github.io/2017/06/03/%E8%81%9A%E7%9F%B3%E5%A1%94/"/>
     <id>http://YDDMAX.github.io/2017/06/03/聚石塔/</id>
     <published>2017-06-03T11:32:45.000Z</published>
-    <updated>2017-06-03T12:13:04.059Z</updated>
+    <updated>2017-06-03T12:21:15.792Z</updated>
     
-    <content type="html"><![CDATA[<blockquote>
-<p><strong>聚石塔</strong>是阿里为卖家系统提供的云计算环境，该云环境在全球提供了相应的负载均衡、安全、计算、存储等解决方案。卖家利用聚石塔的基础设施和服务可以快速搭建一套性能优越、扩容简单、资源弹性伸缩、容灾强、支持多活的系统，聚石塔的功能是赋能商家。  </p>
-<p><strong>EWS(Enterprise Workstation)</strong>，是聚石塔中的企业工作站，下图是EWS的系统总架构图。</p>
+    <content type="html"><![CDATA[<p><a href="https://yq.aliyun.com/articles/60879" target="_blank" rel="external">遵循互联网架构“八荣八耻”，解析EWS高质量架构6个维度的20个能力</a>，本文简单介绍了聚石塔和EWS。</p>
+<blockquote>
+<p><strong>聚石塔</strong>是阿里为卖家系统提供的云计算环境，该云环境在全球提供了相应的负载均衡、安全、计算、存储等解决方案。卖家利用聚石塔的基础设施和服务可以快速搭建一套性能优越、扩容简单、资源弹性伸缩、容灾强、支持多活的系统，聚石塔的功能是赋能商家。<br><strong>EWS(Enterprise Workstation)</strong>，是聚石塔中的企业工作站，下图是EWS的系统总架构图。</p>
 </blockquote>
 <p><img src="http://oqxil93b6.bkt.clouddn.com/images/%E8%81%9A%E7%9F%B3%E5%A1%94/EWS-architecture.png" alt="聚石塔系统架构图"></p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;聚石塔&lt;/strong&gt;是阿里为卖家系统提供的云计算环境，该云环境在全球提供了相应的负载均衡、安全、计算、存储等解决方案。卖家利用聚石塔的基础设施和服务可以快速搭建一套性能优越、扩容简单、资源弹性伸缩、容灾强、支持多活的系统，聚石塔
+      &lt;p&gt;&lt;a href=&quot;https://yq.aliyun.com/articles/60879&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;遵循互联网架构“八荣八耻”，解析EWS高质量架构6个维度的20个能力&lt;/a&gt;，本文简单介绍了聚石塔和EWS。&lt;/p&gt;
+
     
     </summary>
     
