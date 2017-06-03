@@ -102,7 +102,7 @@
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/dr-same.png">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/dr-no-same.png">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/tunnel.png">
-<meta property="og:updated_time" content="2017-06-03T13:16:32.014Z">
+<meta property="og:updated_time" content="2017-06-03T13:21:43.177Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="负载均衡">
 <meta name="twitter:description" content="DNS DNS负责提供域名解析服务，当访问某个站点时，实际上首先需要通过该站点域名的DNS服务器来获取域名指向的IP地址，在这一过程中，DNS服务器完成了域名到IP地址的映射，同样，这样映射也可以是一对多的，这时候，DNS服务器便充当了负载均衡调度器，它就像http重定向转换策略一样，将用户的请求分散到多台服务器上，但是它的实现机制完全不同。  下图展示百度有三个IP地址：  优点:   可以根据">
@@ -431,13 +431,13 @@
 <li>策略的局限性。例如你无法将HTTP请求的上下文引入到调度策略中，而在前面介绍的基于HTTP重定向的负载均衡系统中，调度器工作在HTTP层面，它可以充分理解HTTP请求后根据站点的应用逻辑来设计调度策略，比如根据请求不同的URL来进行合理的过滤和转移。</li>
 <li>如果要根据实际服务器的实时负载差异来调整调度策略，这需要DNS服务器在每次解析操作时分析各服务器的健康状态，对于DNS服务器来说，这种自定义开发存在较高的门槛，更何况大多数站点只是使用第三方DNS服务。</li>
 <li>DNS记录缓存，各级节点的DNS服务器不同程序的缓存会让你晕头转向。</li>
-<li><p>基于以上几点，DNS服务器并不能很好地完成工作量均衡分配，最后，是否选择基于DNS的负载均衡方式完全取决于你的需要。</p>
+<li>基于以上几点，DNS服务器并不能很好地完成工作量均衡分配，最后，是否选择基于DNS的负载均衡方式完全取决于你的需要。</li>
+</ol>
 <h1 id="HTTP重定向"><a href="#HTTP重定向" class="headerlink" title="HTTP重定向"></a>HTTP重定向</h1><blockquote>
 <p>当http代理（比如浏览器）向web服务器请求某个URL后，web服务器可以通过http响应头信息中的Location标记来返回一个新的URL。这意味着HTTP代理需要继续请求这个新的URL，完成自动跳转。</p>
 </blockquote>
-</li>
-<li><p>吞吐率限制<br>主站点服务器的吞吐率平均分配到了被转移的服务器。现假设使用RR（Round Robin）调度策略，子服务器的最大吞吐率为1000reqs/s，那么主服务器的吞吐率要达到3000reqs/s才能完全发挥三台子服务器的作用，那么如果有100台子服务器，那么主服务器的吞吐率可想而知得有大？相反，如果主服务的最大吞吐率为6000reqs/s，那么平均分配到子服务器的吞吐率为2000reqs/s，而现子服务器的最大吞吐率为1000reqs/s，因此就得增加子服务器的数量，增加到6个才能满足。</p>
-</li>
+<ol>
+<li>吞吐率限制<br>主站点服务器的吞吐率平均分配到了被转移的服务器。现假设使用RR（Round Robin）调度策略，子服务器的最大吞吐率为1000reqs/s，那么主服务器的吞吐率要达到3000reqs/s才能完全发挥三台子服务器的作用，那么如果有100台子服务器，那么主服务器的吞吐率可想而知得有大？相反，如果主服务的最大吞吐率为6000reqs/s，那么平均分配到子服务器的吞吐率为2000reqs/s，而现子服务器的最大吞吐率为1000reqs/s，因此就得增加子服务器的数量，增加到6个才能满足。</li>
 <li>重定向访问深度不同<br>有的重定向一个静态页面，有的重定向相比复杂的动态页面，那么实际服务器的负载差异是不可预料的，而主站服务器却一无所知。因此整站使用重定向方法做负载均衡不太好。</li>
 </ol>
 <p>我们需要权衡转移请求的开销和处理实际请求的开销，前者相对于后者越小，那么重定向的意义就越大，例如下载。你可以去很多镜像下载网站试下，会发现基本下载都使用了Location做了重定向。</p>
@@ -448,19 +448,29 @@
 <li><strong>请求和响应报文都要经由director转发；极高负载的场景中，Director可能会成为系统性能瓶颈</strong></li>
 <li>支持端口映射</li>
 <li>VS必须为Linux，RS可以是任意的OS</li>
-<li><strong>调度器上需要两块网卡,一个配置vip 一个配置dip</strong><br><img src="http://oqxil93b6.bkt.clouddn.com/nat.png" alt="NAT"><h2 id="FULLNAT"><a href="#FULLNAT" class="headerlink" title="FULLNAT"></a>FULLNAT</h2>非标准模型, ipvs默认不支持,ipvsadm也不支持。<br>NAT模式的扩展（阿里云的四层SLB使用的是此方式，因为此种方式下负载均衡器和后端服务器的部署不需要部署在同一网络内）<br>通过同时修改请求报文的源IP地址（cip–&gt;dip）和目标IP地址（vip –&gt; rip）实现转发<br>特点：</li>
+<li><strong>调度器上需要两块网卡,一个配置vip 一个配置dip</strong></li>
+</ol>
+<p><img src="http://oqxil93b6.bkt.clouddn.com/nat.png" alt="NAT"></p>
+<h2 id="FULLNAT"><a href="#FULLNAT" class="headerlink" title="FULLNAT"></a>FULLNAT</h2><p>非标准模型, ipvs默认不支持,ipvsadm也不支持。<br>NAT模式的扩展（阿里云的四层SLB使用的是此方式，因为此种方式下负载均衡器和后端服务器的部署不需要部署在同一网络内）<br>通过同时修改请求报文的源IP地址（cip–&gt;dip）和目标IP地址（vip –&gt; rip）实现转发<br>特点：</p>
+<ol>
 <li>调度器和后端服务器可以不在同一IP网络中</li>
 <li>RS收到的请求报文的源IP为DIP，因此其响应报文将发送给DIP；</li>
 <li>请求报文和响应报文都必须经由director；</li>
 <li>支持端口映射；</li>
-<li>RS可使用任意OS；<br><img src="http://oqxil93b6.bkt.clouddn.com/fullNAT.png" alt="fullNAT"><h2 id="DR"><a href="#DR" class="headerlink" title="DR"></a>DR</h2>直接路由<br>通过为请求报文重新封装一个MAC首部进行转发,源MAC是DIP所在接口的MAC,目标MAC是挑选出的某RS的RIP所在接口的MAC地址；IP首部不会发生变化（源IP为CIP，目标IP始终为VIP） </li>
+<li>RS可使用任意OS；    </li>
+</ol>
+<p><img src="http://oqxil93b6.bkt.clouddn.com/fullNAT.png" alt="fullNAT"></p>
+<h2 id="DR"><a href="#DR" class="headerlink" title="DR"></a>DR</h2><p>直接路由<br>通过为请求报文重新封装一个MAC首部进行转发,源MAC是DIP所在接口的MAC,目标MAC是挑选出的某RS的RIP所在接口的MAC地址；IP首部不会发生变化（源IP为CIP，目标IP始终为VIP） </p>
+<ol>
 <li>RS跟Director必须在同一物理网络中；RS的网关必须不能指向DIP</li>
 <li><strong>请求报文必须由Director调度，但响应报文必须不能经由Director</strong></li>
 <li><strong>不支持端口映射</strong></li>
 <li>各RS可以使用大多数的OS；一般是linux</li>
 </ol>
-<p>情形1: RIP DIP VIP 都在一个网络, 都是公网IP 地址<br><img src="http://oqxil93b6.bkt.clouddn.com/dr-same.png" alt="dr-same"></p>
-<p>情形2: VIP 是公网ip地址, RIP,DIP是私有地址, 情况要复制些, RS要通过另一个路由出去<br><img src="http://oqxil93b6.bkt.clouddn.com/dr-no-same.png" alt="dr-nosame"></p>
+<p>情形1: RIP DIP VIP 都在一个网络, 都是公网IP 地址</p>
+<p><img src="http://oqxil93b6.bkt.clouddn.com/dr-same.png" alt="dr-same"></p>
+<p>情形2: VIP 是公网ip地址, RIP,DIP是私有地址, 情况要复制些, RS要通过另一个路由出去</p>
+<p><img src="http://oqxil93b6.bkt.clouddn.com/dr-no-same.png" alt="dr-nosame"></p>
 <p>注意:<br>一个路由其可以有多个网络接口<br>一个交换机可以承载多个ip网络<br>所以路由器1和路由器2可以使用同一个<br>私网交换机和公网交换机也可以用同一个</p>
 <h2 id="TUN"><a href="#TUN" class="headerlink" title="TUN"></a>TUN</h2><p>ip tunnel，ip隧道<br>转发方式：不修改请求报文的IP首部（源IP为CIP，目标IP为VIP），而是在原有的IP首部之外再次封装一个IP首部（源IP为DIP，目标IP为RIP）</p>
 <ol>
