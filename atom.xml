@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://YDDMAX.github.io/"/>
-  <updated>2017-06-04T04:10:21.678Z</updated>
+  <updated>2017-06-04T04:13:05.365Z</updated>
   <id>http://YDDMAX.github.io/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://YDDMAX.github.io/2017/06/04/Pro-Java-7-NIO-2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     <id>http://YDDMAX.github.io/2017/06/04/Pro-Java-7-NIO-2读书笔记/</id>
     <published>2017-06-04T03:44:38.000Z</published>
-    <updated>2017-06-04T04:10:21.678Z</updated>
+    <updated>2017-06-04T04:13:05.365Z</updated>
     
-    <content type="html"><![CDATA[<p> <img src="http://oqxil93b6.bkt.clouddn.com/images/Pro%20Java%207%20NIO%202%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/pro-java7-nio.png" alt="Pro Java 7 NIO.2"><br>花了几天把这本书初略的看了一下， 之所以初略的看了一下，是因为这书里确实没啥内容。如果去了NIO 1的内容和大段大段的代码， 基本上压缩到50页应该没问题。 </p>
+    <content type="html"><![CDATA[<p><a href="http://www.tuicool.com/articles/IRfIJ3" target="_blank" rel="external">转自</a><br> <img src="http://oqxil93b6.bkt.clouddn.com/images/Pro%20Java%207%20NIO%202%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/pro-java7-nio.png" alt="Pro Java 7 NIO.2"><br>花了几天把这本书初略的看了一下， 之所以初略的看了一下，是因为这书里确实没啥内容。如果去了NIO 1的内容和大段大段的代码， 基本上压缩到50页应该没问题。 </p>
 <p>下面简单的罗列一下看到的内容： </p>
 <h1 id="Path"><a href="#Path" class="headerlink" title="Path"></a>Path</h1><p>这个类在java.nio.file，在NIO里对文件系统进行了进一步的抽象。 是用来替换原来的java.io.File。其中 FileSystems, Files, Path, PathMatcher 成为一个体系。 </p>
 <p>在java7里File和Path可以相互转换： File.toPath(), Path.toFile()<br>原来的File里包含了文件引用和文件，在Path系统里， Path里是文件的引用，而文件操作都放到了Files的静态方法里。这种方式究竟好不好用，我没啥感觉。不过我个人偏向于把操作放到另外一个类里面。 </p>
@@ -64,7 +64,7 @@
     
     <summary type="html">
     
-      &lt;p&gt; &lt;img src=&quot;http://oqxil93b6.bkt.clouddn.com/images/Pro%20Java%207%20NIO%202%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/pro-java7-nio.png&quot; alt=&quot;P
+      &lt;p&gt;&lt;a href=&quot;http://www.tuicool.com/articles/IRfIJ3&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;转自&lt;/a&gt;&lt;br&gt; &lt;img src=&quot;http://oqxil93b6.bkt.clouddn.com/ima
     
     </summary>
     
