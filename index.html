@@ -306,6 +306,158 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/05/JDK源码之编译/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yunzhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YDDMAX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/05/JDK源码之编译/" itemprop="url">
+                  JDK源码之编译
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T21:19:58+08:00">
+                2017-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文主要说明如何编译组成rt.jar的源码，不涉及JVM的编译。</p>
+<h1 id="rt-jar"><a href="#rt-jar" class="headerlink" title="rt.jar"></a>rt.jar</h1><p>rt.jar也就是运行时相关的class类，安装的jre里面的rt.jar是不能被debug的，为了对JDK的源码进行debug跟踪，需要重新编译rt.jar。<br>rt.jar因为操作系统的不同，所包含的class也不同。rt.jar的全部源码在openjdk的jdk目录下，具体的路径是openjdk\jdk\src\，源码根据操作系统的不同和是否共享分成几个目录。<br>操作系统安装的JDK里面的src.zip不包含<strong>sun.*包</strong>，<strong><em>sun.\</em></strong>包在openjdk源码里面,具体的路径是：<strong>jdk\src\share\classes</strong>。</p>
+<p>openjdk的目录说明和源码下载参见：<a href="https://yddmax.github.io/2017/06/05/openjdk%E6%BA%90%E7%A0%81%E7%9B%AE%E5%BD%95/">openjdk目录</a></p>
+<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><p>本文编译的是openjdk-7里面jdk目录下的源码。</p>
+<ol>
+<li>新建java project</li>
+<li>将openjdk源码copy到project中。除了复制share目录下的共享源码，还需要复制具体操作系统下的源码。</li>
+<li>编译导出jar。</li>
+</ol>
+<p>参考资料：<a href="http://bijian1013.iteye.com/blog/2302520" target="_blank" rel="external">怎么对jdk核心包进行跟踪调试，并查看调试中的变量值</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/05/openjdk源码目录/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1435,7 +1587,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
