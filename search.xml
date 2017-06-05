@@ -32,7 +32,8 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>IO,JAVA</tag>
+        <tag>IO</tag>
+        <tag>JAVA</tag>
       </tags>
   </entry>
   <entry>
@@ -54,8 +55,8 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>负载均衡</tag>
         <tag>technology</tag>
+        <tag>负载均衡</tag>
       </tags>
   </entry>
   <entry>
