@@ -96,7 +96,7 @@
 <meta property="og:url" content="http://YDDMAX.github.io/2017/06/05/JDK源码之编译/index.html">
 <meta property="og:site_name" content="YDDMAX">
 <meta property="og:description" content="本文主要说明如何编译组成rt.jar的源码，不涉及JVM的编译。 rt.jarrt.jar也就是运行时相关的class类，安装的jre里面的rt.jar是不能被debug的，为了对JDK的源码进行debug跟踪，需要重新编译rt.jar。rt.jar因为操作系统的不同，所包含的class也不同。rt.jar的全部源码在openjdk的jdk目录下，具体的路径是openjdk\jdk\src\，源码">
-<meta property="og:updated_time" content="2017-06-05T07:22:36.310Z">
+<meta property="og:updated_time" content="2017-06-05T07:25:05.880Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDK源码之编译">
 <meta name="twitter:description" content="本文主要说明如何编译组成rt.jar的源码，不涉及JVM的编译。 rt.jarrt.jar也就是运行时相关的class类，安装的jre里面的rt.jar是不能被debug的，为了对JDK的源码进行debug跟踪，需要重新编译rt.jar。rt.jar因为操作系统的不同，所包含的class也不同。rt.jar的全部源码在openjdk的jdk目录下，具体的路径是openjdk\jdk\src\，源码">
@@ -406,7 +406,7 @@
 
       
         <p>本文主要说明如何编译组成rt.jar的源码，不涉及JVM的编译。</p>
-<h1 id="rt-jar"><a href="#rt-jar" class="headerlink" title="rt.jar"></a>rt.jar</h1><p>rt.jar也就是运行时相关的class类，安装的jre里面的rt.jar是不能被debug的，为了对JDK的源码进行debug跟踪，需要重新编译rt.jar。<br>rt.jar因为操作系统的不同，所包含的class也不同。rt.jar的全部源码在openjdk的jdk目录下，具体的路径是openjdk\jdk\src\，源码根据操作系统的不同和是否共享分成几个目录。<br>操作系统安装的JDK里面的src.zip不包含<strong>sun.*包</strong>，<strong><em>sun.\</em></strong>包在openjdk源码里面,具体的路径是：<strong>jdk\src\share\classes</strong>。</p>
+<h1 id="rt-jar"><a href="#rt-jar" class="headerlink" title="rt.jar"></a>rt.jar</h1><p>rt.jar也就是运行时相关的class类，安装的jre里面的rt.jar是不能被debug的，为了对JDK的源码进行debug跟踪，需要重新编译rt.jar。<br><strong>rt.jar因为操作系统的不同，所包含的class也不同</strong>。rt.jar的全部源码在openjdk的jdk目录下，具体的路径是openjdk\jdk\src\，源码根据操作系统的不同和是否共享分成几个目录。<br>操作系统安装的JDK里面的src.zip不包含<strong>sun.*包</strong>，<strong><em>sun.\</em></strong>包在openjdk源码里面,具体的路径是：<strong>jdk\src\share\classes</strong>。</p>
 <p>openjdk的目录说明和源码下载参见：<a href="https://yddmax.github.io/2017/06/05/openjdk%E6%BA%90%E7%A0%81%E7%9B%AE%E5%BD%95/">openjdk目录</a></p>
 <h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><p>本文编译的是openjdk-7里面jdk目录下的源码。</p>
 <ol>
