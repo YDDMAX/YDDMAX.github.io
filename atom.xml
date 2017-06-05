@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://YDDMAX.github.io/"/>
-  <updated>2017-06-04T08:03:59.967Z</updated>
+  <updated>2017-06-04T08:13:57.680Z</updated>
   <id>http://YDDMAX.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://YDDMAX.github.io/2017/06/04/JAVA-IO/"/>
     <id>http://YDDMAX.github.io/2017/06/04/JAVA-IO/</id>
     <published>2017-06-04T06:14:39.000Z</published>
-    <updated>2017-06-04T08:03:59.967Z</updated>
+    <updated>2017-06-04T08:13:57.680Z</updated>
     
     <content type="html"><![CDATA[<h1 id="计算机IO"><a href="#计算机IO" class="headerlink" title="计算机IO"></a>计算机IO</h1><p>本部分内容主要参考自《JAVA NIO》的第一章简介。</p>
 <h2 id="缓冲区操作"><a href="#缓冲区操作" class="headerlink" title="缓冲区操作"></a>缓冲区操作</h2><p>下图简单描述了数据从外部磁盘向运行中的进程的内存区域移动的过程。<br>进程使用 read( )系统调用，要求其缓冲区被填满。内核随即向磁盘控制硬件发出命令，要求其从磁盘读取数据。磁盘控制器把数据直接写入内核内存缓冲区，<strong>这一步通过 DMA 完成，无需主 CPU 协助</strong>。一旦磁盘控制器把缓冲区装满，内核即把数据从内核空间的临时缓冲区拷贝到进程执行 read()调用时指定的缓冲区。<br>  <img src="http://oqxil93b6.bkt.clouddn.com/images/JAVA%20IO/buffer-io.png" alt="缓冲区操作"><br>为什么不让磁盘控制器直接将磁盘上数据直接copy到用户缓冲区呢？</p>
@@ -104,6 +104,10 @@
     
     </summary>
     
+      <category term="technology" scheme="http://YDDMAX.github.io/categories/technology/"/>
+    
+    
+      <category term="IO,JAVA" scheme="http://YDDMAX.github.io/tags/IO-JAVA/"/>
     
   </entry>
   
@@ -273,9 +277,9 @@
       <category term="technology" scheme="http://YDDMAX.github.io/categories/technology/"/>
     
     
-      <category term="负载均衡" scheme="http://YDDMAX.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/"/>
-    
       <category term="technology" scheme="http://YDDMAX.github.io/tags/technology/"/>
+    
+      <category term="负载均衡" scheme="http://YDDMAX.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/"/>
     
   </entry>
   

@@ -3,16 +3,22 @@
 
 
     
+    
   <url>
     <loc>http://YDDMAX.github.io/2017/06/04/JAVA-IO/</loc>
-    <lastmod>2017-06-04T08:03:59.967Z</lastmod>
+    <lastmod>2017-06-04T08:13:57.680Z</lastmod>
     <data>
         <display>
         <title>JAVA IO</title>
         <pubTime>2017-06-04T06:14:39.000Z</pubTime>
         
+        <tag>IO,JAVA</tag>
+         
          
            
+             
+              <breadCrumb title="technology" url="http://YDDMAX.github.io/categories/technology/"/>
+          
         </display>
     </data>
     </url>
@@ -66,9 +72,9 @@
         <title>负载均衡</title>
         <pubTime>2017-06-03T13:15:10.000Z</pubTime>
         
-        <tag>负载均衡</tag>
-         
         <tag>technology</tag>
+         
+        <tag>负载均衡</tag>
          
          
            
@@ -101,7 +107,6 @@
     </data>
     </url>
 
-    
     
     
 </urlset>
