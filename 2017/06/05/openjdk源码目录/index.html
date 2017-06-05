@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="technology,负载均衡," />
+  <meta name="keywords" content="JDK,java," />
 
 
 
@@ -89,24 +89,19 @@
 
 
 
-<meta name="description" content="DNS DNS负责提供域名解析服务，当访问某个站点时，实际上首先需要通过该站点域名的DNS服务器来获取域名指向的IP地址，在这一过程中，DNS服务器完成了域名到IP地址的映射，同样，这样映射也可以是一对多的，这时候，DNS服务器便充当了负载均衡调度器，它就像http重定向转换策略一样，将用户的请求分散到多台服务器上，但是它的实现机制完全不同。  下图展示百度有三个IP地址：  优点:   可以根据">
-<meta name="keywords" content="technology,负载均衡">
+<meta name="description" content="本文主要参考自：openjdk源码结构 源码下载openjdk-7的源码：openjdk7源码openjdk-8的源码：openJDK8源码 目录说明openjdk的源码的目录结构如下图所示： 各个目录的说明如下：—— corba：不流行的多语言、分布式通讯接口—— hotspot：Java 虚拟机—— jaxp：XML 处理—— jaxws：一组 XML web services 的 Java">
+<meta name="keywords" content="JDK,java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="负载均衡">
-<meta property="og:url" content="http://YDDMAX.github.io/2017/06/03/负载均衡/index.html">
+<meta property="og:title" content="openjdk源码目录">
+<meta property="og:url" content="http://YDDMAX.github.io/2017/06/05/openjdk源码目录/index.html">
 <meta property="og:site_name" content="YDDMAX">
-<meta property="og:description" content="DNS DNS负责提供域名解析服务，当访问某个站点时，实际上首先需要通过该站点域名的DNS服务器来获取域名指向的IP地址，在这一过程中，DNS服务器完成了域名到IP地址的映射，同样，这样映射也可以是一对多的，这时候，DNS服务器便充当了负载均衡调度器，它就像http重定向转换策略一样，将用户的请求分散到多台服务器上，但是它的实现机制完全不同。  下图展示百度有三个IP地址：  优点:   可以根据">
-<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/baidu-dns.png">
-<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/nat.png">
-<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/fullNAT.png">
-<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/dr-same.png">
-<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/dr-no-same.png">
-<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/tunnel.png">
-<meta property="og:updated_time" content="2017-06-03T13:21:43.177Z">
+<meta property="og:description" content="本文主要参考自：openjdk源码结构 源码下载openjdk-7的源码：openjdk7源码openjdk-8的源码：openJDK8源码 目录说明openjdk的源码的目录结构如下图所示： 各个目录的说明如下：—— corba：不流行的多语言、分布式通讯接口—— hotspot：Java 虚拟机—— jaxp：XML 处理—— jaxws：一组 XML web services 的 Java">
+<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk%E6%BA%90%E7%A0%81%E7%BB%93%E6%9E%84openjdk-source-structure.png">
+<meta property="og:updated_time" content="2017-06-05T13:17:03.270Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="负载均衡">
-<meta name="twitter:description" content="DNS DNS负责提供域名解析服务，当访问某个站点时，实际上首先需要通过该站点域名的DNS服务器来获取域名指向的IP地址，在这一过程中，DNS服务器完成了域名到IP地址的映射，同样，这样映射也可以是一对多的，这时候，DNS服务器便充当了负载均衡调度器，它就像http重定向转换策略一样，将用户的请求分散到多台服务器上，但是它的实现机制完全不同。  下图展示百度有三个IP地址：  优点:   可以根据">
-<meta name="twitter:image" content="http://oqxil93b6.bkt.clouddn.com/images/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/baidu-dns.png">
+<meta name="twitter:title" content="openjdk源码目录">
+<meta name="twitter:description" content="本文主要参考自：openjdk源码结构 源码下载openjdk-7的源码：openjdk7源码openjdk-8的源码：openJDK8源码 目录说明openjdk的源码的目录结构如下图所示： 各个目录的说明如下：—— corba：不流行的多语言、分布式通讯接口—— hotspot：Java 虚拟机—— jaxp：XML 处理—— jaxws：一组 XML web services 的 Java">
+<meta name="twitter:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk%E6%BA%90%E7%A0%81%E7%BB%93%E6%9E%84openjdk-source-structure.png">
 
 
 
@@ -134,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://YDDMAX.github.io/2017/06/03/负载均衡/"/>
+  <link rel="canonical" href="http://YDDMAX.github.io/2017/06/05/openjdk源码目录/"/>
 
 
 
 
 
-  <title> 负载均衡 | YDDMAX </title>
+  <title> openjdk源码目录 | YDDMAX </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -313,7 +308,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/03/负载均衡/">
+    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/05/openjdk源码目录/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yunzhu">
@@ -334,7 +329,7 @@
             
             
               
-                负载均衡
+                openjdk源码目录
               
             
           </h1>
@@ -349,8 +344,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-03T21:15:10+08:00">
-                2017-06-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T20:53:40+08:00">
+                2017-06-05
               </time>
             
 
@@ -372,8 +367,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/technology/" itemprop="url" rel="index">
-                    <span itemprop="name">technology</span>
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -412,93 +407,40 @@
       
 
       
-        <h1 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h1><blockquote>
-<p>DNS负责提供域名解析服务，当访问某个站点时，实际上首先需要通过该站点域名的DNS服务器来获取域名指向的IP地址，在这一过程中，DNS服务器完成了域名到IP地址的映射，同样，这样映射也可以是一对多的，这时候，DNS服务器便充当了负载均衡调度器，它就像http重定向转换策略一样，将用户的请求分散到多台服务器上，但是它的实现机制完全不同。</p>
-</blockquote>
-<p>下图展示百度有三个IP地址：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/baidu-dns.png" alt="百度DNS"></p>
+        <p>本文主要参考自：<a href="http://blog.csdn.net/socrj/article/details/43916221" target="_blank" rel="external">openjdk源码结构</a></p>
+<h1 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h1><p>openjdk-7的源码：<a href="http://pan.baidu.com/s/1qYAtBK4" target="_blank" rel="external">openjdk7源码</a><br>openjdk-8的源码：<a href="http://download.csdn.net/download/socrj/8454221" target="_blank" rel="external">openJDK8源码</a></p>
+<h1 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h1><p>openjdk的源码的目录结构如下图所示：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/openjdk%E6%BA%90%E7%A0%81%E7%BB%93%E6%9E%84openjdk-source-structure.png" alt="此处输入图片的描述"></p>
+<p>各个目录的说明如下：<br><strong>—— corba：不流行的多语言、分布式通讯接口<br>—— hotspot：Java 虚拟机<br>—— jaxp：XML 处理<br>—— jaxws：一组 XML web services 的 Java API<br>—— jdk：java 开发工具包<br>—— —— 针对操作系统的部分<br>—— —— share：与平台无关的实现<br>—— langtools：Java 语言工具<br>—— nashorn：JVM 上的 JavaScript 运行时</strong></p>
+<p>为了让大家易于理解，有所简化了结构。</p>
+<h2 id="Corba"><a href="#Corba" class="headerlink" title="Corba"></a>Corba</h2><p>全称 Common Object Request Broker Architecture，通用对象请求代理架构，是基于 对象-服务 机制设计得。</p>
+<p>与 JavaBean、COM 等是同种范畴。</p>
+<p>目前，通用的远程过程调用协议是 SOAP（Simple Object Access Protocol，简单对象访问协议），消息格式是 XML-RPC（存在 Json-RPC）。<br>另外，Apache Thrift 提供了多语言 C/S 通讯支持； 不少语言也内置了跨语言调用或对分布式环境友好，比如： lua 可以与 c 代码互调用，Go 可以调用 C 代码，erlang 在本地操作与分布式环境下的操作方法一样等。<br><strong>Corba和RMI类似，都能实现RPC。但是RMI只是针对JAVA环境的，Corba是支持多语言的方案</strong></p>
+<h2 id="Hotspot"><a href="#Hotspot" class="headerlink" title="Hotspot"></a>Hotspot</h2><p>全称 Java HotSpot Performance Engine，是 Java 虚拟机的一个实现，包含了服务器版和桌面应用程序版。利用 JIT 及自适应优化技术（自动查找性能热点并进行动态优化）来提高性能。</p>
+<p>使用 java -version 可以查看 Hotspot 的版本。</p>
+<p>从 Java 1.3 起为默认虚拟机，现由 Oracle 维护并发布。</p>
+<p>其他 java 虚拟机：</p>
 <ul>
-<li><strong>优点:</strong></li>
+<li>JRockit：专注于服务器端，曾经号称是“世界上速度最快的 Java 虚拟机”，现归于 Oracle 旗下。</li>
+<li>J9：IBM 设计的 Java 虚拟机。</li>
+<li>Harmony：Apache 的顶级项目之一，从 2011 年 11 月 6 日起入驻 Apache 的 Java 项目。虽然其能够兼容 jdk，但由于 JCP （Java Community Process）仅仅允许授权给 Harmony 一个带有限制条件的TCK（Technology Compatibility Kit），即仅仅能使用在 J2SE ,而不是所有Java实现上（包括 J2ME 和 J2EE），导致了 Apache 组织与 Oracle 的决裂。Harmony 是 Android 虚拟机 Dalvik 的前身。</li>
+<li>Dalvik 并不是 Java 虚拟机，它执行的是 dex 文件而不是 class 文件，使用的也是寄存器架构而不是栈架构 。</li>
 </ul>
-<ol>
-<li>可以根据用户IP来进行智能解析。DNS服务器可以在所有可用的A记录中寻找离用记最近的一台服务器。</li>
-<li>动态DNS：在每次IP地址变更时，及时更新DNS服务器。当然，因为缓存，一定的延迟不可避免。</li>
-</ol>
+<h2 id="jaxp"><a href="#jaxp" class="headerlink" title="jaxp"></a>jaxp</h2><p>全称 Java API for XML Processing，处理 XML 的Java API，是 Java XML 程序设计的应用程序接口之一，它提供解析和验证XML文档的能力。<br>jaxp 提供了处理 xml 文件的三种接口：</p>
 <ul>
-<li><strong>缺点:</strong></li>
+<li>DOM 接口（文档对象模型解析），位于 \openjdk\jaxp\src\org\w3c\dom</li>
+<li>SAX 接口（xml 简单 api 解析），位于 \openjdk\jaxp\src\org\xml\sax</li>
+<li>StAX 接口（xml 流 api），位于 \openjdk\jaxp\src\javax\xml</li>
+<li>除了解析接口，JAXP还提供了XSLT接口用来对XML文档进行数据和结构的转换。</li>
 </ul>
-<ol>
-<li>没有用户能直接看到DNS解析到了哪一台实际服务器，加服务器运维人员的调试带来了不便。</li>
-<li>策略的局限性。例如你无法将HTTP请求的上下文引入到调度策略中，而在前面介绍的基于HTTP重定向的负载均衡系统中，调度器工作在HTTP层面，它可以充分理解HTTP请求后根据站点的应用逻辑来设计调度策略，比如根据请求不同的URL来进行合理的过滤和转移。</li>
-<li>如果要根据实际服务器的实时负载差异来调整调度策略，这需要DNS服务器在每次解析操作时分析各服务器的健康状态，对于DNS服务器来说，这种自定义开发存在较高的门槛，更何况大多数站点只是使用第三方DNS服务。</li>
-<li>DNS记录缓存，各级节点的DNS服务器不同程序的缓存会让你晕头转向。</li>
-<li>基于以上几点，DNS服务器并不能很好地完成工作量均衡分配，最后，是否选择基于DNS的负载均衡方式完全取决于你的需要。</li>
-</ol>
-<h1 id="HTTP重定向"><a href="#HTTP重定向" class="headerlink" title="HTTP重定向"></a>HTTP重定向</h1><blockquote>
-<p>当http代理（比如浏览器）向web服务器请求某个URL后，web服务器可以通过http响应头信息中的Location标记来返回一个新的URL。这意味着HTTP代理需要继续请求这个新的URL，完成自动跳转。</p>
-</blockquote>
-<ol>
-<li>吞吐率限制<br>主站点服务器的吞吐率平均分配到了被转移的服务器。现假设使用RR（Round Robin）调度策略，子服务器的最大吞吐率为1000reqs/s，那么主服务器的吞吐率要达到3000reqs/s才能完全发挥三台子服务器的作用，那么如果有100台子服务器，那么主服务器的吞吐率可想而知得有大？相反，如果主服务的最大吞吐率为6000reqs/s，那么平均分配到子服务器的吞吐率为2000reqs/s，而现子服务器的最大吞吐率为1000reqs/s，因此就得增加子服务器的数量，增加到6个才能满足。</li>
-<li>重定向访问深度不同<br>有的重定向一个静态页面，有的重定向相比复杂的动态页面，那么实际服务器的负载差异是不可预料的，而主站服务器却一无所知。因此整站使用重定向方法做负载均衡不太好。</li>
-</ol>
-<p>我们需要权衡转移请求的开销和处理实际请求的开销，前者相对于后者越小，那么重定向的意义就越大，例如下载。你可以去很多镜像下载网站试下，会发现基本下载都使用了Location做了重定向。</p>
-<h1 id="LVS（四层）"><a href="#LVS（四层）" class="headerlink" title="LVS（四层）"></a>LVS（四层）</h1><p>以下内容参考自<a href="http://www.tuicool.com/articles/vQzmi2" target="_blank" rel="external">LVS</a></p>
-<h2 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h2><p>通过将请求报文的目标地址和目标端口修改为挑选出的某RS的RIP和PORT实现转发；<br>特点：</p>
-<ol>
-<li><strong>RIP和DIP必须在同一IP网络,且使用私网地址RS的网关应该指向DIP(保证响应报文必须经由VS)</strong></li>
-<li><strong>请求和响应报文都要经由director转发；极高负载的场景中，Director可能会成为系统性能瓶颈</strong></li>
-<li>支持端口映射</li>
-<li>VS必须为Linux，RS可以是任意的OS</li>
-<li><strong>调度器上需要两块网卡,一个配置vip 一个配置dip</strong></li>
-</ol>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/nat.png" alt="NAT"></p>
-<h2 id="FULLNAT"><a href="#FULLNAT" class="headerlink" title="FULLNAT"></a>FULLNAT</h2><p>非标准模型, ipvs默认不支持,ipvsadm也不支持。<br>NAT模式的扩展（阿里云的四层SLB使用的是此方式，因为此种方式下负载均衡器和后端服务器的部署不需要部署在同一网络内）<br>通过同时修改请求报文的源IP地址（cip–&gt;dip）和目标IP地址（vip –&gt; rip）实现转发<br>特点：</p>
-<ol>
-<li>调度器和后端服务器可以不在同一IP网络中</li>
-<li>RS收到的请求报文的源IP为DIP，因此其响应报文将发送给DIP；</li>
-<li>请求报文和响应报文都必须经由director；</li>
-<li>支持端口映射；</li>
-<li>RS可使用任意OS；    </li>
-</ol>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/fullNAT.png" alt="fullNAT"></p>
-<h2 id="DR"><a href="#DR" class="headerlink" title="DR"></a>DR</h2><p>直接路由<br>通过为请求报文重新封装一个MAC首部进行转发,源MAC是DIP所在接口的MAC,目标MAC是挑选出的某RS的RIP所在接口的MAC地址；IP首部不会发生变化（源IP为CIP，目标IP始终为VIP） </p>
-<ol>
-<li>RS跟Director必须在同一物理网络中；RS的网关必须不能指向DIP</li>
-<li><strong>请求报文必须由Director调度，但响应报文必须不能经由Director</strong></li>
-<li><strong>不支持端口映射</strong></li>
-<li>各RS可以使用大多数的OS；一般是linux</li>
-</ol>
-<p>情形1: RIP DIP VIP 都在一个网络, 都是公网IP 地址</p>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/dr-same.png" alt="dr-same"></p>
-<p>情形2: VIP 是公网ip地址, RIP,DIP是私有地址, 情况要复制些, RS要通过另一个路由出去</p>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/dr-no-same.png" alt="dr-nosame"></p>
-<p>注意:<br>一个路由其可以有多个网络接口<br>一个交换机可以承载多个ip网络<br>所以路由器1和路由器2可以使用同一个<br>私网交换机和公网交换机也可以用同一个</p>
-<h2 id="TUN"><a href="#TUN" class="headerlink" title="TUN"></a>TUN</h2><p>ip tunnel，ip隧道<br>转发方式：不修改请求报文的IP首部（源IP为CIP，目标IP为VIP），而是在原有的IP首部之外再次封装一个IP首部（源IP为DIP，目标IP为RIP）</p>
-<ol>
-<li>RIP，DIP，VIP全得是公网地址</li>
-<li>RS的网关不能也不可能指向DIP</li>
-<li>请求报文经由Director调度，但响应报文将直接发给CIP</li>
-<li>不支持端口映射</li>
-<li>RS的OS必须支持IP隧道功能；</li>
-<li><strong>容易超出MTU,  弊端比较大</strong></li>
-</ol>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/tunnel.png" alt="tunnel"></p>
-<h1 id="反向代理（七层）"><a href="#反向代理（七层）" class="headerlink" title="反向代理（七层）"></a>反向代理（七层）</h1><p>这个肯定大家都有所接触，因为几乎所有主流的Web服务器都热衷于支持基于反向代理的负载均衡。<br>相比前面的HTTP重定向和DNS解析，反向代理的调度器扮演的是用户和实际服务器中间人的角色：</p>
-<ol>
-<li>任何对于实际服务器的HTTP请求都必须经过调度器</li>
-<li>调度器必须等待实际服务器的HTTP响应，并将它反馈给用户（前两种方式不需要经过调度反馈，是实际服务器直接发送给用户）</li>
-</ol>
-<ul>
-<li><strong>优点：</strong></li>
-</ul>
-<ol>
-<li>调度策略丰富。例如可以为不同的实际服务器设置不同的权重，以达到能者多劳的效果。</li>
-<li>对反向代理服务器的并发处理能力要求高，因为它工作在HTTP层面。</li>
-<li>反向代理服务器可以监控后端服务器，比如系统负载、响应时间、是否可用、TCP连接数、流量等，从而根据这些数据调整负载均衡的策略。</li>
-<li>反射代理服务器可以让用户在一次会话周期内的所有请求始终转发到一台特定的后端服务器上（粘滞会话），这样的好处一是保持session的本地访问，二是防止后端服务器的动态内存缓存的资源浪费。</li>
-</ol>
-<ul>
-<li><strong>缺点：</strong><br>反向代理服务器进行转发操作本身是需要一定开销的，比如创建线程、与后端服务器建立TCP连接、接收后端服务器返回的处理结果、分析HTTP头部信息、用户空间和内核空间的频繁切换等，虽然这部分时间并不长，但是当后端服务器处理请求的时间非常短时，转发的开销就显得尤为突出。例如请求静态文件，更适合使用前面介绍的基于DNS的负载均衡方式。<h1 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h1>一般工作在四层。<br>性能较高，但是价格昂贵。</li>
-</ul>
+<h2 id="JaxWS"><a href="#JaxWS" class="headerlink" title="JaxWS"></a>JaxWS</h2><p>全称 Java API for Web Services，JAX-WS 允许开发者选择 RPC-oriented（面向 RPC） 或者 message-oriented（消息通信，erlang 使用的就是消息通信，不过 Java 内存模型是内存共享）来实现自己的web services。</p>
+<p>通过 Web Services 提供的环境，可以实现 Java 与其他编程语言的交互（事实上就是 thrift 所做的，任何一种语言都可以通过 Web Services 实现与其他语言的通信，客户端用一种语言，服务器端可以用其他语言）。</p>
+<h2 id="LangTools"><a href="#LangTools" class="headerlink" title="LangTools"></a>LangTools</h2><p>Java 语言支持工具</p>
+<h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><p>全称 Java Development Kit。</p>
+<p><strong>share</strong></p>
+<p><strong>classes</strong> 目录里的是 Java 的实现，<strong>native</strong> 目录里的是 C++ 的实现，两部分基本对应。这两个目录里的结构与 java 的包也是对应，各个部分的用途另外再讲。</p>
+<p>back、instrument、javavm、npt、transport 几个部分是实现 java 的基础部分，都是 C++ 代码，在这里从最底层理解 java，往后这些内容也会详讲。</p>
+<p>sample 和 demo 目录有以下示例，区别在于 demo 目录是 针对 applets 的。</p>
+<h2 id="Nashorn"><a href="#Nashorn" class="headerlink" title="Nashorn"></a>Nashorn</h2><p>Nashorn 项目的目的是基于 Java 在 JVM 上实现一个轻量级高性能的 JavaScript 运行环境。基于 JSR-223 协议，Java 程序员可在 Java 程序中嵌入 JavaScript 代码。<br>该项目使用了 JSR-229 里描述的新连接机制（从 Java7起开始使用的连接机制）：新的字节码（invokedynamic）以及新的基于方法句柄（method handle）的连接机制。通过接口注入（interface injection）在运行时修改类也是 JSR-229 里的内容。</p>
 
       
     </div>
@@ -528,9 +470,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/technology/" rel="tag"># technology</a>
+            <a href="/tags/JDK/" rel="tag"># JDK</a>
           
-            <a href="/tags/负载均衡/" rel="tag"># 负载均衡</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -543,8 +485,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/03/架构的八荣八耻和20个能力/" rel="next" title="架构的八荣八耻和20个能力">
-                <i class="fa fa-chevron-left"></i> 架构的八荣八耻和20个能力
+              <a href="/2017/06/04/JAVA-IO/" rel="next" title="JAVA IO">
+                <i class="fa fa-chevron-left"></i> JAVA IO
               </a>
             
           </div>
@@ -552,10 +494,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/04/Pro-Java-7-NIO-2读书笔记/" rel="prev" title="Pro Java 7 NIO 2读书笔记">
-                Pro Java 7 NIO 2读书笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -729,7 +667,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DNS"><span class="nav-number">1.</span> <span class="nav-text">DNS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP重定向"><span class="nav-number">2.</span> <span class="nav-text">HTTP重定向</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LVS（四层）"><span class="nav-number">3.</span> <span class="nav-text">LVS（四层）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#NAT"><span class="nav-number">3.1.</span> <span class="nav-text">NAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FULLNAT"><span class="nav-number">3.2.</span> <span class="nav-text">FULLNAT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DR"><span class="nav-number">3.3.</span> <span class="nav-text">DR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TUN"><span class="nav-number">3.4.</span> <span class="nav-text">TUN</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反向代理（七层）"><span class="nav-number">4.</span> <span class="nav-text">反向代理（七层）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#硬件"><span class="nav-number">5.</span> <span class="nav-text">硬件</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#源码下载"><span class="nav-number">1.</span> <span class="nav-text">源码下载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录说明"><span class="nav-number">2.</span> <span class="nav-text">目录说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Corba"><span class="nav-number">2.1.</span> <span class="nav-text">Corba</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hotspot"><span class="nav-number">2.2.</span> <span class="nav-text">Hotspot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jaxp"><span class="nav-number">2.3.</span> <span class="nav-text">jaxp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JaxWS"><span class="nav-number">2.4.</span> <span class="nav-text">JaxWS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LangTools"><span class="nav-number">2.5.</span> <span class="nav-text">LangTools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK"><span class="nav-number">2.6.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nashorn"><span class="nav-number">2.7.</span> <span class="nav-text">Nashorn</span></a></li></ol></li></ol></div>
             
 
           </div>
