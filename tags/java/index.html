@@ -92,7 +92,7 @@
 <meta name="description" content="code rush">
 <meta property="og:type" content="website">
 <meta property="og:title" content="YDDMAX">
-<meta property="og:url" content="http://YDDMAX.github.io/tags/java/index.html">
+<meta property="og:url" content="http://YDDMAX.github.io/tags/JAVA/index.html">
 <meta property="og:site_name" content="YDDMAX">
 <meta property="og:description" content="code rush">
 <meta name="twitter:card" content="summary">
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://YDDMAX.github.io/tags/java/"/>
+  <link rel="canonical" href="http://YDDMAX.github.io/tags/JAVA/"/>
 
 
 
 
 
-  <title> 标签: java | YDDMAX </title>
+  <title> 标签: JAVA | YDDMAX </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -297,7 +297,7 @@
   <div id="posts" class="posts-collapse">
     <div class="collection-title">
       <h2 >
-        java
+        JAVA
         <small>标签</small>
       </h2>
     </div>
@@ -310,37 +310,9 @@
 
       <h1 class="post-title">
         
-            <a class="post-title-link" href="/2017/06/05/JDK源码之编译/" itemprop="url">
+            <a class="post-title-link" href="/2017/06/04/JAVA-IO/" itemprop="url">
               
-                <span itemprop="name">JDK源码之编译</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-05T21:19:58+08:00"
-              content="2017-06-05" >
-          06-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/05/openjdk源码目录/" itemprop="url">
-              
-                <span itemprop="name">openjdk源码目录</span>
+                <span itemprop="name">JAVA IO</span>
               
             </a>
         
@@ -348,9 +320,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-05T20:53:40+08:00"
-              content="2017-06-05" >
-          06-05
+              datetime="2017-06-04T14:14:39+08:00"
+              content="2017-06-04" >
+          06-04
         </time>
       </div>
 
@@ -404,7 +376,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -426,7 +398,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -761,6 +733,59 @@
                     var match_content = content.substring(start, end);
                     // highlight all keywords
                     keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+.forEach(function(keyword){
                       var regS = new RegExp(keyword, "gi");
                       match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
                     });
