@@ -87,7 +87,7 @@
     <link href="http://YDDMAX.github.io/2017/06/11/openjdk7%E4%B9%8B%E7%BC%96%E8%AF%91%E5%92%8Cdebug/"/>
     <id>http://YDDMAX.github.io/2017/06/11/openjdk7之编译和debug/</id>
     <published>2017-06-11T15:53:55.000Z</published>
-    <updated>2017-06-11T09:32:12.820Z</updated>
+    <updated>2017-06-11T09:37:20.436Z</updated>
     
     <content type="html"><![CDATA[<p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><ol>
@@ -140,8 +140,10 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
 </ul>
 </li>
 </ul>
-<p>然后开始debug。<br>首先是第一个断点：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/openjdk/init.cpp-95.png" alt="init.cpp-95.png"></p>
-<p>F8进行到下一个断电点：</p>
+<ol>
+<li>然后开始debug。<br>首先是第一个断点：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/openjdk/init.cpp-95.png" alt="init.cpp-95.png"></li>
+</ol>
+<p>F8进行到下一个断点：</p>
 <p><img src="http://oqxil93b6.bkt.clouddn.com/images/openjdk/FileDispatcherImpl-write.c.jpg" alt="FileDispatcherImpl-write.c.png"></p>
 <p>从上图可以看到,FileChannel.write()最后调用的是write()操作系统调用。<br>所以，大家现在可以随便debug　HotSpot的源码和JDK的native源码了。酷！</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://yddmax.github.io/2017/06/12/openjdk%E4%B9%8B%E7%BC%96%E8%AF%91%E7%BB%8F%E5%B8%B8%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/">openjdk之编译经常出现的问题</a><br><a href="https://yddmax.github.io/2017/06/12/openjdk8%E4%B9%8B%E7%BC%96%E8%AF%91%E5%92%8Cdebug/">openjdk8的编译和debug</a><br>编译主要参考：<a href="https://ayonel.me/index.php/2017/01/05/compile_openjdk/" target="_blank" rel="external">ubuntu14.04 编译openjdk7</a><br>debug主要参考：<a href="http://blog.csdn.net/tjiyu/article/details/53725247" target="_blank" rel="external">CentOS上编译OpenJDK8源码 以及 在eclipse上调试HotSpot虚拟机源码</a></p>
@@ -638,9 +640,9 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
       <category term="ali" scheme="http://YDDMAX.github.io/categories/ali/"/>
     
     
-      <category term="architecture" scheme="http://YDDMAX.github.io/tags/architecture/"/>
-    
       <category term="technology" scheme="http://YDDMAX.github.io/tags/technology/"/>
+    
+      <category term="architecture" scheme="http://YDDMAX.github.io/tags/architecture/"/>
     
   </entry>
   
