@@ -98,7 +98,7 @@
 <meta property="og:description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generi">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/init.cpp-95.png">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/FileDispatcherImpl-write.c.jpg">
-<meta property="og:updated_time" content="2017-06-11T19:11:33.956Z">
+<meta property="og:updated_time" content="2017-06-11T19:15:25.758Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openjdk7之编译和debug">
 <meta name="twitter:description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generi">
@@ -444,7 +444,7 @@ n</code>，执行<br>    <code>./java -version</code><br>    输出的java版本
 <li><p>下载eclipse,安装C/C++插件　<br> 到官网选择一个合适的eclipse下载，因为本人主要进行JAVA开发，所以下载的是j2EE版本，这个版本没有C/C++的功能。不过可以安装插件使其支持C/C++功能。”help -&gt; Eclipse Maketplace”,搜索”c++”找到Eclipse C++ IDE..安装。安装后，就可以转到C++开发视图界面了。</p>
 </li>
 <li>导入hotspot工程<br> File-&gt; New -&gt; Makefile Project With Existing Code<br> 在界面中:<br> Project Name：openjdk（这个可以自己选择）<br> Existing Code Location：/root/openjdk<br> Toolchain：选Linux GCC，然后按Finish.     </li>
-<li>配置源码调试     </li>
+<li>配置源码调试   </li>
 </ol>
 <ul>
 <li><p>右键工程 -&gt; Debug As -&gt; Debug Configurations -&gt; 右键左边的C/C++ Application -&gt; New -&gt; 进入Main选项卡；<br>在选项卡中:</p>
