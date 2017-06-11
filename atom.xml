@@ -87,7 +87,7 @@
     <link href="http://YDDMAX.github.io/2017/06/11/openjdk7%E4%B9%8B%E7%BC%96%E8%AF%91%E5%92%8Cdebug/"/>
     <id>http://YDDMAX.github.io/2017/06/11/openjdk7之编译和debug/</id>
     <published>2017-06-11T15:53:55.000Z</published>
-    <updated>2017-06-11T09:27:49.475Z</updated>
+    <updated>2017-06-11T09:30:04.849Z</updated>
     
     <content type="html"><![CDATA[<p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><ol>
@@ -96,9 +96,8 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java version <span class="string">"1.6.0_45"</span></div><div class="line">Java(TM) SE Runtime Environment (build 1.6.0_45-b06)</div><div class="line">Java HotSpot(TM) Server VM (build 20.45-b01, mixed mode)</div></pre></td></tr></table></figure>
 <p>JDK1.6.0_45下载地址：<a href="https://pan.baidu.com/s/1eStdxq6" target="_blank" rel="external">jdk1.6.0_45.tar.gz</a></p>
 </li>
-<li>安装编译前的依赖环境</li>
+<li>安装编译前的依赖环境<br>安装gcc、g++、make等<br><code>sudo apt-get install build-essential</code><br>安装ant 1.7以上<br><code>sudo apt-get install ant</code><br>安装XRender<br><code>sudo apt-get install libxrender-dev</code><br><code>sudo apt-get install xorg-dev</code><br>安装alsa<br><code>sudo apt-get install libasound2-dev</code><br>Cups<br><code>sudo apt-get install libcups2-dev</code><br>安装零碎的工具包<br><code>sudo apt-get install gawk zip libxtst-dev libxi-dev libxt-dev</code></li>
 </ol>
-<p>安装gcc、g++、make等<br><code>sudo apt-get install build-essential</code><br>安装ant 1.7以上<br><code>sudo apt-get install ant</code><br>安装XRender<br><code>sudo apt-get install libxrender-dev</code><br><code>sudo apt-get install xorg-dev</code><br>安装alsa<br><code>sudo apt-get install libasound2-dev</code><br>Cups<br><code>sudo apt-get install libcups2-dev</code><br>安装零碎的工具包<br><code>sudo apt-get install gawk zip libxtst-dev libxi-dev libxt-dev</code></p>
 <p>４. 配置编译脚本<br>将你的openjdk解压后，并进入该文件夹。比如我的是在/home/ddy/openjdk-compile/openjdk-7u40-fcs-b43-26/openjdk<br>下。新建一个build.sh，并添加如下内容：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> LANG=C</div><div class="line"><span class="comment">#将一下两项设置为你的BootstrapJDK安装目录</span></div><div class="line"><span class="built_in">export</span> ALT_BOOTDIR=/home/ddy/jdk1.6.0_45</div><div class="line"><span class="built_in">export</span> ALT_JDK_IMPORT_PATH=/home/ddy/jdk1.6.0_45</div><div class="line"><span class="comment">#允许自动下载依赖包</span></div><div class="line"><span class="built_in">export</span> ALLOW_DOWNLOADS=<span class="literal">true</span></div><div class="line"></div><div class="line"><span class="comment">#使用预编译头文件，以提升便以速度</span></div><div class="line"><span class="built_in">export</span> USE_PRECOMPILED_HEADER=<span class="literal">true</span></div><div class="line"></div><div class="line"><span class="comment">#要编译的内容，我只选择了LANGTOOLS、HOTSPOT以及JDK</span></div><div class="line"><span class="built_in">export</span> BUILD_LANGTOOLS=<span class="literal">true</span></div><div class="line"><span class="built_in">export</span> BUILD_JAXP=<span class="literal">false</span></div><div class="line"><span class="built_in">export</span> BUILD_JAXWS=<span class="literal">false</span></div><div class="line"><span class="built_in">export</span> BUILD_CORBA=<span class="literal">false</span></div><div class="line"><span class="built_in">export</span> BUILD_HOSTPOT=<span class="literal">true</span></div><div class="line"><span class="built_in">export</span> BUILD_JDK=<span class="literal">true</span></div><div class="line"></div><div class="line"><span class="comment">#要编译的版本</span></div><div class="line"><span class="built_in">export</span> SKIP_DEBUG_BUILD=<span class="literal">false</span></div><div class="line"><span class="built_in">export</span> SKIP_FASTDEBUG_BUILD=<span class="literal">true</span></div><div class="line"><span class="built_in">export</span> DEBUG_NAME=debug</div><div class="line"></div><div class="line"><span class="comment">#避免javaws和浏览器Java插件等的build</span></div><div class="line">BUILD_DEPLOY=<span class="literal">false</span></div><div class="line"></div><div class="line"><span class="comment">#不build安装包</span></div><div class="line">BUILD_INSTALL=<span class="literal">false</span></div><div class="line"></div><div class="line"><span class="comment">#包含全部的调试信息</span></div><div class="line"><span class="built_in">export</span>  ENABLE_FULL_DEBUG_SYMBOLS=1</div><div class="line"><span class="comment">#调试信息是否压缩，如果配置为１,libjvm.debuginfo会被压缩成libjvm.diz,将不能被debug。</span></div><div class="line"><span class="built_in">export</span>  ZIP_DEBUGINFO_FILES=0</div><div class="line"><span class="comment">#用于编译线程数</span></div><div class="line"><span class="built_in">export</span>  HOTSPOT_BUILD_JOBS=3</div><div class="line"></div><div class="line"><span class="comment">#设置存放编译结果的目录</span></div><div class="line"><span class="comment">#export ALT_OUTPUTDIR=/home/ddy/openjdk/7/build</span></div><div class="line"></div><div class="line"><span class="built_in">unset</span> CLASSPATH</div><div class="line"><span class="built_in">unset</span> JAVA_HOME</div><div class="line">make sanity</div><div class="line">DEBUG_BINARIES=<span class="literal">true</span> make 2&gt;&amp;1</div></pre></td></tr></table></figure></p>
 <p>５. 开始编译<br>在openjdk目录下，运行build.sh</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chmod +x build.sh</div><div class="line">./build.sh</div></pre></td></tr></table></figure>
@@ -217,9 +216,9 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
       <category term="java" scheme="http://YDDMAX.github.io/categories/java/"/>
     
     
-      <category term="Buffer" scheme="http://YDDMAX.github.io/tags/Buffer/"/>
-    
       <category term="java" scheme="http://YDDMAX.github.io/tags/java/"/>
+    
+      <category term="Buffer" scheme="http://YDDMAX.github.io/tags/Buffer/"/>
     
   </entry>
   
@@ -251,9 +250,9 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
       <category term="java" scheme="http://YDDMAX.github.io/categories/java/"/>
     
     
-      <category term="java" scheme="http://YDDMAX.github.io/tags/java/"/>
-    
       <category term="JDK" scheme="http://YDDMAX.github.io/tags/JDK/"/>
+    
+      <category term="java" scheme="http://YDDMAX.github.io/tags/java/"/>
     
   </entry>
   
@@ -310,9 +309,9 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
       <category term="java" scheme="http://YDDMAX.github.io/categories/java/"/>
     
     
-      <category term="java" scheme="http://YDDMAX.github.io/tags/java/"/>
-    
       <category term="JDK" scheme="http://YDDMAX.github.io/tags/JDK/"/>
+    
+      <category term="java" scheme="http://YDDMAX.github.io/tags/java/"/>
     
   </entry>
   
