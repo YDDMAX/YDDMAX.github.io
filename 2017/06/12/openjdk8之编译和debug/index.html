@@ -89,18 +89,18 @@
 
 
 
-<meta name="description" content="openjdk8的编译和debug标签（空格分隔）： openjdk8 jvm  系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openj">
+<meta name="description" content="系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openjdk版本为:openjdk-8u40-src-b25-10_feb_2015。尝试">
 <meta name="keywords" content="openjdk,jvm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openjdk8之编译和debug">
 <meta property="og:url" content="http://YDDMAX.github.io/2017/06/12/openjdk8之编译和debug/index.html">
 <meta property="og:site_name" content="YDDMAX">
-<meta property="og:description" content="openjdk8的编译和debug标签（空格分隔）： openjdk8 jvm  系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openj">
+<meta property="og:description" content="系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openjdk版本为:openjdk-8u40-src-b25-10_feb_2015。尝试">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/opjdk-8u40-compile-success.png">
-<meta property="og:updated_time" content="2017-06-11T09:02:43.607Z">
+<meta property="og:updated_time" content="2017-06-11T09:08:51.757Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openjdk8之编译和debug">
-<meta name="twitter:description" content="openjdk8的编译和debug标签（空格分隔）： openjdk8 jvm  系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openj">
+<meta name="twitter:description" content="系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openjdk版本为:openjdk-8u40-src-b25-10_feb_2015。尝试">
 <meta name="twitter:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/opjdk-8u40-compile-success.png">
 
 
@@ -407,9 +407,7 @@
       
 
       
-        <h1 id="openjdk8的编译和debug"><a href="#openjdk8的编译和debug" class="headerlink" title="openjdk8的编译和debug"></a>openjdk8的编译和debug</h1><p>标签（空格分隔）： openjdk8 jvm</p>
-<hr>
-<p>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
+        <p>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <p>在本文中，要编译的openjdk版本为:<a href="https://pan.baidu.com/s/1mhLHkc4" target="_blank" rel="external">openjdk-8u40-src-b25-10_feb_2015</a>。<br>尝试了编译<a href="https://pan.baidu.com/s/1jI1cGNc" target="_blank" rel="external">openjdk-8-src-b132-03_mar_2014</a>，但是失败。网上说,因为ubuntu16.04较新，但是该版本的JDK较老，所以失败。</p>
 <p>下面说明编译过程。</p>
 <h1 id="make版本"><a href="#make版本" class="headerlink" title="make版本"></a>make版本</h1><p>OpenJDK8可以使用”config &amp;&amp; make”编译构建，不再使用Ant和ALT_ *环境变量来配置构建。<br>不过需要GNU make 3.81或更新的版本</p>
@@ -648,7 +646,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#openjdk8的编译和debug"><span class="nav-number">1.</span> <span class="nav-text">openjdk8的编译和debug</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#make版本"><span class="nav-number">2.</span> <span class="nav-text">make版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装引导JDK"><span class="nav-number">3.</span> <span class="nav-text">安装引导JDK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装编译工具类库："><span class="nav-number">4.</span> <span class="nav-text">安装编译工具类库：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译"><span class="nav-number">5.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用GDB测试是否能debug"><span class="nav-number">6.</span> <span class="nav-text">用GDB测试是否能debug</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#make版本"><span class="nav-number">1.</span> <span class="nav-text">make版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装引导JDK"><span class="nav-number">2.</span> <span class="nav-text">安装引导JDK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装编译工具类库："><span class="nav-number">3.</span> <span class="nav-text">安装编译工具类库：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译"><span class="nav-number">4.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用GDB测试是否能debug"><span class="nav-number">5.</span> <span class="nav-text">用GDB测试是否能debug</span></a></li></ol></div>
             
 
           </div>

@@ -554,9 +554,7 @@
       
         
           
-            <h1 id="openjdk8的编译和debug"><a href="#openjdk8的编译和debug" class="headerlink" title="openjdk8的编译和debug"></a>openjdk8的编译和debug</h1><p>标签（空格分隔）： openjdk8 jvm</p>
-<hr>
-<p>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
+            <p>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <p>在本文中，要编译的openjdk版本为:<a href="https://pan.baidu.com/s/1mhLHkc4" target="_blank" rel="external">openjdk-8u40-src-b25-10_feb_2015</a>。<br>尝试了编译<a href="https://pan.baidu.com/s/1jI1cGNc" target="_blank" rel="external">openjdk-8-src-b132-03_mar_2014</a>，但是失败。网上说,因为ubuntu16.04较新，但是该版本的JDK较老，所以失败。</p>
 <p>下面说明编译过程。</p>
 <h1 id="make版本"><a href="#make版本" class="headerlink" title="make版本"></a>make版本</h1><p>OpenJDK8可以使用”config &amp;&amp; make”编译构建，不再使用Ant和ALT_ *环境变量来配置构建。<br>不过需要GNU make 3.81或更新的版本</p>
