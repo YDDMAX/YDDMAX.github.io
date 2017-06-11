@@ -89,19 +89,19 @@
 
 
 
-<meta name="description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generi">
+<meta name="description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-gener">
 <meta name="keywords" content="openjdk,jvm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openjdk7之编译和debug">
 <meta property="og:url" content="http://YDDMAX.github.io/2017/06/11/openjdk7之编译和debug/index.html">
 <meta property="og:site_name" content="YDDMAX">
-<meta property="og:description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generi">
+<meta property="og:description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-gener">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/init.cpp-95.png">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/FileDispatcherImpl-write.c.jpg">
-<meta property="og:updated_time" content="2017-06-11T19:15:25.758Z">
+<meta property="og:updated_time" content="2017-06-11T19:28:35.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openjdk7之编译和debug">
-<meta name="twitter:description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generi">
+<meta name="twitter:description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-gener">
 <meta name="twitter:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/init.cpp-95.png">
 
 
@@ -408,7 +408,7 @@
       
 
       
-        <p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
+        <p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><ol>
 <li>下载源代码<br> openjdk的源码可以通过hg方式下载。　　<br> 也可以从此处下载：<a href="https://pan.baidu.com/s/1qXMoWfM" target="_blank" rel="external">openjdk源码</a>　　</li>
 <li><p>安装引导JDK<br> 因为JDK中有很多代码是Java自身实现的，所以还需要一个已经安装在本机上可用的JDK，叫做“Bootstrap     JDK”。我所选用的Bootstarp JDK是JDK1.6.0_45。　　</p>
@@ -444,14 +444,9 @@ n</code>，执行<br>    <code>./java -version</code><br>    输出的java版本
 <li><p>下载eclipse,安装C/C++插件　<br> 到官网选择一个合适的eclipse下载，因为本人主要进行JAVA开发，所以下载的是j2EE版本，这个版本没有C/C++的功能。不过可以安装插件使其支持C/C++功能。”help -&gt; Eclipse Maketplace”,搜索”c++”找到Eclipse C++ IDE..安装。安装后，就可以转到C++开发视图界面了。</p>
 </li>
 <li>导入hotspot工程<br> File-&gt; New -&gt; Makefile Project With Existing Code<br> 在界面中:<br> Project Name：openjdk（这个可以自己选择）<br> Existing Code Location：/root/openjdk<br> Toolchain：选Linux GCC，然后按Finish.     </li>
-<li>配置源码调试   </li>
-</ol>
-<ul>
-<li><p>右键工程 -&gt; Debug As -&gt; Debug Configurations -&gt; 右键左边的C/C++ Application -&gt; New -&gt; 进入Main选项卡；<br>在选项卡中:</p>
-<pre><code>**Project：** openjdk（选择导入的openjdk工程）
-**C/C++ Application：**   ``/home/ddy/openjdk-compile/openjdk-7u40-fcs-b43-26/openjdk/build/linux-amd64-debug/j2sdk-image/bin/java``（编译生成的openjdk虚拟机入口）
-**Disable auto build：**因为不再在eclipse里面编译hotspot源码,所以这里选上它；
-</code></pre></li>
+<li><p>配置源码调试   </p>
+<ol>
+<li>右键工程 -&gt; Debug As -&gt; Debug Configurations -&gt; 右键左边的C/C++ Application -&gt; New -&gt; 进入Main选项卡；<br>在选项卡中:<br><strong>Project：</strong> openjdk（选择导入的openjdk工程）<br><strong>C/C++ Application：</strong>   <code>/home/ddy/openjdk-compile/openjdk-7u40-fcs-b43-26/openjdk/build/linux-amd64-debug/j2sdk-image/bin/java</code>（编译生成的openjdk虚拟机入口）<br><strong>Disable auto build：</strong>因为不再在eclipse里面编译hotspot源码,所以这里选上它；</li>
 <li>然后切换到Arguments选项卡, 输入<strong>Java参数</strong>, 这里填上 “FileChannelTest”也就是我们要执行的JAVA程序。</li>
 <li>然后切换到Environment选项卡, 添加<strong>变量</strong>：<br><code>JAVA_HOME=/home/ddy/openjdk-compile/openjdk-7u40-fcs-b43-26/openjdk/build/linux-amd64-debug/j2sdk-image</code>（编译生成JDK所在目录）<br><code>CLASSPATH=.:/home/ddy/src/java-src</code> (FileChannelTest.java文件所在目录)<br>点击下面的Apply保存；</li>
 <li>断点Debug<br>　下面分别在源码上打两个断点：<ul>
@@ -459,8 +454,8 @@ n</code>，执行<br>    <code>./java -version</code><br>    输出的java版本
 <li>FileDispatchImpl.c(/home/ddy/openjdk-compile/openjdk-7u40-fcs-b43-26/openjdk/jdk/src/solaris/native/sun/nio/ch目录下)    107行</li>
 </ul>
 </li>
-</ul>
-<ol>
+</ol>
+</li>
 <li><p>然后开始debug。<br> 首先是第一个断点：<br> <img src="http://oqxil93b6.bkt.clouddn.com/images/openjdk/init.cpp-95.png" alt="init.cpp-95.png"></p>
 <p> F8进行到下一个断电点：</p>
 <p> <img src="http://oqxil93b6.bkt.clouddn.com/images/openjdk/FileDispatcherImpl-write.c.jpg" alt="FileDispatcherImpl-write.c.png"></p>
