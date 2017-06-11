@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="openjdk,jvm," />
 
 
 
@@ -89,15 +89,17 @@
 
 
 
-<meta name="description" content="code rush">
-<meta property="og:type" content="website">
-<meta property="og:title" content="YDDMAX">
-<meta property="og:url" content="http://YDDMAX.github.io/tags/JDK/index.html">
+<meta name="description" content="openjdk编译过程中，因为系统环境和openjdk版本等问题，会出现各种问题。本文主要列出两个经常出现的问题及解决办法。 time is more than 10 years from present12345Error: time is more than 10 years from present: 1136059200000Java.lang.RuntimeException: time">
+<meta name="keywords" content="openjdk,jvm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openjdk之编译经常出现的问题">
+<meta property="og:url" content="http://YDDMAX.github.io/2017/06/12/openjdk之编译经常出现的问题/index.html">
 <meta property="og:site_name" content="YDDMAX">
-<meta property="og:description" content="code rush">
+<meta property="og:description" content="openjdk编译过程中，因为系统环境和openjdk版本等问题，会出现各种问题。本文主要列出两个经常出现的问题及解决办法。 time is more than 10 years from present12345Error: time is more than 10 years from present: 1136059200000Java.lang.RuntimeException: time">
+<meta property="og:updated_time" content="2017-06-11T08:47:02.696Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="YDDMAX">
-<meta name="twitter:description" content="code rush">
+<meta name="twitter:title" content="openjdk之编译经常出现的问题">
+<meta name="twitter:description" content="openjdk编译过程中，因为系统环境和openjdk版本等问题，会出现各种问题。本文主要列出两个经常出现的问题及解决办法。 time is more than 10 years from present12345Error: time is more than 10 years from present: 1136059200000Java.lang.RuntimeException: time">
 
 
 
@@ -125,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://YDDMAX.github.io/tags/JDK/"/>
+  <link rel="canonical" href="http://YDDMAX.github.io/2017/06/12/openjdk之编译经常出现的问题/"/>
 
 
 
 
 
-  <title> 标签: JDK | YDDMAX </title>
+  <title> openjdk之编译经常出现的问题 | YDDMAX </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -156,7 +158,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -294,74 +296,191 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        JDK
-        <small>标签</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/05/JDK源码之编译/" itemprop="url">
-              
-                <span itemprop="name">JDK源码之编译</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-05T21:19:58+08:00"
-              content="2017-06-05" >
-          06-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2017/06/05/openjdk源码目录/" itemprop="url">
-              
-                <span itemprop="name">openjdk源码目录</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-05T20:53:40+08:00"
-              content="2017-06-05" >
-          06-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </div>
 
   
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/12/openjdk之编译经常出现的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yunzhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YDDMAX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                openjdk之编译经常出现的问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-12T00:41:19+08:00">
+                2017-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/jvm/" itemprop="url" rel="index">
+                    <span itemprop="name">jvm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>openjdk编译过程中，因为系统环境和openjdk版本等问题，会出现各种问题。本文主要列出两个经常出现的问题及解决办法。</p>
+<h1 id="time-is-more-than-10-years-from-present"><a href="#time-is-more-than-10-years-from-present" class="headerlink" title="time is more than 10 years from present"></a>time is more than 10 years from present</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Error: time is more than <span class="number">10</span> years from present: <span class="number">1136059200000</span></div><div class="line">Java.lang.RuntimeException: time is more than <span class="number">10</span> years from present: <span class="number">1136059200000</span></div><div class="line">  at build.tools.generatecurrencydata.GenerateCurrencyData.makeSpecialCaseEntry(GenerateCurrencyData.java:<span class="number">285</span>)</div><div class="line">  at build.tools.generatecurrencydata.GenerateCurrencyData.buildMainAndSpecialCaseTables(GenerateCurrencyData.java:<span class="number">225</span>)</div><div class="line">  at build.tools.generatecurrencydata.GenerateCurrencyData.main(GenerateCurrencyData.java:<span class="number">154</span>)</div></pre></td></tr></table></figure>
+<p>解决办法:</p>
+<p>修改CurrencyData.properties（路径：jdk/src/share/classes/java/util/CurrencyData.properties）</p>
+<p>修改108行<br><code>AZ=AZM;2009-12-31-20-00-00;AZN</code><br>修改381行<br><code>MZ=MZM;2009-06-30-22-00-00;MZN</code><br>修改443行<br><code>RO=ROL;2009-06-30-21-00-00;RON</code><br>修改535行<br><code>TR=TRL;2009-12-31-22-00-00;TRY</code><br>修改561行<br><code>VE=VEB;2009-01-01-04-00-00;VEF</code></p>
+<h1 id="OS-is-not-supported-Linux-…-4-0-0-1-amd64-…"><a href="#OS-is-not-supported-Linux-…-4-0-0-1-amd64-…" class="headerlink" title="OS is not supported: Linux … 4.0.0-1-amd64 …"></a>OS is not supported: Linux … 4.0.0-1-amd64 …</h1><p>openjdk在编译时检查linux的内核版本，之前的检查代码没有检查4.x版本(那个时候还没有这个版本的内核)，导致出错。我们只需要在对应的检查代码里加上即可。</p>
+<p>在文件hotspot/make/linux/Makefile中，修改如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">-SUPPORTED_OS_VERSION = 2.4% 2.5% 2.6% 3%</div><div class="line">+SUPPORTED_OS_VERSION = 2.4% 2.5% 2.6% 3% 4%</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/openjdk/" rel="tag"># openjdk</a>
+          
+            <a href="/tags/jvm/" rel="tag"># jvm</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/12/openjdk8之编译和debug-md/" rel="next" title="openjdk8之编译和debug.md">
+                <i class="fa fa-chevron-left"></i> openjdk8之编译和debug.md
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -369,6 +488,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -388,8 +511,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -496,6 +628,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#time-is-more-than-10-years-from-present"><span class="nav-number">1.</span> <span class="nav-text">time is more than 10 years from present</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OS-is-not-supported-Linux-…-4-0-0-1-amd64-…"><span class="nav-number">2.</span> <span class="nav-text">OS is not supported: Linux … 4.0.0-1-amd64 …</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -630,6 +778,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 

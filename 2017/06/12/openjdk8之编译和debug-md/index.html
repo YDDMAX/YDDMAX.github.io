@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JDK,java," />
+  <meta name="keywords" content="openjdk,jvm," />
 
 
 
@@ -89,19 +89,19 @@
 
 
 
-<meta name="description" content="本文主要参考自：openjdk源码结构 源码下载openjdk-7的源码：openjdk7源码openjdk-8的源码：openJDK8源码 目录说明openjdk的源码的目录结构如下图所示： 各个目录的说明如下：—— corba：不流行的多语言、分布式通讯接口—— hotspot：Java 虚拟机—— jaxp：XML 处理—— jaxws：一组 XML web services 的 Java">
-<meta name="keywords" content="JDK,java">
+<meta name="description" content="系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openjdk版本为:openjdk-8u40-src-b25-10_feb_2015。尝试">
+<meta name="keywords" content="openjdk,jvm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="openjdk源码目录">
-<meta property="og:url" content="http://YDDMAX.github.io/2017/06/05/openjdk源码目录/index.html">
+<meta property="og:title" content="openjdk8之编译和debug.md">
+<meta property="og:url" content="http://YDDMAX.github.io/2017/06/12/openjdk8之编译和debug-md/index.html">
 <meta property="og:site_name" content="YDDMAX">
-<meta property="og:description" content="本文主要参考自：openjdk源码结构 源码下载openjdk-7的源码：openjdk7源码openjdk-8的源码：openJDK8源码 目录说明openjdk的源码的目录结构如下图所示： 各个目录的说明如下：—— corba：不流行的多语言、分布式通讯接口—— hotspot：Java 虚拟机—— jaxp：XML 处理—— jaxws：一组 XML web services 的 Java">
-<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk%E6%BA%90%E7%A0%81%E7%BB%93%E6%9E%84openjdk-source-structure.png">
-<meta property="og:updated_time" content="2017-06-05T08:06:35.234Z">
+<meta property="og:description" content="系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openjdk版本为:openjdk-8u40-src-b25-10_feb_2015。尝试">
+<meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/opjdk-8u40-compile-success.png">
+<meta property="og:updated_time" content="2017-06-11T08:47:02.696Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="openjdk源码目录">
-<meta name="twitter:description" content="本文主要参考自：openjdk源码结构 源码下载openjdk-7的源码：openjdk7源码openjdk-8的源码：openJDK8源码 目录说明openjdk的源码的目录结构如下图所示： 各个目录的说明如下：—— corba：不流行的多语言、分布式通讯接口—— hotspot：Java 虚拟机—— jaxp：XML 处理—— jaxws：一组 XML web services 的 Java">
-<meta name="twitter:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk%E6%BA%90%E7%A0%81%E7%BB%93%E6%9E%84openjdk-source-structure.png">
+<meta name="twitter:title" content="openjdk8之编译和debug.md">
+<meta name="twitter:description" content="系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openjdk版本为:openjdk-8u40-src-b25-10_feb_2015。尝试">
+<meta name="twitter:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/opjdk-8u40-compile-success.png">
 
 
 
@@ -129,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://YDDMAX.github.io/2017/06/05/openjdk源码目录/"/>
+  <link rel="canonical" href="http://YDDMAX.github.io/2017/06/12/openjdk8之编译和debug-md/"/>
 
 
 
 
 
-  <title> openjdk源码目录 | YDDMAX </title>
+  <title> openjdk8之编译和debug.md | YDDMAX </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -308,7 +308,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/05/openjdk源码目录/">
+    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/12/openjdk8之编译和debug-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="yunzhu">
@@ -329,7 +329,7 @@
             
             
               
-                openjdk源码目录
+                openjdk8之编译和debug.md
               
             
           </h1>
@@ -344,8 +344,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-05T20:53:40+08:00">
-                2017-06-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-12T00:26:56+08:00">
+                2017-06-12
               </time>
             
 
@@ -367,8 +367,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/jvm/" itemprop="url" rel="index">
+                    <span itemprop="name">jvm</span>
                   </a>
                 </span>
 
@@ -407,40 +407,14 @@
       
 
       
-        <p>本文主要参考自：<a href="http://blog.csdn.net/socrj/article/details/43916221" target="_blank" rel="external">openjdk源码结构</a></p>
-<h1 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h1><p>openjdk-7的源码：<a href="http://pan.baidu.com/s/1qYAtBK4" target="_blank" rel="external">openjdk7源码</a><br>openjdk-8的源码：<a href="http://download.csdn.net/download/socrj/8454221" target="_blank" rel="external">openJDK8源码</a></p>
-<h1 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h1><p>openjdk的源码的目录结构如下图所示：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/openjdk%E6%BA%90%E7%A0%81%E7%BB%93%E6%9E%84openjdk-source-structure.png" alt="此处输入图片的描述"></p>
-<p>各个目录的说明如下：<br><strong>—— corba：不流行的多语言、分布式通讯接口<br>—— hotspot：Java 虚拟机<br>—— jaxp：XML 处理<br>—— jaxws：一组 XML web services 的 Java API<br>—— jdk：java 开发工具包<br>—— —— 针对操作系统的部分<br>—— —— share：与平台无关的实现<br>—— langtools：Java 语言工具<br>—— nashorn：JVM 上的 JavaScript 运行时</strong></p>
-<p>为了让大家易于理解，有所简化了结构。</p>
-<h2 id="Corba"><a href="#Corba" class="headerlink" title="Corba"></a>Corba</h2><p>全称 Common Object Request Broker Architecture，通用对象请求代理架构，是基于 对象-服务 机制设计得。</p>
-<p>与 JavaBean、COM 等是同种范畴。</p>
-<p>目前，通用的远程过程调用协议是 SOAP（Simple Object Access Protocol，简单对象访问协议），消息格式是 XML-RPC（存在 Json-RPC）。<br>另外，Apache Thrift 提供了多语言 C/S 通讯支持； 不少语言也内置了跨语言调用或对分布式环境友好，比如： lua 可以与 c 代码互调用，Go 可以调用 C 代码，erlang 在本地操作与分布式环境下的操作方法一样等。<br><strong>Corba和RMI类似，都能实现RPC。但是RMI只是针对JAVA环境的，Corba是支持多语言的方案</strong></p>
-<h2 id="Hotspot"><a href="#Hotspot" class="headerlink" title="Hotspot"></a>Hotspot</h2><p>全称 Java HotSpot Performance Engine，是 Java 虚拟机的一个实现，包含了服务器版和桌面应用程序版。利用 JIT 及自适应优化技术（自动查找性能热点并进行动态优化）来提高性能。</p>
-<p>使用 java -version 可以查看 Hotspot 的版本。</p>
-<p>从 Java 1.3 起为默认虚拟机，现由 Oracle 维护并发布。</p>
-<p>其他 java 虚拟机：</p>
-<ul>
-<li>JRockit：专注于服务器端，曾经号称是“世界上速度最快的 Java 虚拟机”，现归于 Oracle 旗下。</li>
-<li>J9：IBM 设计的 Java 虚拟机。</li>
-<li>Harmony：Apache 的顶级项目之一，从 2011 年 11 月 6 日起入驻 Apache 的 Java 项目。虽然其能够兼容 jdk，但由于 JCP （Java Community Process）仅仅允许授权给 Harmony 一个带有限制条件的TCK（Technology Compatibility Kit），即仅仅能使用在 J2SE ,而不是所有Java实现上（包括 J2ME 和 J2EE），导致了 Apache 组织与 Oracle 的决裂。Harmony 是 Android 虚拟机 Dalvik 的前身。</li>
-<li>Dalvik 并不是 Java 虚拟机，它执行的是 dex 文件而不是 class 文件，使用的也是寄存器架构而不是栈架构 。</li>
-</ul>
-<h2 id="jaxp"><a href="#jaxp" class="headerlink" title="jaxp"></a>jaxp</h2><p>全称 Java API for XML Processing，处理 XML 的Java API，是 Java XML 程序设计的应用程序接口之一，它提供解析和验证XML文档的能力。<br>jaxp 提供了处理 xml 文件的三种接口：</p>
-<ul>
-<li>DOM 接口（文档对象模型解析），位于 \openjdk\jaxp\src\org\w3c\dom</li>
-<li>SAX 接口（xml 简单 api 解析），位于 \openjdk\jaxp\src\org\xml\sax</li>
-<li>StAX 接口（xml 流 api），位于 \openjdk\jaxp\src\javax\xml</li>
-<li>除了解析接口，JAXP还提供了XSLT接口用来对XML文档进行数据和结构的转换。</li>
-</ul>
-<h2 id="JaxWS"><a href="#JaxWS" class="headerlink" title="JaxWS"></a>JaxWS</h2><p>全称 Java API for Web Services，JAX-WS 允许开发者选择 RPC-oriented（面向 RPC） 或者 message-oriented（消息通信，erlang 使用的就是消息通信，不过 Java 内存模型是内存共享）来实现自己的web services。</p>
-<p>通过 Web Services 提供的环境，可以实现 Java 与其他编程语言的交互（事实上就是 thrift 所做的，任何一种语言都可以通过 Web Services 实现与其他语言的通信，客户端用一种语言，服务器端可以用其他语言）。</p>
-<h2 id="LangTools"><a href="#LangTools" class="headerlink" title="LangTools"></a>LangTools</h2><p>Java 语言支持工具</p>
-<h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><p>全称 Java Development Kit。</p>
-<p><strong>share</strong></p>
-<p><strong>classes</strong> 目录里的是 Java 的实现，<strong>native</strong> 目录里的是 C++ 的实现，两部分基本对应。这两个目录里的结构与 java 的包也是对应，各个部分的用途另外再讲。</p>
-<p>back、instrument、javavm、npt、transport 几个部分是实现 java 的基础部分，都是 C++ 代码，在这里从最底层理解 java，往后这些内容也会详讲。</p>
-<p>sample 和 demo 目录有以下示例，区别在于 demo 目录是 针对 applets 的。</p>
-<h2 id="Nashorn"><a href="#Nashorn" class="headerlink" title="Nashorn"></a>Nashorn</h2><p>Nashorn 项目的目的是基于 Java 在 JVM 上实现一个轻量级高性能的 JavaScript 运行环境。基于 JSR-223 协议，Java 程序员可在 Java 程序中嵌入 JavaScript 代码。<br>该项目使用了 JSR-229 里描述的新连接机制（从 Java7起开始使用的连接机制）：新的字节码（invokedynamic）以及新的基于方法句柄（method handle）的连接机制。通过接口注入（interface injection）在运行时修改类也是 JSR-229 里的内容。</p>
+        <p>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
+<p>在本文中，要编译的openjdk版本为:<a href="https://pan.baidu.com/s/1mhLHkc4" target="_blank" rel="external">openjdk-8u40-src-b25-10_feb_2015</a>。<br>尝试了编译<a href="https://pan.baidu.com/s/1jI1cGNc" target="_blank" rel="external">openjdk-8-src-b132-03_mar_2014</a>，但是失败。网上说,因为ubuntu16.04较新，但是该版本的JDK较老，所以失败。</p>
+<p>下面说明编译过程。</p>
+<h1 id="make版本"><a href="#make版本" class="headerlink" title="make版本"></a>make版本</h1><p>OpenJDK8可以使用”config &amp;&amp; make”编译构建，不再使用Ant和ALT_ *环境变量来配置构建。<br>不过需要GNU make 3.81或更新的版本</p>
+<h1 id="安装引导JDK"><a href="#安装引导JDK" class="headerlink" title="安装引导JDK"></a>安装引导JDK</h1><p>我使用的引导JDK是<a href="https://pan.baidu.com/s/1hr6qkOO" target="_blank" rel="external">jdk-7u76-linux-x64</a>。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java version <span class="string">"1.6.0_45"</span></div><div class="line">Java(TM) SE Runtime Environment (build 1.6.0_45-b06)</div><div class="line">Java HotSpot(TM) 64-Bit Server VM (build 20.45-b01, mixed mode)</div></pre></td></tr></table></figure></p>
+<h1 id="安装编译工具类库："><a href="#安装编译工具类库：" class="headerlink" title="安装编译工具类库："></a>安装编译工具类库：</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#安装gcc、g++、make等  </span></div><div class="line">sudo apt-get install build-essential      </div><div class="line"><span class="comment">#安装ant 1.7以上  </span></div><div class="line">sudo apt-get install ant  </div><div class="line"><span class="comment">#安装XRender  </span></div><div class="line">sudo apt-get install libxrender-dev  </div><div class="line">sudo apt-get install xorg-dev </div><div class="line"><span class="comment">#安装alsa  </span></div><div class="line">sudo apt-get install libasound2-dev</div><div class="line"><span class="comment">#Cups  </span></div><div class="line">sudo apt-get install libcups2-dev </div><div class="line"><span class="comment">#安装零碎的工具包  </span></div><div class="line">sudo apt-get install gawk zip libxtst-dev libxi-dev libxt-dev</div><div class="line">```  </div><div class="line"><span class="comment"># 建立编译脚本</span></div><div class="line">--with-boot-jdk：指定引导JDK所在目录，以防其他安装的JDK影响（本机上以前安装了JDK8，并配置了JAVA_HOME指向JDK8）；</div><div class="line">--with-target-bits：指定编译64位系统的JDK；</div><div class="line"></div><div class="line">为可以进行源码调试，再指定下面三个参数：</div><div class="line">--with-debug-level=slowdebug：指定可以生成最多的调试信息；</div><div class="line">--<span class="built_in">enable</span>-debug-symbols ZIP_DEBUGINFO_FILES=0：生成调试的符号信息，并且不压缩；</div><div class="line">在openjdk目录下新建build.sh，内容如下:</div><div class="line">```bash</div><div class="line"><span class="built_in">cd</span> openjdk  </div><div class="line">bash ./configure --with-target-bits=64 --with-boot-jdk=/usr/java/jdk1.7.0_80/ --with-debug-level=slowdebug --<span class="built_in">enable</span>-debug-symbols ZIP_DEBUGINFO_FILES=0  </div><div class="line">make all ZIP_DEBUGINFO_FILES=0</div></pre></td></tr></table></figure>
+<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><p>执行<code>./build.sh</code><br>编译完成是这样的：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/openjdk/opjdk-8u40-compile-success.png" alt="openjdk8-compile-success.png"></p>
+<h1 id="用GDB测试是否能debug"><a href="#用GDB测试是否能debug" class="headerlink" title="用GDB测试是否能debug"></a>用GDB测试是否能debug</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">ddy@ddy-Aspire-V5-573G ~/openjdk-compile/openjdk-8u40-src-b25-10_feb_2015/openjdk/build/linux-x86_64-normal-server-slowdebug/jdk/bin $ ./java -version</div><div class="line">openjdk version <span class="string">"1.8.0-internal-debug"</span></div><div class="line">OpenJDK Runtime Environment (build 1.8.0-internal-debug-ddy_2017_06_11_23_26-b00)</div><div class="line">OpenJDK 64-Bit Server VM (build 25.40-b25-debug, mixed mode)</div><div class="line">ddy@ddy-Aspire-V5-573G ~/openjdk-compile/openjdk-8u40-src-b25-10_feb_2015/openjdk/build/linux-x86_64-normal-server-slowdebug/jdk/bin $ <span class="built_in">export</span> CLASSPATH=.:/home/</div><div class="line">ddy/java_src</div><div class="line">ddy@ddy-Aspire-V5-573G ~/openjdk-compile/openjdk-8u40-src-b25-10_feb_2015/openjdk/build/linux-x86_64-normal-server-slowdebug/jdk/bin $ gdb --args java FileChann</div><div class="line">elTest</div><div class="line">GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.04) 7.11.1</div><div class="line">Copyright (C) 2016 Free Software Foundation, Inc.</div><div class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</div><div class="line">This is free software: you are free to change and redistribute it.</div><div class="line">There is NO WARRANTY, to the extent permitted by law.  Type <span class="string">"show copying"</span></div><div class="line">and <span class="string">"show warranty"</span> <span class="keyword">for</span> details.</div><div class="line">This GDB was configured as <span class="string">"x86_64-linux-gnu"</span>.</div><div class="line">Type <span class="string">"show configuration"</span> <span class="keyword">for</span> configuration details.</div><div class="line">For bug reporting instructions, please see:</div><div class="line">&lt;http://www.gnu.org/software/gdb/bugs/&gt;.</div><div class="line">Find the GDB manual and other documentation resources online at:</div><div class="line">&lt;http://www.gnu.org/software/gdb/documentation/&gt;.</div><div class="line">For <span class="built_in">help</span>, <span class="built_in">type</span> <span class="string">"help"</span>.</div><div class="line">Type <span class="string">"apropos word"</span> to search <span class="keyword">for</span> commands related to <span class="string">"word"</span>...</div><div class="line">Reading symbols from java...done.</div><div class="line">(gdb) <span class="built_in">break</span> init.cpp:95</div><div class="line">No <span class="built_in">source</span> file named init.cpp.</div><div class="line">Make breakpoint pending on future shared library load? (y or [n]) y</div><div class="line">Breakpoint 1 (init.cpp:95) pending.</div><div class="line">(gdb) run</div><div class="line">Starting program: /home/ddy/openjdk-compile/openjdk-8u40-src-b25-10_feb_2015/openjdk/build/linux-x86_64-normal-server-slowdebug/jdk/bin/java FileChannelTest</div><div class="line">[Thread debugging using libthread_db enabled]</div><div class="line">Using host libthread_db library <span class="string">"/lib/x86_64-linux-gnu/libthread_db.so.1"</span>.</div><div class="line">[New Thread 0x7ffff7fc8700 (LWP 9311)]</div><div class="line">[Switching to Thread 0x7ffff7fc8700 (LWP 9311)]</div><div class="line"></div><div class="line">Thread 2 <span class="string">"java"</span> hit Breakpoint 1, init_globals ()</div><div class="line">    at /home/ddy/openjdk-compile/openjdk-8u40-src-b25-10_feb_2015/openjdk/hotspot/src/share/vm/runtime/init.cpp:95</div><div class="line">95	jint <span class="function"><span class="title">init_globals</span></span>() &#123;</div><div class="line">(gdb) l</div><div class="line">90	  chunkpool_init();</div><div class="line">91	  perfMemory_init();</div><div class="line">92	&#125;</div><div class="line">93	</div><div class="line">94	</div><div class="line">95	jint <span class="function"><span class="title">init_globals</span></span>() &#123;</div><div class="line">96	  HandleMark hm;</div><div class="line">97	  management_init();</div><div class="line">98	  bytecodes_init();</div><div class="line">99	  classLoader_init();</div><div class="line">(gdb) quit</div><div class="line">A debugging session is active.</div><div class="line"></div><div class="line">	Inferior 1 [process 9307] will be killed.</div><div class="line"></div><div class="line">Quit anyway? (y or n) y</div><div class="line">ddy@ddy-Aspire-V5-573G ~/openjdk-compile/openjdk-8u40-src-b25-10_feb_2015/openjdk/build/linux-x86_64-normal-server-slowdebug/jdk/bin $</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -470,9 +444,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JDK/" rel="tag"># JDK</a>
+            <a href="/tags/openjdk/" rel="tag"># openjdk</a>
           
-            <a href="/tags/java/" rel="tag"># java</a>
+            <a href="/tags/jvm/" rel="tag"># jvm</a>
           
         </div>
       
@@ -485,8 +459,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/04/JAVA-IO/" rel="next" title="JAVA IO">
-                <i class="fa fa-chevron-left"></i> JAVA IO
+              <a href="/2017/06/11/openjdk7之编译和debug/" rel="next" title="openjdk之编译和debug">
+                <i class="fa fa-chevron-left"></i> openjdk之编译和debug
               </a>
             
           </div>
@@ -495,8 +469,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/05/JDK源码之编译/" rel="prev" title="JDK源码之编译">
-                JDK源码之编译 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/12/openjdk之编译经常出现的问题/" rel="prev" title="openjdk之编译经常出现的问题">
+                openjdk之编译经常出现的问题 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -671,7 +645,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#源码下载"><span class="nav-number">1.</span> <span class="nav-text">源码下载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录说明"><span class="nav-number">2.</span> <span class="nav-text">目录说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Corba"><span class="nav-number">2.1.</span> <span class="nav-text">Corba</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hotspot"><span class="nav-number">2.2.</span> <span class="nav-text">Hotspot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jaxp"><span class="nav-number">2.3.</span> <span class="nav-text">jaxp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JaxWS"><span class="nav-number">2.4.</span> <span class="nav-text">JaxWS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LangTools"><span class="nav-number">2.5.</span> <span class="nav-text">LangTools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK"><span class="nav-number">2.6.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nashorn"><span class="nav-number">2.7.</span> <span class="nav-text">Nashorn</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#make版本"><span class="nav-number">1.</span> <span class="nav-text">make版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装引导JDK"><span class="nav-number">2.</span> <span class="nav-text">安装引导JDK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装编译工具类库："><span class="nav-number">3.</span> <span class="nav-text">安装编译工具类库：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译"><span class="nav-number">4.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用GDB测试是否能debug"><span class="nav-number">5.</span> <span class="nav-text">用GDB测试是否能debug</span></a></li></ol></div>
             
 
           </div>
