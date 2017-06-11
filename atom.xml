@@ -48,11 +48,11 @@
   </entry>
   
   <entry>
-    <title>openjdk8之编译和debug.md</title>
+    <title>openjdk8之编译和debug</title>
     <link href="http://YDDMAX.github.io/2017/06/12/openjdk8%E4%B9%8B%E7%BC%96%E8%AF%91%E5%92%8Cdebug/"/>
     <id>http://YDDMAX.github.io/2017/06/12/openjdk8之编译和debug/</id>
     <published>2017-06-11T16:26:56.000Z</published>
-    <updated>2017-06-11T08:59:44.386Z</updated>
+    <updated>2017-06-11T09:02:43.607Z</updated>
     
     <content type="html"><![CDATA[<h1 id="openjdk8的编译和debug"><a href="#openjdk8的编译和debug" class="headerlink" title="openjdk8的编译和debug"></a>openjdk8的编译和debug</h1><p>标签（空格分隔）： openjdk8 jvm</p>
 <hr>
@@ -581,9 +581,9 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
       <category term="technology" scheme="http://YDDMAX.github.io/categories/technology/"/>
     
     
-      <category term="technology" scheme="http://YDDMAX.github.io/tags/technology/"/>
-    
       <category term="负载均衡" scheme="http://YDDMAX.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/"/>
+    
+      <category term="technology" scheme="http://YDDMAX.github.io/tags/technology/"/>
     
   </entry>
   
