@@ -97,7 +97,7 @@
 <meta property="og:site_name" content="YDDMAX">
 <meta property="og:description" content="系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openjdk版本为:openjdk-8u40-src-b25-10_feb_2015。尝试">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/opjdk-8u40-compile-success.png">
-<meta property="og:updated_time" content="2017-06-11T09:25:01.064Z">
+<meta property="og:updated_time" content="2017-06-11T19:05:07.818Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openjdk8之编译和debug">
 <meta name="twitter:description" content="系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux 在本文中，要编译的openjdk版本为:openjdk-8u40-src-b25-10_feb_2015。尝试">
@@ -409,7 +409,7 @@
       
         <p>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <p>在本文中，要编译的openjdk版本为:<a href="https://pan.baidu.com/s/1mhLHkc4" target="_blank" rel="external">openjdk-8u40-src-b25-10_feb_2015</a>。<br>尝试了编译<a href="https://pan.baidu.com/s/1jI1cGNc" target="_blank" rel="external">openjdk-8-src-b132-03_mar_2014</a>，但是失败。网上说,因为ubuntu16.04较新，但是该版本的JDK较老，所以失败。</p>
-<p>下面说明编译过程。</p>
+<p>下面说明编译和debug过程。</p>
 <h1 id="make版本"><a href="#make版本" class="headerlink" title="make版本"></a>make版本</h1><p>OpenJDK8可以使用”config &amp;&amp; make”编译构建，不再使用Ant和ALT_ *环境变量来配置构建。<br>不过需要GNU make 3.81或更新的版本</p>
 <h1 id="安装引导JDK"><a href="#安装引导JDK" class="headerlink" title="安装引导JDK"></a>安装引导JDK</h1><p>我使用的引导JDK是<a href="https://pan.baidu.com/s/1hr6qkOO" target="_blank" rel="external">jdk-7u76-linux-x64</a>。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">java version <span class="string">"1.6.0_45"</span></div><div class="line">Java(TM) SE Runtime Environment (build 1.6.0_45-b06)</div><div class="line">Java HotSpot(TM) 64-Bit Server VM (build 20.45-b01, mixed mode)</div></pre></td></tr></table></figure></p>
 <h1 id="安装编译工具类库："><a href="#安装编译工具类库：" class="headerlink" title="安装编译工具类库："></a>安装编译工具类库：</h1><p>安装gcc、g++、make等<br><code>sudo apt-get install build-essential</code><br>安装XRender<br><code>sudo apt-get install libxrender-dev</code><br><code>sudo apt-get install xorg-dev</code><br>安装alsa<br><code>sudo apt-get install libasound2-dev</code><br>Cups<br><code>sudo apt-get install libcups2-dev</code><br>安装零碎的工具包<br><code>sudo apt-get install gawk zip libxtst-dev libxi-dev libxt-dev</code></p>
@@ -462,8 +462,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/11/openjdk7之编译和debug/" rel="next" title="openjdk7之编译和debug">
-                <i class="fa fa-chevron-left"></i> openjdk7之编译和debug
+              <a href="/2017/06/11/openjdk7之编译和debug/" rel="next" title="openjdk之编译和debug">
+                <i class="fa fa-chevron-left"></i> openjdk之编译和debug
               </a>
             
           </div>
