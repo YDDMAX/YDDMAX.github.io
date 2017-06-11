@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>YDDMAX</title>
-  <subtitle>���뱼��</subtitle>
+  <subtitle>代码奔腾</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://YDDMAX.github.io/"/>
-  <updated>2017-06-11T23:17:11.806Z</updated>
+  <updated>2017-06-11T23:33:54.879Z</updated>
   <id>http://YDDMAX.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://YDDMAX.github.io/2017/06/12/FileChannel/"/>
     <id>http://YDDMAX.github.io/2017/06/12/FileChannel/</id>
     <published>2017-06-12T06:21:58.000Z</published>
-    <updated>2017-06-11T23:17:11.806Z</updated>
+    <updated>2017-06-11T23:33:54.879Z</updated>
     
     <content type="html"><![CDATA[<p>FileChannel主要进行文件IO的操作，下面主要分析write()的整个过程，read()和write()是相同的。</p>
 <h1 id="概要"><a href="#概要" class="headerlink" title="概要　"></a>概要　</h1><p>write()/read()时:</p>
@@ -56,7 +56,7 @@
     <link href="http://YDDMAX.github.io/2017/06/12/openjdk%E4%B9%8B%E7%BC%96%E8%AF%91%E7%BB%8F%E5%B8%B8%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
     <id>http://YDDMAX.github.io/2017/06/12/openjdk之编译经常出现的问题/</id>
     <published>2017-06-11T16:41:19.000Z</published>
-    <updated>2017-06-11T08:47:02.696Z</updated>
+    <updated>2017-06-11T23:33:54.879Z</updated>
     
     <content type="html"><![CDATA[<p>openjdk编译过程中，因为系统环境和openjdk版本等问题，会出现各种问题。本文主要列出两个经常出现的问题及解决办法。</p>
 <h1 id="time-is-more-than-10-years-from-present"><a href="#time-is-more-than-10-years-from-present" class="headerlink" title="time is more than 10 years from present"></a>time is more than 10 years from present</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Error: time is more than <span class="number">10</span> years from present: <span class="number">1136059200000</span></div><div class="line">Java.lang.RuntimeException: time is more than <span class="number">10</span> years from present: <span class="number">1136059200000</span></div><div class="line">  at build.tools.generatecurrencydata.GenerateCurrencyData.makeSpecialCaseEntry(GenerateCurrencyData.java:<span class="number">285</span>)</div><div class="line">  at build.tools.generatecurrencydata.GenerateCurrencyData.buildMainAndSpecialCaseTables(GenerateCurrencyData.java:<span class="number">225</span>)</div><div class="line">  at build.tools.generatecurrencydata.GenerateCurrencyData.main(GenerateCurrencyData.java:<span class="number">154</span>)</div></pre></td></tr></table></figure>
@@ -88,7 +88,7 @@
     <link href="http://YDDMAX.github.io/2017/06/12/openjdk8%E4%B9%8B%E7%BC%96%E8%AF%91%E5%92%8Cdebug/"/>
     <id>http://YDDMAX.github.io/2017/06/12/openjdk8之编译和debug/</id>
     <published>2017-06-11T16:26:56.000Z</published>
-    <updated>2017-06-11T19:05:07.818Z</updated>
+    <updated>2017-06-11T23:33:54.879Z</updated>
     
     <content type="html"><![CDATA[<p>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <p>在本文中，要编译的openjdk版本为:<a href="https://pan.baidu.com/s/1mhLHkc4" target="_blank" rel="external">openjdk-8u40-src-b25-10_feb_2015</a>。<br>尝试了编译<a href="https://pan.baidu.com/s/1jI1cGNc" target="_blank" rel="external">openjdk-8-src-b132-03_mar_2014</a>，但是失败。网上说,因为ubuntu16.04较新，但是该版本的JDK较老，所以失败。</p>
@@ -123,7 +123,7 @@
     <link href="http://YDDMAX.github.io/2017/06/11/openjdk7%E4%B9%8B%E7%BC%96%E8%AF%91%E5%92%8Cdebug/"/>
     <id>http://YDDMAX.github.io/2017/06/11/openjdk7之编译和debug/</id>
     <published>2017-06-11T15:53:55.000Z</published>
-    <updated>2017-06-11T19:32:54.961Z</updated>
+    <updated>2017-06-11T23:33:54.879Z</updated>
     
     <content type="html"><![CDATA[<p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><ol>

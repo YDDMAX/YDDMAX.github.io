@@ -96,7 +96,7 @@
 <meta property="og:url" content="http://YDDMAX.github.io/2017/06/12/FileChannel/index.html">
 <meta property="og:site_name" content="YDDMAX">
 <meta property="og:description" content="FileChannel主要进行文件IO的操作，下面主要分析write()的整个过程，read()和write()是相同的。 概要　write()/read()时:  如果传入的是DirectBuffer，则不需要进行数据复制，最后通过write系统调用完成IO。 如果传入的是非DirectBuffer，则先从本线程的DirectBuffer池中得到一个满足（size能容纳所有数据）的Buffer,">
-<meta property="og:updated_time" content="2017-06-11T23:17:11.806Z">
+<meta property="og:updated_time" content="2017-06-11T23:33:54.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="FileChannel">
 <meta name="twitter:description" content="FileChannel主要进行文件IO的操作，下面主要分析write()的整个过程，read()和write()是相同的。 概要　write()/read()时:  如果传入的是DirectBuffer，则不需要进行数据复制，最后通过write系统调用完成IO。 如果传入的是非DirectBuffer，则先从本线程的DirectBuffer池中得到一个满足（size能容纳所有数据）的Buffer,">
@@ -174,7 +174,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">���뱼��</p>
+        <p class="site-subtitle">代码奔腾</p>
       
   </div>
 
