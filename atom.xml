@@ -87,11 +87,9 @@
     <link href="http://YDDMAX.github.io/2017/06/11/openjdk7%E4%B9%8B%E7%BC%96%E8%AF%91%E5%92%8Cdebug/"/>
     <id>http://YDDMAX.github.io/2017/06/11/openjdk7之编译和debug/</id>
     <published>2017-06-11T15:53:55.000Z</published>
-    <updated>2017-06-11T08:59:14.870Z</updated>
+    <updated>2017-06-11T09:07:06.624Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="openjdk7的编译和debug"><a href="#openjdk7的编译和debug" class="headerlink" title="openjdk7的编译和debug"></a>openjdk7的编译和debug</h1><p>标签（空格分隔）： openjdk7 jvm</p>
-<hr>
-<p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
+    <content type="html"><![CDATA[<p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><ol>
 <li>下载源代码<br>openjdk的源码可以通过hg方式下载。<br>也可以从此处下载：<a href="https://pan.baidu.com/s/1qXMoWfM" target="_blank" rel="external">openjdk源码</a></li>
 <li><p>安装引导JDK<br>因为JDK中有很多代码是Java自身实现的，所以还需要一个已经安装在本机上可用的JDK，叫做“Bootstrap JDK”。我所选用的Bootstarp JDK是JDK1.6.0_45。</p>
@@ -148,7 +146,7 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
     
     <summary type="html">
     
-      &lt;h1 id=&quot;openjdk7的编译和debug&quot;&gt;&lt;a href=&quot;#openjdk7的编译和debug&quot; class=&quot;headerlink&quot; title=&quot;openjdk7的编译和debug&quot;&gt;&lt;/a&gt;openjdk7的编译和debug&lt;/h1&gt;&lt;p&gt;标签（空格分隔）： 
+      &lt;p&gt;为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。&lt;br&gt;在本文中，要编译的openjdk:&lt;a href=&quot;https://pan.baidu.com/s/1bFVRwq&quot;
     
     </summary>
     
@@ -581,9 +579,9 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
       <category term="technology" scheme="http://YDDMAX.github.io/categories/technology/"/>
     
     
-      <category term="负载均衡" scheme="http://YDDMAX.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/"/>
-    
       <category term="technology" scheme="http://YDDMAX.github.io/tags/technology/"/>
+    
+      <category term="负载均衡" scheme="http://YDDMAX.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/"/>
     
   </entry>
   

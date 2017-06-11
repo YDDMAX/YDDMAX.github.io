@@ -89,20 +89,20 @@
 
 
 
-<meta name="description" content="openjdk7的编译和debug标签（空格分隔）： openjdk7 jvm  为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:">
+<meta name="description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generi">
 <meta name="keywords" content="openjdk,jvm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openjdk7之编译和debug">
 <meta property="og:url" content="http://YDDMAX.github.io/2017/06/11/openjdk7之编译和debug/index.html">
 <meta property="og:site_name" content="YDDMAX">
-<meta property="og:description" content="openjdk7的编译和debug标签（空格分隔）： openjdk7 jvm  为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:">
+<meta property="og:description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generi">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/compile-success.png">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/init.cpp-95.png">
 <meta property="og:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/FileDispatcherImpl-write.c.jpg">
-<meta property="og:updated_time" content="2017-06-11T08:59:14.870Z">
+<meta property="og:updated_time" content="2017-06-11T09:07:06.624Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="openjdk7之编译和debug">
-<meta name="twitter:description" content="openjdk7的编译和debug标签（空格分隔）： openjdk7 jvm  为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:">
+<meta name="twitter:description" content="为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。在本文中，要编译的openjdk:openjdk-7u40-fcs-src-b43-26_aug_2013.zip系统环境为ubuntu 16.04，uname -a:1Linux ddy-Aspire-V5-573G 4.4.0-21-generi">
 <meta name="twitter:image" content="http://oqxil93b6.bkt.clouddn.com/images/openjdk/compile-success.png">
 
 
@@ -409,9 +409,7 @@
       
 
       
-        <h1 id="openjdk7的编译和debug"><a href="#openjdk7的编译和debug" class="headerlink" title="openjdk7的编译和debug"></a>openjdk7的编译和debug</h1><p>标签（空格分隔）： openjdk7 jvm</p>
-<hr>
-<p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
+        <p>为了更好的学习JDK、HotSpot等源码，需要能debug JDK、HotSpot等源码。本文主要讲述，怎么编译openjdk并debug相关源码。<br>在本文中，要编译的openjdk:<a href="https://pan.baidu.com/s/1bFVRwq" target="_blank" rel="external">openjdk-7u40-fcs-src-b43-26_aug_2013.zip</a><br>系统环境为ubuntu 16.04，uname -a:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Linux ddy-Aspire-V5-573G 4.4.0-21-generic <span class="comment">#37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux</span></div></pre></td></tr></table></figure></p>
 <h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><ol>
 <li>下载源代码<br>openjdk的源码可以通过hg方式下载。<br>也可以从此处下载：<a href="https://pan.baidu.com/s/1qXMoWfM" target="_blank" rel="external">openjdk源码</a></li>
 <li><p>安装引导JDK<br>因为JDK中有很多代码是Java自身实现的，所以还需要一个已经安装在本机上可用的JDK，叫做“Bootstrap JDK”。我所选用的Bootstarp JDK是JDK1.6.0_45。</p>
@@ -694,7 +692,7 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#openjdk7的编译和debug"><span class="nav-number">1.</span> <span class="nav-text">openjdk7的编译和debug</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译"><span class="nav-number">2.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#debug"><span class="nav-number">3.</span> <span class="nav-text">debug</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK"><span class="nav-number">3.1.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotSpot"><span class="nav-number">3.2.</span> <span class="nav-text">HotSpot</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用GDB"><span class="nav-number">3.2.1.</span> <span class="nav-text">使用GDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用eclipse"><span class="nav-number">3.2.2.</span> <span class="nav-text">使用eclipse</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编译"><span class="nav-number">1.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#debug"><span class="nav-number">2.</span> <span class="nav-text">debug</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK"><span class="nav-number">2.1.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HotSpot"><span class="nav-number">2.2.</span> <span class="nav-text">HotSpot</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用GDB"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用GDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用eclipse"><span class="nav-number">2.2.2.</span> <span class="nav-text">使用eclipse</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
