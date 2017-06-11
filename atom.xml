@@ -637,9 +637,9 @@ Disable auto build：因为不再在eclipse里面编译hotspot源码,所以这�
       <category term="ali" scheme="http://YDDMAX.github.io/categories/ali/"/>
     
     
-      <category term="technology" scheme="http://YDDMAX.github.io/tags/technology/"/>
-    
       <category term="architecture" scheme="http://YDDMAX.github.io/tags/architecture/"/>
+    
+      <category term="technology" scheme="http://YDDMAX.github.io/tags/technology/"/>
     
   </entry>
   
