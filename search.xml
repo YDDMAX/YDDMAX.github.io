@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[FileChannel]]></title>
+    <url>%2F2017%2F06%2F12%2FFileChannel%2F</url>
+    <content type="text"><![CDATA[FileChannel主要进行文件IO的操作，下面主要分析write()的整个过程，read()和write()是相同的。 概要 write()/read()时: 如果传入的是DirectBuffer，则不需要进行数据复制，最后通过write系统调用完成IO。 如果传入的是非DirectBuffer，则先从本线程的DirectBuffer池中得到一个满足（size能容纳所有数据）的Buffer,之后进行数据复制，并使用DirectBuffer参与write系统调用完成IO。 对于第二种情况，数据复制会引起效率。如果业务代码再不重复利用所传入的非DirectBuffer，则会增加GC频率。第二种情况，线程里有一个DirectBuffer池，使得DirectBuffer可以重复利用。这样不仅可以减小DirectBuffer的新建和释放开销，而且可以减小GC频率。这给我们以借鉴，我们在编写业务代码时页应该这样处理。 下面分析具体的源码。 源码sun.nio.ch.FileChannelImpl.write()1234567891011121314151617181920212223242526public int write(ByteBuffer src) throws IOException &#123; ensureOpen(); if (!writable) throw new NonWritableChannelException(); synchronized (positionLock) &#123; int n = 0; int ti = -1; Object traceContext = IoTrace.fileWriteBegin(path); try &#123; begin(); ti = threads.add(); if (!isOpen()) return 0; do &#123; //这里写 n = IOUtil.write(fd, src, -1, nd); &#125; while ((n == IOStatus.INTERRUPTED) &amp;&amp; isOpen()); return IOStatus.normalize(n); &#125; finally &#123; threads.remove(ti); end(n &gt; 0); IoTrace.fileWriteEnd(traceContext, n &gt; 0 ? n : 0); assert IOStatus.check(n); &#125; &#125;&#125; sun.nio.ch.IOUtil.write()123456789101112131415161718192021222324252627282930313233static int write(FileDescriptor fd, ByteBuffer src, long position, NativeDispatcher nd) throws IOException &#123; //如果是DirectBuffer if (src instanceof DirectBuffer) return writeFromNativeBuffer(fd, src, position, nd); // Substitute a native buffer int pos = src.position(); int lim = src.limit(); assert (pos &lt;= lim); int rem = (pos &lt;= lim ? lim - pos : 0); //从本线程所缓存的临时DirectBuffer池中得到一个size满足的Buffer（如果没有符合的，new一个） ByteBuffer bb = Util.getTemporaryDirectBuffer(rem); try &#123; //数据copy bb.put(src); bb.flip(); // Do not update src until we see how many bytes were written src.position(pos); //真正的写 int n = writeFromNativeBuffer(fd, bb, position, nd); if (n &gt; 0) &#123; // now update src src.position(pos + n); &#125; return n; &#125; finally &#123; //将本次使用的DirectBuffer重新还给DirectBuffer池 Util.offerFirstTemporaryDirectBuffer(bb); &#125; &#125; 接上面，sun.nio.ch.Util.getTemporaryDirectBuffer()。下面代码说明了每个线程维持了一个DirectBuffer池，当使用的是Heap类型的Buffer进行IO时，需要先从池中得到一个DirectBuffer,之后还有进行数据复制等，并使用DirectBuffer参与系统调用完成IO。12345678910111213141516171819/** * Returns a temporary buffer of at least the given size */static ByteBuffer getTemporaryDirectBuffer(int size) &#123; BufferCache cache = bufferCache.get(); ByteBuffer buf = cache.get(size); if (buf != null) &#123; return buf; &#125; else &#123; // No suitable buffer in the cache so we need to allocate a new // one. To avoid the cache growing then we remove the first // buffer from the cache and free it. if (!cache.isEmpty()) &#123; buf = cache.removeFirst(); free(buf); &#125; return ByteBuffer.allocateDirect(size); &#125;&#125; sun.nio.ch.IOUtil.writeFromNativeBuffer()123456789101112131415161718192021222324252627private static int writeFromNativeBuffer(FileDescriptor fd, ByteBuffer bb, long position, NativeDispatcher nd) throws IOException &#123; int pos = bb.position(); int lim = bb.limit(); assert (pos &lt;= lim); int rem = (pos &lt;= lim ? lim - pos : 0); int written = 0; if (rem == 0) return 0; if (position != -1) &#123; //不从Buffer头开始写 //sun.nio.ch.FileDispatcherImpl.writeFromNativeBuffer() written = nd.pwrite(fd, ((DirectBuffer)bb).address() + pos, rem, position); &#125; else &#123; //从Buffer头开始 //sun.nio.ch.FileDispatcherImpl.writeFromNativeBuffer() written = nd.write(fd, ((DirectBuffer)bb).address() + pos, rem); &#125; if (written &gt; 0) bb.position(pos + written); return written; &#125; sun.nio.ch.FileDispatcherImpl.writeFromNativeBuffer()12345int write(FileDescriptor fd, long address, int len) throws IOException &#123; //native调用 //源码在openjdk/jdk/src/solaris/native/sun/nio/ch/FileDispatcherImpl.c里面 return write0(fd, address, len);&#125; 接上面，native调用：12345678910JNIEXPORT jint JNICALLJava_sun_nio_ch_FileDispatcherImpl_write0(JNIEnv *env, jclass clazz, jobject fdo, jlong address, jint len)&#123; jint fd = fdval(env, fdo); void *buf = (void *)jlong_to_ptr(address); //write的原型是 //extern ssize_t write (int __fd, const void *__buf, size_t __n) __wur; return convertReturnVal(env, write(fd, buf, len), JNI_FALSE);&#125; 所以最后，通过系统调用完成IO.操作系统调用接口的原型是：12345/* Write N bytes of BUF to FD. Return the number written, or -1. This function is a cancellation point and therefore not marked with __THROW. */extern ssize_t write (int __fd, const void *__buf, size_t __n) __wur;]]></content>
+      <tags>
+        <tag>IO</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[openjdk之编译经常出现的问题]]></title>
     <url>%2F2017%2F06%2F12%2Fopenjdk%E4%B9%8B%E7%BC%96%E8%AF%91%E7%BB%8F%E5%B8%B8%E5%87%BA%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98%2F</url>
     <content type="text"><![CDATA[openjdk编译过程中，因为系统环境和openjdk版本等问题，会出现各种问题。本文主要列出两个经常出现的问题及解决办法。 time is more than 10 years from present12345Error: time is more than 10 years from present: 1136059200000Java.lang.RuntimeException: time is more than 10 years from present: 1136059200000 at build.tools.generatecurrencydata.GenerateCurrencyData.makeSpecialCaseEntry(GenerateCurrencyData.java:285) at build.tools.generatecurrencydata.GenerateCurrencyData.buildMainAndSpecialCaseTables(GenerateCurrencyData.java:225) at build.tools.generatecurrencydata.GenerateCurrencyData.main(GenerateCurrencyData.java:154) 解决办法: 修改CurrencyData.properties（路径：jdk/src/share/classes/java/util/CurrencyData.properties） 修改108行AZ=AZM;2009-12-31-20-00-00;AZN修改381行MZ=MZM;2009-06-30-22-00-00;MZN修改443行RO=ROL;2009-06-30-21-00-00;RON修改535行TR=TRL;2009-12-31-22-00-00;TRY修改561行VE=VEB;2009-01-01-04-00-00;VEF OS is not supported: Linux … 4.0.0-1-amd64 …openjdk在编译时检查linux的内核版本，之前的检查代码没有检查4.x版本(那个时候还没有这个版本的内核)，导致出错。我们只需要在对应的检查代码里加上即可。 在文件hotspot/make/linux/Makefile中，修改如下：12-SUPPORTED_OS_VERSION = 2.4% 2.5% 2.6% 3%+SUPPORTED_OS_VERSION = 2.4% 2.5% 2.6% 3% 4%]]></content>
@@ -44,8 +52,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>Buffer</tag>
+        <tag>java</tag>
       </tags>
   </entry>
   <entry>
@@ -56,8 +64,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>JDK</tag>
         <tag>java</tag>
+        <tag>JDK</tag>
       </tags>
   </entry>
   <entry>
@@ -68,8 +76,8 @@
         <category>java</category>
       </categories>
       <tags>
-        <tag>JDK</tag>
         <tag>java</tag>
+        <tag>JDK</tag>
       </tags>
   </entry>
   <entry>
@@ -103,8 +111,8 @@
         <category>technology</category>
       </categories>
       <tags>
-        <tag>负载均衡</tag>
         <tag>technology</tag>
+        <tag>负载均衡</tag>
       </tags>
   </entry>
   <entry>
@@ -126,8 +134,8 @@
         <category>ali</category>
       </categories>
       <tags>
-        <tag>architecture</tag>
         <tag>technology</tag>
+        <tag>architecture</tag>
       </tags>
   </entry>
 </search>
