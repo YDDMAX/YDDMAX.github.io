@@ -631,7 +631,7 @@
               
                 
                 <a class="post-title-link" href="/2017/06/11/openjdk7之编译和debug/" itemprop="url">
-                  openjdk之编译和debug
+                  openjdk7之编译和debug
                 </a>
               
             
@@ -753,8 +753,7 @@ n</code>，执行<br>    <code>./java -version</code><br>    输出的java版本
 </code></pre></li>
 <li>然后切换到Arguments选项卡, 输入<strong>Java参数</strong>, 这里填上 “FileChannelTest”也就是我们要执行的JAVA程序。</li>
 <li>然后切换到Environment选项卡, 添加<strong>变量</strong>：<br><code>JAVA_HOME=/home/ddy/openjdk-compile/openjdk-7u40-fcs-b43-26/openjdk/build/linux-amd64-debug/j2sdk-image</code>（编译生成JDK所在目录）<br><code>CLASSPATH=.:/home/ddy/src/java-src</code> (FileChannelTest.java文件所在目录)<br>点击下面的Apply保存；</li>
-<li><p>断点Debug<br>　下面分别在源码上打两个断点：</p>
-<ul>
+<li>断点Debug<br>　下面分别在源码上打两个断点：<ul>
 <li>init.cpp(/home/ddy/openjdk-compile/openjdk-7u40-fcs-b43-26/openjdk/hotspot/src/share/vm/runtime目录下)      95行</li>
 <li>FileDispatchImpl.c(/home/ddy/openjdk-compile/openjdk-7u40-fcs-b43-26/openjdk/jdk/src/solaris/native/sun/nio/ch目录下)    107行</li>
 </ul>
