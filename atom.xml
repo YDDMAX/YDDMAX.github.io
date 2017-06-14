@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://YDDMAX.github.io/"/>
-  <updated>2017-06-14T15:47:03.194Z</updated>
+  <updated>2017-06-14T15:49:33.423Z</updated>
   <id>http://YDDMAX.github.io/</id>
   
   <author>
@@ -20,11 +20,9 @@
     <link href="http://YDDMAX.github.io/2017/06/14/Channel/"/>
     <id>http://YDDMAX.github.io/2017/06/14/Channel/</id>
     <published>2017-06-14T14:59:47.000Z</published>
-    <updated>2017-06-14T15:47:03.194Z</updated>
+    <updated>2017-06-14T15:49:33.423Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Channel"><a href="#Channel" class="headerlink" title="Channel"></a>Channel</h1><p>标签（空格分隔）： IO,java</p>
-<hr>
-<p><strong>本文内容主要摘录自：《JAVA NIO》。</strong></p>
+    <content type="html"><![CDATA[<p><strong>本文内容主要摘录自：《JAVA NIO》。</strong></p>
 <p>Channel的类图如下：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/Channel-class.png" alt="Channel-class"></p>
 <h1 id="通道基础"><a href="#通道基础" class="headerlink" title="通道基础"></a>通道基础</h1><ol>
 <li>从 Channel 接口引申出的其他接口都是面向字节的子接口，包括 WritableByteChannel和ReadableByteChannel.这也正好支持了我们之前所学的：通道只能在字节缓冲区上操作。</li>
@@ -55,7 +53,7 @@
 <p>Gather:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GatheringByteChannel</span></span></div><div class="line"><span class="keyword">extends</span> <span class="title">WritableByteChannel</span></div><div class="line">&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">write</span><span class="params">(ByteBuffer[] srcs)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">write</span><span class="params">(ByteBuffer[] srcs, <span class="keyword">int</span> offset, <span class="keyword">int</span> length)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>使用得当的话， <strong>Scatter/Gather 会是一个极其强大的工具。它允许您委托操作系统来完成辛苦活：将读取到的数据分开存放到多个存储桶（bucket）或者将不同的数据区块合并成一个整体。这是一个巨大的成就，因为操作系统已经被高度优化来完成此类工作了。它节省了您来回移动数据的工作，也就<font color="red">避免了缓冲区拷贝(为啥？)</font>和减少了您需要编写、调试的代码数量。</strong></p>
 <h1 id="文件通道"><a href="#文件通道" class="headerlink" title="文件通道"></a>文件通道</h1><h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><p><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/FileChanel-class.png" alt="Filechannel-class"></p>
-<p>FileChannel原型，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public abstract class FileChannel</div><div class="line">    extends AbstractChannel</div><div class="line">    implements ByteChannel, GatheringByteChannel, ScatteringByteChannel</div><div class="line">    &#123;</div><div class="line">    // This is a partial API listing</div><div class="line">    public abstract long position( )</div><div class="line">    public abstract void position (long newPosition)</div><div class="line">    public abstract int read (ByteBuffer dst)</div><div class="line">    public abstract int read (ByteBuffer dst, long position)</div><div class="line">    public abstract int write (ByteBuffer src)</div><div class="line">    public abstract int write (ByteBuffer src, long position)</div><div class="line">    public abstract long size( )</div><div class="line">    public abstract void truncate (long size)</div><div class="line">    public abstract void force (boolean metaData)</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>FileChannel原型，如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FileChannel</span></span></div><div class="line">    <span class="keyword">extends</span> <span class="title">AbstractChannel</span></div><div class="line">    <span class="keyword">implements</span> <span class="title">ByteChannel</span>, <span class="title">GatheringByteChannel</span>, <span class="title">ScatteringByteChannel</span></div><div class="line">&#123;</div><div class="line">    <span class="comment">// This is a partial API listing</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">long</span> <span class="title">position</span><span class="params">( )</span></span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">position</span> <span class="params">(<span class="keyword">long</span> newPosition)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span> <span class="params">(ByteBuffer dst)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span> <span class="params">(ByteBuffer dst, <span class="keyword">long</span> position)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">write</span> <span class="params">(ByteBuffer src)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">write</span> <span class="params">(ByteBuffer src, <span class="keyword">long</span> position)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">long</span> <span class="title">size</span><span class="params">( )</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">truncate</span> <span class="params">(<span class="keyword">long</span> size)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">force</span> <span class="params">(<span class="keyword">boolean</span> metaData)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <ol>
 <li>文件通道总是阻塞式的，因此不能被置于非阻塞模式。<br> 现代操作系统都有复杂的缓存和预取机制，使得本地磁盘I/O操作延迟很少。网络文件系统一般而言延迟会多些，不过却也因该优化而受益。 <strong>面向流的 I/O的非阻塞范例对于面向文件的操作并无多大意义，这是由文件I/O本质上的不同性质造成的。</strong></li>
 <li>FileChannel 对象是线程安全（thread-safe）的。</li>
@@ -182,9 +180,8 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Channel&quot;&gt;&lt;a href=&quot;#Channel&quot; class=&quot;headerlink&quot; title=&quot;Channel&quot;&gt;&lt;/a&gt;Channel&lt;/h1&gt;&lt;p&gt;标签（空格分隔）： IO,java&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;strong&gt;本文内容主要摘录自：《J
+      &lt;p&gt;&lt;strong&gt;本文内容主要摘录自：《JAVA NIO》。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Channel的类图如下：&lt;br&gt;&lt;img src=&quot;http://oqxil93b6.bkt.clouddn.com/images/IO/Channel-class.png&quot; al
     
     </summary>
     
