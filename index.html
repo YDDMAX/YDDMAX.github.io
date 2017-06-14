@@ -438,7 +438,25 @@
 <p>Gather:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GatheringByteChannel</span></span></div><div class="line"><span class="keyword">extends</span> <span class="title">WritableByteChannel</span></div><div class="line">&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">write</span><span class="params">(ByteBuffer[] srcs)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">write</span><span class="params">(ByteBuffer[] srcs, <span class="keyword">int</span> offset, <span class="keyword">int</span> length)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>使用得当的话， <strong>Scatter/Gather 会是一个极其强大的工具。它允许您委托操作系统来完成辛苦活：将读取到的数据分开存放到多个存储桶（bucket）或者将不同的数据区块合并成一个整体。这是一个巨大的成就，因为操作系统已经被高度优化来完成此类工作了。它节省了您来回移动数据的工作，也就<font color="red">避免了缓冲区拷贝(为啥？)</font>和减少了您需要编写、调试的代码数量。</strong></p>
 <h1 id="文件通道"><a href="#文件通道" class="headerlink" title="文件通道"></a>文件通道</h1><h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><p><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/FileChanel-class.png" alt="Filechannel-class"></p>
-<p>FileChannel原型，如下：<br><code><br>public abstract class FileChannel<br>    extends AbstractChannel<br>    implements ByteChannel, GatheringByteChannel, ScatteringByteChannel<br>    {<br>    // This is a partial API listing<br>    public abstract long position( )<br>    public abstract void position (long newPosition)<br>    public abstract int read (ByteBuffer dst)<br>    public abstract int read (ByteBuffer dst, long position)<br>    public abstract int write (ByteBuffer src)<br>    public abstract int write (ByteBuffer src, long position)<br>    public abstract long size( )<br>    public abstract void truncate (long size)<br>    public abstract void force (boolean metaData)<br>    }<br></code>  </p>
+<p>FileChannel原型，如下：</p>
+<pre><code>
+public abstract class FileChannel
+    extends AbstractChannel
+    implements ByteChannel, GatheringByteChannel, ScatteringByteChannel
+    {
+    // This is a partial API listing
+    public abstract long position( )
+    public abstract void position (long newPosition)
+    public abstract int read (ByteBuffer dst)
+    public abstract int read (ByteBuffer dst, long position)
+    public abstract int write (ByteBuffer src)
+    public abstract int write (ByteBuffer src, long position)
+    public abstract long size( )
+    public abstract void truncate (long size)
+    public abstract void force (boolean metaData)
+    }
+</code></pre>
+
 <ol>
 <li>文件通道总是阻塞式的，因此不能被置于非阻塞模式。<br> 现代操作系统都有复杂的缓存和预取机制，使得本地磁盘I/O操作延迟很少。网络文件系统一般而言延迟会多些，不过却也因该优化而受益。 <strong>面向流的 I/O的非阻塞范例对于面向文件的操作并无多大意义，这是由文件I/O本质上的不同性质造成的。</strong></li>
 <li>FileChannel 对象是线程安全（thread-safe）的。</li>
