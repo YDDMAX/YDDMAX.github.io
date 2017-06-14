@@ -306,6 +306,485 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/14/Channel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yunzhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YDDMAX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/14/Channel/" itemprop="url">
+                  Channel
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-14T22:59:47+08:00">
+                2017-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/io/" itemprop="url" rel="index">
+                    <span itemprop="name">io</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>本文内容主要摘录自：《JAVA NIO》。</strong></p>
+<p>Channel的类图如下：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/Channel-class.png" alt="Channel-class"></p>
+<h1 id="通道基础"><a href="#通道基础" class="headerlink" title="通道基础"></a>通道基础</h1><ol>
+<li>从 Channel 接口引申出的其他接口都是面向字节的子接口，包括 WritableByteChannel和ReadableByteChannel.这也正好支持了我们之前所学的：通道只能在字节缓冲区上操作。</li>
+<li>SelectableChannel和InterruptibleChannel<h2 id="打开通道"><a href="#打开通道" class="headerlink" title="打开通道"></a>打开通道</h2></li>
+</ol>
+<ul>
+<li><code>SocketChannel sc = SocketChannel.open( );</code></li>
+<li><code>ServerSocketChannel ssc = ServerSocketChannel.open( );</code></li>
+<li><code>DatagramChannel dc = DatagramChannel.open( );</code></li>
+<li>RandomAccessFile、 FileInputStream 或 FileOutputStream对象上调用 getChannel( )方法来获取<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RandomAccessFile raf = <span class="keyword">new</span> RandomAccessFile (<span class="string">"somefile"</span>, <span class="string">"r"</span>);</div><div class="line">FileChannel fc = raf.getChannel( );</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="使用通道"><a href="#使用通道" class="headerlink" title="使用通道"></a>使用通道</h2><ol>
+<li>通道可以是单向的，也可以是双向的，由底层的打开方式决定。</li>
+<li>ByteChannel 接口本身并不定义新的 API 方法，它是一种用来聚集它自己以一个新名称继承的多个接口的便捷接口。</li>
+<li><strong>通道可以以阻塞（blocking）或非阻塞（nonblocking）模式运行。</strong>非阻塞模式的通道永远不会让调用的线程休眠。请求操作要么立即完成，要么返回一个结果表明未进行任何操作。<br> <strong>只有面向流的（stream-oriented）的通道，如 sockets 和 pipes 才能使用非阻塞模式。</strong><h2 id="关闭通道"><a href="#关闭通道" class="headerlink" title="关闭通道"></a>关闭通道</h2></li>
+<li><strong>调用通道的close( )方法时，可能会导致在通道关闭底层I/O服务的过程中线程暂时阻塞,哪怕该通道处于非阻塞模式。</strong><br> 通道关闭时的阻塞行为（如果有的话）是高度取决于操作系统或者文件系统的。<strong>在一个通道上多次调用close( )方法是没有坏处的</strong>，但是如果第一个线程在close( )方法中阻塞，那么在它完成关闭通道之前，任何其他调用close( )方法都会阻塞。后续在该已关闭的通道上调用close( )不会产生任何操作，只会立即返回。</li>
+<li>通道引入了一些与<strong>关闭和中断有关的新行为</strong>。<br> 如果一个通道实现 InterruptibleChannel接口，它的行为以下述语义为准：<strong>如果一个线程在一个通道上被阻塞并且同时被中断（由调用该被阻塞线程的 interrupt( )方法的另一个线程中断），那么该通道将被关闭，该被阻塞线程也会产生一个 ClosedByInterruptException 异常。</strong></li>
+<li><strong>请不要将在 Channels 上休眠的中断线程同在 Selectors上休眠的中断线程混淆。前者会关闭通道，而后者则不会。</strong><br> 不过，如果您的线程在 Selector 上休眠时被中断，那它的 interrupt status 会被设置。假设那个线程接着又访问一个Channel，则该通道会被关闭。</li>
+<li>仅仅因为休眠在其上的线程被中断就关闭通道，这看起来似乎过于苛刻了。<br> 不过这却是 NIO架构师们所做出的明确的设计决定。经验表明，想要在所有的操作系统上一致而可靠地处理被中断的 I/O操作是不可能的。 java.nio 包中强制使用此行为来避免因操作系统独特性而导致的困境，因为该困境对 I/O 区域而言是极其危险的。<strong>这也是为增强健壮性（robustness）而采用的一种经典的权衡。</strong></li>
+<li><strong>可中断的通道也是可以异步关闭的。</strong><br> 实现 InterruptibleChannel 接口的通道可以在任何时候被关闭，即使有另一个被阻塞的线程在等待该通道上的一个 I/O 操作完成。当一个通道被关闭时，休眠在该通道上的所有线程都将被唤醒并接收到一个 AsynchronousCloseException异常。接着通道就被关闭并将不再可用。<h1 id="Scanner-Gather"><a href="#Scanner-Gather" class="headerlink" title="Scanner/Gather"></a>Scanner/Gather</h1>通道提供了一种被称为 Scatter/Gather的重要新功能（有时也被称为矢量 I/O）。 </li>
+</ol>
+<p>Scatter/Gather是一个简单却强大的概念，它是指在多个缓冲区上实现一个简单的 I/O 操作。<br><strong>对于一个 write 操作而言</strong>，数据是从几个缓冲区按顺序抽取（称为 gather）并沿着通道发送的。缓冲区本身并不需要具备这种 gather 的能力（通常它们也没有此能力）。该 gather过程的效果就好比全部缓冲区的内容被连结起来，并在发送数据前存放到一个大的缓冲区中。<br><strong>对于 read 操作而言</strong>，从通道读取的数据会按顺序被散布（称为 scatter）到多个缓冲区，将每个缓冲区填满直至通道中的数63据或者缓冲区的最大空间被消耗完。大多数现代操作系统都支持本地矢量 I/O（native vectored I/O）。当您在一个通道上请求一个Scatter/Gather操作时，该请求会被翻译为适当的本地调用来直接填充或抽取缓冲区。这是一个很大的进步，因为减少或避免了缓冲区拷贝和系统调用。 </p>
+<p>Scanner:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ScatteringByteChannel</span></span></div><div class="line"><span class="keyword">extends</span> <span class="title">ReadableByteChannel</span></div><div class="line">&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">read</span> <span class="params">(ByteBuffer [] dsts)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">read</span> <span class="params">(ByteBuffer [] dsts, <span class="keyword">int</span> offset, <span class="keyword">int</span> length)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Gather:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GatheringByteChannel</span></span></div><div class="line"><span class="keyword">extends</span> <span class="title">WritableByteChannel</span></div><div class="line">&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">write</span><span class="params">(ByteBuffer[] srcs)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">write</span><span class="params">(ByteBuffer[] srcs, <span class="keyword">int</span> offset, <span class="keyword">int</span> length)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>使用得当的话， <strong>Scatter/Gather 会是一个极其强大的工具。它允许您委托操作系统来完成辛苦活：将读取到的数据分开存放到多个存储桶（bucket）或者将不同的数据区块合并成一个整体。这是一个巨大的成就，因为操作系统已经被高度优化来完成此类工作了。它节省了您来回移动数据的工作，也就<font color="red">避免了缓冲区拷贝(为啥？)</font>和减少了您需要编写、调试的代码数量。</strong></p>
+<h1 id="文件通道"><a href="#文件通道" class="headerlink" title="文件通道"></a>文件通道</h1><h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><p><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/FileChanel-class.png" alt="Filechannel-class"></p>
+<ol>
+<li>文件通道总是阻塞式的，因此不能被置于非阻塞模式。<br> 现代操作系统都有复杂的缓存和预取机制，使得本地磁盘I/O操作延迟很少。网络文件系统一般而言延迟会多些，不过却也因该优化而受益。 <strong>面向流的 I/O的非阻塞范例对于面向文件的操作并无多大意义，这是由文件I/O本质上的不同性质造成的。</strong></li>
+<li>FileChannel 对象是线程安全（thread-safe）的。</li>
+<li>File IO的比较<br> <img src="http://oqxil93b6.bkt.clouddn.com/images/IO/file-io-operation-compare.png" alt="file-io-opeartion-compare"></li>
+<li><p>FileChannel原型：<br> 如下：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FileChannel</span></span></div><div class="line">    <span class="keyword">extends</span> <span class="title">AbstractChannel</span></div><div class="line">    <span class="keyword">implements</span> <span class="title">ByteChannel</span>, <span class="title">GatheringByteChannel</span>, <span class="title">ScatteringByteChannel</span></div><div class="line">    &#123;</div><div class="line">    <span class="comment">// This is a partial API listing</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">long</span> <span class="title">position</span><span class="params">( )</span></span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">position</span> <span class="params">(<span class="keyword">long</span> newPosition)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span> <span class="params">(ByteBuffer dst)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span> <span class="params">(ByteBuffer dst, <span class="keyword">long</span> position)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">write</span> <span class="params">(ByteBuffer src)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">write</span> <span class="params">(ByteBuffer src, <span class="keyword">long</span> position)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">long</span> <span class="title">size</span><span class="params">( )</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">truncate</span> <span class="params">(<span class="keyword">long</span> size)</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">force</span> <span class="params">(<span class="keyword">boolean</span> metaData)</span></div><div class="line">    &#125;</div><div class="line">    ```   </div><div class="line">    </div><div class="line">5.    文件空洞</div><div class="line">    当磁盘上一个文件的分配空间小于它的文件大小时会出现“文件空洞”。对于内容稀疏的文件，大多数现代文件系统只为实际写入的数据分配磁盘空间（更准确地说，只为那些写入数据的文件系统页分配空间）。假如数据被写入到文件中非连续的位置上，这将导致文件出现在逻辑上不包含数据的区域（即“空洞”）。**如果该文件被顺序读取的话，所有空洞都会被“0”填充但不占用磁盘空间。**</div><div class="line">6. <span class="title">truncate</span><span class="params">()</span></div><div class="line">    当需要减少一个文件的 size 时， <span class="title">truncate</span><span class="params">( )</span>方法会砍掉您所指定的新 size 值之外的所有数据。</div><div class="line">    如果当前 size 大于新 size，超出新 size 的所有字节都会被悄悄地丢弃。</div><div class="line">    如果提供的新 size 值大于或等于当前的文件 size 值，该文件不会被修改。</div><div class="line">   **这两种情况下， <span class="title">truncate</span><span class="params">( )</span>都会产生副作用：文件的position 会被设置为所提供的新 size 值。**</div><div class="line">## 文件锁定</div><div class="line">有关 FileChannel 实现的文件锁定模型的一个重要注意项是：**锁的对象是文件而不是通道或线程，这意味着文件锁不适用于判优同一台 Java 虚拟机上的多个线程发起的访问。**</div><div class="line">如果一个线程在某个文件上获得了一个独占锁，然后第二个线程利用一个单独打开的通道来请求该文件的独占锁，那么第二个线程的请求会被批准。</div><div class="line">但如果这两个线程运行在不同的 Java 虚拟机上，那么第二个线程会阻塞，因为锁最终是由操作系统或文件系统来判优的并且几乎总是在进程级而非线程级上判优。锁都是与一个文件关联的，而不是与单个的文件句柄或通道关联。锁与文件关联，而不是与通道关联。**我们使用锁来判优外部进程，而不是判优同一个 Java 虚拟机上的线程。**</div><div class="line">## 内存映射文件</div><div class="line">1. 因为不需要做明确的系统调用，那会很消耗时间。</div><div class="line">    更重要的是，操作系统的虚拟内存可以自动缓存内存页（memory page）。这些页是用系统内存来缓存的，所以不会消耗 Java 虚拟机内存堆（memory heap）。</div><div class="line">2. 与文件锁的范围机制不一样，映射文件的范围不应超过文件的实际大小。</div><div class="line">    **如果您请求一个超出文件大小的映射，文件会被增大以匹配映射的大小<span class="params">(文件空洞)</span>。**即使您请求的是一个只读映射，<span class="title">map</span><span class="params">( )</span>方法也会尝试这样做并且大多数情况下都会抛出一个 IOException 异常，因为底层的文件不能被修改。该行为同之前讨论的文件“空洞”的行为是一致的。</div><div class="line">3. MapMode.READ_ONLY </div><div class="line">4. MapMode.READ_WRITE </div><div class="line">5.  MapMode.<span class="title">PRIVATE</span><span class="params">(写时拷贝)</span></div><div class="line">    + 您通过 <span class="title">put</span><span class="params">( )</span>方法所做的任何修改都会导致产生一个私有的数据拷贝，并且该拷贝中的数据只有MappedByteBuffer 实例可以看到。该过程不会对底层文件做任何修改，而且一旦缓冲区被施以垃圾收集动作（garbage collected），那些修改都会丢失。</div><div class="line">    + **尽管写时拷贝的映射可以防止底层文件被修改，您也必须以 read/write 权限来打开文件**以建立 MapMode.PRIVATE 映射。只有这样，返回的MappedByteBuffer 对象才能允许使用 <span class="title">put</span><span class="params">( )</span>方法。</div><div class="line">    + 选择使用 MapMode.PRIVATE 模式并不会导致您的缓冲区看不到通过其他方式对文件所做的修改。</div><div class="line">        对文件某个区域的修改在使用 MapMode.PRIVATE模式的缓冲区中都能反映出来，除非该缓冲区已经修改了文件上的同一个区域。如果缓冲区还没对某个页做出修改，那么这个页就会反映被映射文件的相应位置上的内容。一旦某个页因为写操作而被拷贝，之后就将使用该拷贝页，并且不能被其他缓冲区或文件更新所修改。</div><div class="line">    + 关闭相关联的 FileChannel 不会破坏映射，只有丢弃缓冲区对象本身才会破坏该映射。</div><div class="line">        **NIO设计师们之所以做这样的决定是因为当关闭通道时破坏映射会引起安全问题，而解决该安全问题又会导致性能问题。** ***如果您确实需要知道一个映射是什么时候被破坏的，他们建议使用虚引用（phantomreferences，参见java.lang.ref.PhantomReference）和一个 cleanup 线程。***不过有此需要的概率是微乎其微的。</div><div class="line">6. <span class="title">load</span><span class="params">()</span></div><div class="line">    在一个映射缓冲区上调用 <span class="title">load</span><span class="params">()</span>方法会是一个**代价高**的操作，因为它会导致大量的页调入（page-in），具体数量取决于文件中被映射区域的实际大小。</div><div class="line">   **然而， <span class="title">load</span><span class="params">( )</span>方法返回并不能保证文件就会完全常驻内存，这是由于请求页面调入（demandpaging）是动态的。**具体结果会因某些因素而有所差异，这些因素包括：操作系统、文件系统，可用 Java 虚拟机内存，最大 Java 虚拟机内存，垃圾收集器实现过程等等。请小心使用 <span class="title">load</span><span class="params">( )</span>方法，它可能会导致您不希望出现的结果。该方法的主要作用是为提前加载文件埋单，以便后续的访问速度可以尽可能的快。</div><div class="line">7. <span class="title">isLoaded</span><span class="params">()</span></div><div class="line">     <span class="title">isLoaded</span><span class="params">( )</span>方法来判断一个被映射的文件是否完全常驻内存了。**不过，这也是不能保证的。**同样地，返回 <span class="keyword">false</span> 值并不一定意味着访问缓冲区将很慢或者该文件并未完全常驻内存。 <span class="title">isLoaded</span><span class="params">()</span>方法的返回值只是一个暗示，由于垃圾收集的异步性质、底层操作系统以及运行系统的动态性等因素，**想要在任意时刻准确判断全部映射页的状态是不可能的。**</div><div class="line">8. <span class="title">force</span><span class="params">()</span></div><div class="line">该方法会强制将映射缓冲区上的更改应用到永久磁盘存储器上。当用 MappedByteBuffer 对象来更新一个文件，**您应该总是使用 MappedByteBuffer.<span class="title">force</span><span class="params">( )</span>,而非 FileChannel.<span class="title">force</span><span class="params">( )</span>，因为通道对象可能不清楚通过映射缓冲区做出的文件的全部更改。**</div><div class="line">**MappedByteBuffer 没有不更新文件元数据的选项——元数据总是会同时被更新的。**</div><div class="line">**如果映射是以 MapMode.READ_ONLY 或 MAP_MODE.PRIVATE 模式建立的，那么调用 <span class="title">force</span><span class="params">()</span>方法将不起任何作用，因为永远不会有更改需要应用到磁盘上（但是这样做也是没有害处的）。**</div><div class="line">## Channel-to-Channel传输</div><div class="line">1. <span class="title">transferTo</span><span class="params">( )</span>和 <span class="title">transferFrom</span><span class="params">( )</span>方法允许将一个通道交叉连接到另一个通道，而不需要通过一个中间缓冲区来传递数据。</div><div class="line">2. **只有 FileChannel 类有这两个方法，因此 channel-to-channel 传输中通道之一必须是 FileChannel。您不能在 socket 通道之间直接传输数据**，不过 socket 通道实现WritableByteChannel 和 ReadableByteChannel接口，因此文件的内容可以用 <span class="title">transferTo</span><span class="params">( )</span>方法传输给一个 socket 通道，或者也可以用 <span class="title">transferFrom</span><span class="params">( )</span>方法将数据从一个 socket通道直接读取到一个文件中。</div><div class="line">3. **直接的通道传输不会更新与某个 FileChannel 关联的 position 值。**</div><div class="line">4.  + 对于传输数据来源是一个文件的<span class="title">transferTo</span><span class="params">()</span>方法，如果position+count的值大于文件的size值，传输会在文件尾的位置终止。</div><div class="line">    + 假如传输的目的地是一个非阻塞模式的socket通道，那么当发送队列（sendqueue）满了之后传输就可能终止，并且如果输出队列（output queue）已满的话可能不会发送任何数据。</div><div class="line">    + 类似地，对于 <span class="title">transferFrom</span><span class="params">( )</span>方法：如果来源 src是另外一个FileChannel并且已经到达文件尾，那么传输将提早终止；如果来源 src 是一个非阻塞 socket通道，只有当前处于队列中的数据才会被传输（可能没有数据）。**由于网络数据传输的非确定性，阻塞模式的socket 也可能会执行部分传输，这取决于操作系统。许多通道实现都是提供它们当前队列中已有的数据而不是等待您请求的全部数据都准备好。**</div><div class="line"># Socket通道</div><div class="line">![socket-channel-class][4]</div><div class="line"></div><div class="line">1. 使用Channel没有为每个 socket连接使用一个线程的必要了，也避免了管理大量线程所需的上下文交换总开销。</div><div class="line">2. 请注意 DatagramChannel 和SocketChannel实现定义读和写功能的接口而ServerSocketChannel不实现。ServerSocketChannel 负责监听传入的连接和创建新的 SocketChannel 对象，它本身从不传输数据。</div><div class="line">3. **虽然每个 socket 通道（在 java.nio.channels 包中）都有一个关联的 java.net socket 对象，却并非所有的 socket 都有一个关联的通道。**如果您用传统方式（直接实例化）创建了一个Socket 对象，它就不会有关联的 SocketChannel并且它的 <span class="title">getChannel</span><span class="params">( )</span>方法将总是返回 <span class="keyword">null</span>。</div><div class="line">## 非阻塞模式</div><div class="line"> Socket 通道可以工作在阻塞和非阻塞模式下，并且可以在运行过程中动态切换。</div><div class="line">SelectableChannel:</div><div class="line">```java</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> class SelectableChannel</div><div class="line">extends AbstractChannel</div><div class="line">implements Channel</div><div class="line">&#123;</div><div class="line"><span class="comment">// This is a partial API listing</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">configureBlocking</span> <span class="params">(<span class="keyword">boolean</span> block)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">isBlocking</span><span class="params">( )</span></span>;<span class="number">99</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Object <span class="title">blockingLock</span><span class="params">( )</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>要把一个 socket 通道置于非阻塞模式，我们要依靠所有 socket 通道类的公有超级类：SelectableChannel。<br> <strong>非阻塞 I/O 和可选择性是紧密相连的，那也正是管理阻塞模式的 API 代码要在SelectableChannel 超级类中定义的原因。</strong></p>
+</li>
+<li><p>blockingLock( )<br> 该方法会返回一个非透明的对象引用。返回的对象是通道实现修改阻塞模式时内部使用的。只有拥有此对象的锁的线程才能更改通道的阻塞模式。</p>
+<h2 id="ServerSocketChannel"><a href="#ServerSocketChannel" class="headerlink" title="ServerSocketChannel"></a>ServerSocketChannel</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ServerSocketChannel</span></span></div><div class="line"><span class="keyword">extends</span> <span class="title">AbstractSelectableChannel</span></div><div class="line">&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ServerSocketChannel <span class="title">open</span><span class="params">( )</span> <span class="keyword">throws</span> IOException</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> ServerSocket <span class="title">socket</span><span class="params">( )</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> SocketChannel <span class="title">accept</span><span class="params">( )</span> <span class="keyword">throws</span> IOException</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">validOps</span><span class="params">( )</span></span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>用静态的 open( )工厂方法创建一个新的 ServerSocketChannel 对象，将会返回与一个未绑定的java.net.ServerSocket 关联的通道。该对等 ServerSocket可以通过在返回的ServerSocketChannel上调用socket()方法来获取。作为ServerSocketChannel 的对等体被创建的 ServerSocket对象依赖通道实现。这些socket关联的SocketImpl能识别通道。通道不能被封装在随意的 socket 对象外面</p>
+</li>
+<li><p>accept</p>
+<ul>
+<li><strong>如果您选择在 ServerSocket 上调用 accept( )方法</strong><br>  那么它会同任何其他的 ServerSocket 表现一样的行为：总是阻塞并返回一个 java.net.Socket 对象。</li>
+<li>如果您选择在 ServerSocketChannel 上调用 accept( )<br>  方法则会返回 SocketChannel 类型的对象，返回的对象能够在非阻塞模式下运行。</li>
+<li>如果在非阻塞模式下的ServerSocketChannel上调用<br>  当没有传入连接在等待时， ServerSocketChannel.accept( )会立即返回 null。<h2 id="SocketChannel"><a href="#SocketChannel" class="headerlink" title="SocketChannel"></a>SocketChannel</h2>SocketChannel原型：<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">SocketChannel</span></span></div><div class="line"><span class="keyword">extends</span> <span class="title">AbstractSelectableChannel</span></div><div class="line"><span class="keyword">implements</span> <span class="title">ByteChannel</span>, <span class="title">ScatteringByteChannel</span>, <span class="title">GatheringByteChannel</span></div><div class="line">&#123;</div><div class="line"><span class="comment">// This is a partial API listing</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SocketChannel <span class="title">open</span><span class="params">( )</span> <span class="keyword">throws</span> IOException</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> SocketChannel <span class="title">open</span> <span class="params">(InetSocketAddress remote)</span></div><div class="line"><span class="keyword">throws</span> IOException</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> Socket <span class="title">socket</span><span class="params">( )</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">connect</span> <span class="params">(SocketAddress remote)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;<span class="number">103</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">isConnectionPending</span><span class="params">( )</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">finishConnect</span><span class="params">( )</span> <span class="keyword">throws</span> IOException</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">isConnected</span><span class="params">( )</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">validOps</span><span class="params">( )</span></span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>connect()</p>
+<ul>
+<li>阻塞模式下：<br>  在Socket对象上调用和通过在阻塞模式的SocketChannel上调用时相同：线程在连接建立好或超时过期之前都将保持阻塞。</li>
+<li>非阻塞模式的SocketChannel上调用<br>  线程不阻塞，如果返回值是true，说明连接立即建立了（这可能是本地环回连接）；如果连接不能立即建立， connect( )方法会返回 false 且并发地继续连接建立过程。</li>
+</ul>
+</li>
+<li><strong>在 SocketChannel 上并没有一种connect()方法可以让您指定超时（timeout）值，编程时一般使用非阻塞模式的SocketChannel.connect()建立异步连接。</strong></li>
+<li>isConnectPending()</li>
+<li><strong>finishConnect()</strong><ul>
+<li>connect( )方法尚未被调用。那么将产生 NoConnectionPendingException 异常。</li>
+<li>连接建立过程正在进行，尚未完成。那么什么都不会发生， finishConnect( )方法会立即返回false 值。</li>
+<li>在非阻塞模式下调用 connect()方法之后，SocketChannel又被切换回了阻塞模式。那么如果有必要的话，调用线程会阻塞直到连接建立完成， finishConnect( )方法接着就会返回 true值。</li>
+<li>在初次调用 connect( )或最后一次调用finishConnect()之后，连接建立过程已经完成。那么SocketChannel对象的内部状态将被更新到已连接状态， finishConnect( )方法会返回 true值，然后 SocketChannel对象就可以被用来传输数据了。</li>
+<li>连接已经建立。那么什么都不会发生，finishConnect()方法会返回true值。假如某个SocketChannel上当前正由一个并发连接， isConnectPending( )方法就会返回 true 值。</li>
+</ul>
+</li>
+<li>isConnected( )<br> 不阻塞</li>
+<li>当通道处于中间的连接等待（connection-pending）状态时，您只可以调用 finishConnect( )、isConnectPending( )或isConnected( )方法。</li>
+<li><strong>如果尝试异步连接失败，那么下次调用finishConnect()方法会产生一个适当的经检查的异常以指出问题的性质。通道然后就会被关闭并将不能被连接或再次使用.</strong></li>
+<li><strong>connect( )和 finishConnect()方法是互相同步的，并且只要其中一个操作正在进行，任何读或写的方法调用都会阻塞,即使是在非阻塞模式下。如果此情形下您有疑问或不能承受一个读或写操作在某个通道上阻塞，请用isConnected()方法测试一下连接状态。</strong><h2 id="DatagramChannel"><a href="#DatagramChannel" class="headerlink" title="DatagramChannel"></a>DatagramChannel</h2>TCP/IP 这样面向流的的协议为了在包导向的互联网基础设施上维护流语义必然会产生巨大的开销，并且流隐喻不能适用所有的情形。<strong>数据报的吞吐量要比流协议高很多， 并且数据报可以做很多流无法完成的事情。</strong></li>
+</ol>
+<p>DatagramChannel的原型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">DatagramChannel</span></span></div><div class="line"><span class="keyword">extends</span> <span class="title">AbstractSelectableChannel</span></div><div class="line"><span class="keyword">implements</span> <span class="title">ByteChannel</span>, <span class="title">ScatteringByteChannel</span>, <span class="title">GatheringByteChannel</span></div><div class="line">&#123;</div><div class="line"><span class="comment">// This is a partial API listing</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> DatagramChannel <span class="title">open</span><span class="params">( )</span> <span class="keyword">throws</span> IOException</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> DatagramSocket <span class="title">socket</span><span class="params">( )</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> DatagramChannel <span class="title">connect</span> <span class="params">(SocketAddress remote)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">isConnected</span><span class="params">( )</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> DatagramChannel <span class="title">disconnect</span><span class="params">( )</span> <span class="keyword">throws</span> IOException</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> SocketAddress <span class="title">receive</span> <span class="params">(ByteBuffer dst)</span></span></div><div class="line"><span class="keyword">throws</span> IOException;<span class="number">107</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">send</span> <span class="params">(ByteBuffer src, SocketAddress target)</span></span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span> <span class="params">(ByteBuffer dst)</span> <span class="keyword">throws</span> IOException;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">long</span> <span class="title">read</span> <span class="params">(ByteBuffer [] dsts)</span> <span class="keyword">throws</span> IOException</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">long</span> <span class="title">read</span> <span class="params">(ByteBuffer [] dsts, <span class="keyword">int</span> offset,</span></span></div><div class="line"><span class="keyword">int</span> length)</div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">write</span> <span class="params">(ByteBuffer src)</span> <span class="keyword">throws</span> IOException</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">long</span> <span class="title">write</span><span class="params">(ByteBuffer[] srcs)</span> <span class="keyword">throws</span> IOException</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">long</span> <span class="title">write</span><span class="params">(ByteBuffer[] srcs, <span class="keyword">int</span> offset,</span></span></div><div class="line"><span class="keyword">int</span> length)</div><div class="line"><span class="keyword">throws</span> IOException;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>DatagramChannel 对象既可以充当服务器（监听者）也可以充当客户端（发送者）。<ul>
+<li>如果您希望新创建的通道负责监听，那么通道必须首先被绑定到一个端口或地址/端口组合上。</li>
+<li><strong>不论通道是否绑定，所有发送的包都含有 DatagramChannel 的源地址（带端口号）。</strong></li>
+<li><strong>未绑定的 DatagramChannel可以接收发送给它的端口的包，通常是来回应该通道之前发出的一个包。通道绑定了端口或者发送了数据包之后就有了相应端口，否则没有端口，也就不能接收数据。</strong></li>
+</ul>
+</li>
+<li>与面向流的的 socket 不同， DatagramChannel 可以发送单独的数据报给不同的目的地址。同样， DatagramChannel 对象也可以接收来自任意地址的数据包。每个到达的数据报都含有关于它来自何处的信息（源地址）。</li>
+<li>receive()<br> receive( )方法将下次将传入的数据报的数据净荷复制到预备好的ByteBuffer中并返回一个SocketAddress对象以指出数据来源。<ul>
+<li>如果通道处于阻塞模式， receive( )可能无限期地休眠直到有包到达。</li>
+<li>如果是非阻塞模式，当没有可接收的包时则会返回 null。</li>
+<li><strong>假如您提供的 ByteBuffer 没有足够的剩余空间来存放您正在接收的数据包，没有被填充的字节都会被悄悄地丢弃</strong></li>
+</ul>
+</li>
+<li>send()<br> 如果 DatagramChannel 对象处于阻塞模式，调用线程可能会休眠直到数据报被加入传输队列。<br> <strong>发送数据报是一个全有或全无（all-or-nothing）的行为。</strong><ul>
+<li><strong>如果通道是非阻塞的，返回值要么是字节缓冲区的字节数，要么是“0”。</strong></li>
+<li>如果传输队列没有足够空间来承载整个数据报，那么什么内容都不会被发送。</li>
+</ul>
+</li>
+<li>connect()语义<ul>
+<li>将 DatagramChannel 置于已连接的状态可以使除了它所“连接”到的地址之外的任何其他源地址的数据报被忽略。这是很有帮助的，因为不想要的包都已经被网络层丢弃了，从而避免了使用代码来接收、检查然后丢弃包的麻烦。</li>
+<li>当 DatagramChannel 已连接时，使用同样的令牌，您不可以发送包到除了指定给connect()方法的目的地址以外的任何其他地址。试图一定要这样做的话会导致一个 <strong>SecurityException 异常</strong>。</li>
+<li>已连接通道会发挥作用的使用场景之一是一个客户端/服务器模式、使用 UDP 通讯协议的实时游戏。每个客户端都只和同一台服务器进行会话而希望忽视任何其他来源地数据包。将客户端的DatagramChannel 实例置于已连接状态可以减少按包计算的总开销（因为不需要对每个包进行安全检查）和剔除来自欺骗玩家的假包。服务器可能也想要这样做，不过需要每个客户端都有一个DatagramChannel 对象。</li>
+<li><strong>DatagramChannel 没有单独的 finishConnect( )方法。我们可以使用isConnected()方法来测试一个数据报通道的连<br>接状态。</strong></li>
+<li><strong>DatagramChannel 对象可以任意次数地进行连接或断开连接。每次连接都可以到一个不同的远程地址。<br>  调用 disconnect( )方法可以配置通道，以便它能再次接收来自安全管理器（如果已安装）所允许的任意远程地址的数据或发送数据到这些地址上。</strong></li>
+<li>当一个 DatagramChannel 处于已连接状态时，发送数据将不用提供目的地址而且接收时的源地址也是已知的。这意味着DatagramChannel已连接时可以使用常规的 read( )和 write( )方法，包括scatter/gather形式的读写来组合或分拆包的数据。</li>
+<li>read( )方法返回读取字节的数量，如果通道处于非阻塞模式的话这个返回值可能是“0”。write( )方法的返回值同 send( )方法一致：<strong>要么返回您的缓冲区中的字节数量，要么返回“0”</strong>（如果由于通道处于非阻塞模式而导致数据报不能被发送）。<strong>当通道不是已连接状态时调用 read( )或write( )方法，都将产生 NotYetConnectedException 异常。</strong><h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1>Pipe 类创建一对提供环回机制的 Channel 对象。这两个通道的远端是连接起来的，以便任何写在 SinkChannel 对象上的数据都能出现在 SourceChannel 对象上。</li>
+</ul>
+</li>
+</ol>
+<p><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/pipe-class.png" alt="pipe-class"></p>
+<p>Pipe原型：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> java.nio.channels;</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Pipe</span></span></div><div class="line">&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Pipe <span class="title">open</span><span class="params">( )</span> <span class="keyword">throws</span> IOException</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> SourceChannel <span class="title">source</span><span class="params">( )</span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> SinkChannel <span class="title">sink</span><span class="params">( )</span></span>;<span class="number">119</span></div><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">SourceChannel</span></span></div><div class="line"><span class="keyword">extends</span> <span class="title">AbstractSelectableChannel</span></div><div class="line"><span class="keyword">implements</span> <span class="title">ReadableByteChannel</span>, <span class="title">ScatteringByteChannel</span></div><div class="line"><span class="title">public</span> <span class="title">static</span> <span class="title">abstract</span> <span class="title">class</span> <span class="title">SinkChannel</span></div><div class="line"><span class="keyword">extends</span> <span class="title">AbstractSelectableChannel</span></div><div class="line"><span class="keyword">implements</span> <span class="title">WritableByteChannel</span>, <span class="title">GatheringByteChannel</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>Pipe.SourceChannel（管道负责读的一端）， Pipe.SinkChannel（管道负责写的一端）。<br> 这两个通道实例是在 Pipe 对象创建的同时被创建的，可以通过在 Pipe 对象上分别调用 source( )和 sink( )方法来取回。</li>
+<li><strong>SinkChannel 和 SourceChannel 都由 AbstractSelectableChannel 引申而来（所以也是从 SelectableChannel 引申而来），这意味着 pipe 通道可以同选择器一起使用.</strong></li>
+<li><strong>管道可以被用来仅在同一个 Java虚拟机内部传输数据（不能在外部）。</strong>虽然有更加有效率的方式来在线程之间传输数据，<strong>但是使用管道的好处在于封装性。</strong></li>
+<li><strong>生产者线程和用户线程都能被写道通用的Channel API中。根据给定的通道类型，相同的代码可以被用来写数据到一个文件、socket或管道。选择器可以被用来检查管道上的数据可用性，如同在socket通道上使用那样地简单。这样就可以允许单个用户线程使用一个Selector来从多个通道有效地收集数据，并可任意结合网络连接或本地工作线程使用。因此，这些对于可伸缩性、冗余度以及可复用性来说无疑都是意义重大的。</strong></li>
+<li><strong>管道所能承载的数据量是依赖实现的（implementation-dependent）。唯一可保证的是写到SinkChannel中的字节都能按照同样的顺序在 SourceChannel 上重现。</strong></li>
+</ol>
+<h1 id="通道工具类"><a href="#通道工具类" class="headerlink" title="通道工具类"></a>通道工具类</h1><p><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/channel-util-table.png" alt="channel-util-table"></p>
+<p><strong>这些方法返回的包封 Channel 对象可能会也可能不会实现 InterruptibleChannel 接口，它们也可能不是从 SelectableChannel 引申而来。因此，可能无法将这些包封通道同 java.nio.channels包中定义的其他通道类型交换使用。</strong></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/14/Zero-Copy-I-User-Mode-Perspective/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="yunzhu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YDDMAX">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/14/Zero-Copy-I-User-Mode-Perspective/" itemprop="url">
+                  Zero Copy I: User-Mode Perspective
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-14T22:57:47+08:00">
+                2017-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/io/" itemprop="url" rel="index">
+                    <span itemprop="name">io</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>转自：<a href="http://www.linuxjournal.com/article/6345" target="_blank" rel="external">Zero Copy I: User-Mode Perspective</a></p>
+<p>Explaining what is zero-copy functionality for Linux, why it’s useful and where it needs work.<br>By now almost everyone has heard of so-called zero-copy functionality under Linux, but I often run into people who don’t have a full understanding of the subject. Because of this, I decided to write a few articles that dig into the matter a bit deeper, in the hope of unraveling this useful feature. In this article, we take a look at zero copy from a user-mode application point of view, so gory kernel-level details are omitted intentionally.</p>
+<p># </p>
+<h1 id="What-Is-Zero-Copy"><a href="#What-Is-Zero-Copy" class="headerlink" title="What Is Zero-Copy?"></a>What Is Zero-Copy?</h1><h2 id="普通的"><a href="#普通的" class="headerlink" title="普通的"></a>普通的</h2><p>To better understand the solution to a problem, we first need to understand the problem itself. Let’s look at what is involved in the simple procedure of a network server d?mon serving data stored in a file to a client over the network. Here’s some sample code:</p>
+<p><code>read(file, tmp_buf, len);</code><br><code>write(socket, tmp_buf, len);</code></p>
+<p>Looks simple enough; you would think there is not much overhead with only those two system calls. In reality, this couldn’t be further from the truth. Behind those two calls, <strong>the data has been copied at least four times, and almost as many user/kernel context switches have been performed.</strong>(Actually this process is much more complicated, but I wanted to keep it simple). To get a better idea of the process involved, take a look at Figure 1. The top side shows context switches, and the bottom side shows copy operations.</p>
+<p><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/step1-zero-copy-1.jpg" alt="zero-copy-1"><br>Figure 1. Copying in Two Sample System Calls</p>
+<ol>
+<li><p>Step one: the read system call causes a context switch from user mode to kernel mode. The first copy is performed by the DMA engine, which reads file contents from the disk and stores them into a kernel address space buffer.</p>
+</li>
+<li><p>Step two: data is copied from the kernel buffer into the user buffer, and the read system call returns. The return from the call caused a context switch from kernel back to user mode. Now the data is stored in the user address space buffer, and it can begin its way down again.</p>
+</li>
+<li><p>Step three: the write system call causes a context switch from user mode to kernel mode. A third copy is performed to put the data into a kernel address space buffer again. This time, though, the data is put into a different buffer, a buffer that is associated with sockets specifically.</p>
+</li>
+<li><p>Step four: the write system call returns, creating our fourth context switch. Independently and asynchronously, a fourth copy happens as the DMA engine passes the data from the kernel buffer to the protocol engine. You are probably asking yourself, “What do you mean independently and asynchronously? Wasn’t the data transmitted before the call returned?” Call return, in fact, doesn’t guarantee transmission; it doesn’t even guarantee the start of the transmission.<strong>It simply means the Ethernet driver had free descriptors in its queue and has accepted our data for transmission. There could be numerous packets queued before ours. Unless the driver/hardware implements priority rings or queues, data is transmitted on a first-in-first-out basis. (The forked DMA copy in Figure 1 illustrates the fact that the last copy can be delayed).</strong></p>
+</li>
+</ol>
+<p>As you can see, a lot of data duplication is not really necessary to hold things up. Some of the duplication could be eliminated to decrease overhead and increase performance. As a driver developer, I work with hardware that has some pretty advanced features. Some hardware can bypass the main memory altogether and transmit data directly to another device. This feature eliminates a copy in the system memory and is a nice thing to have, but not all hardware supports it. There is also the issue of the data from the disk having to be repackaged for the network, which introduces some complications. To eliminate overhead, we could start by eliminating some of the copying between the kernel and user buffers.</p>
+<h2 id="引入mmap"><a href="#引入mmap" class="headerlink" title="引入mmap"></a>引入mmap</h2><p>One way to eliminate a copy is to skip calling read and instead call mmap. For example:</p>
+<p><code>tmp_buf = mmap(file, len);</code><br><code>write(socket, tmp_buf, len);</code></p>
+<p>To get a better idea of the process involved, take a look at Figure 2. Context switches remain the same.</p>
+<p><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/step-zero-copy-2.jpg" alt="zero-copy-step2"><br>Figure 2. Calling mmap</p>
+<ol>
+<li><p>Step one: the mmap system call causes the file contents to be copied into a kernel buffer by the DMA engine. The buffer is shared then with the user process, without any copy being performed between the kernel and user memory spaces.</p>
+</li>
+<li><p>Step two: the write system call causes the kernel to copy the data from the original kernel buffers into the kernel buffers associated with sockets.</p>
+</li>
+<li><p>Step three: the third copy happens as the DMA engine passes the data from the kernel socket buffers to the protocol engine.</p>
+</li>
+</ol>
+<p><strong>By using mmap instead of read, we’ve cut in half the amount of data the kernel has to copy(减小了一次copy,上下文切换次数没有变).</strong> this yields reasonably good results when a lot of data is being transmitted. However, this improvement doesn’t come without a price; <strong>there are hidden pitfalls when using the mmap+write method. You will fall into one of them when you memory map a file and then call write while another process truncates the same file.</strong> Your write system call will be interrupted by the bus error signal SIGBUS, because you performed a bad memory access. The default behavior for that signal is to kill the process and dump core—not the most desirable operation for a network server. There are two ways to get around this problem.</p>
+<ol>
+<li><p>The first way is to install a signal handler for the SIGBUS signal, and then simply call return in the handler. By doing this the write system call returns with the number of bytes it wrote before it got interrupted and the errno set to success. Let me point out that this would be a bad solution, one that treats the symptoms and not the cause of the problem. Because SIGBUS signals that something has gone seriously wrong with the process, I would discourage using this as a solution.</p>
+</li>
+<li><p>The second solution involves <strong>file leasing</strong>  (which is called “opportunistic locking” in Microsoft Windows) from the kernel. This is the correct way to fix this problem. By using leasing on the file descriptor, you take a lease with the kernel on a particular file. You then can request a read/write lease from the kernel. When another process tries to truncate the file you are transmitting, the kernel sends you a real-time signal, the RT_SIGNAL_LEASE signal. It tells you the kernel is breaking your write or read lease on that file. Your write call is interrupted before your program accesses an invalid address and gets killed by the SIGBUS signal. The return value of the write call is the number of bytes written before the interruption, and the errno will be set to success. Here is some sample code that shows how to get a lease from the kernel:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(fcntl(fd, F_SETSIG, RT_SIGNAL_LEASE) == <span class="number">-1</span>) &#123;</div><div class="line">    perror(<span class="string">"kernel lease set signal"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">/* l_type can be F_RDLCK F_WRLCK */</span></div><div class="line"><span class="keyword">if</span>(fcntl(fd, F_SETLEASE, l_type))&#123;</div><div class="line">    perror(<span class="string">"kernel lease set type"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>You should get your lease before mmaping the file, and break your lease after you are done. This is achieved by calling fcntl F_SETLEASE with the lease type of F_UNLCK.</p>
+<h2 id="引入Sendfile"><a href="#引入Sendfile" class="headerlink" title="引入Sendfile"></a>引入Sendfile</h2><p><strong>In kernel version 2.1, the sendfile system call was introduced to simplify the transmission of data over the network and between two local files.</strong><br><strong>Introduction of sendfile not only reduces data copying, it also reduces context switches. Use it like this:</strong></p>
+<p><code>sendfile(socket, file, len);</code></p>
+<p>To get a better idea of the process involved, take a look at Figure 3.</p>
+<p><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/step-zero-copy-3.jpg" alt="step-zero-copy-3"><br>Figure 3. Replacing Read and Write with Sendfile</p>
+<ol>
+<li><p>Step one: the sendfile system call causes the file contents to be copied into a kernel buffer by the DMA engine. Then the data is copied by the kernel into the kernel buffer associated with sockets.</p>
+</li>
+<li><p>Step two: the third copy happens as the DMA engine passes the data from the kernel socket buffers to the protocol engine.</p>
+</li>
+</ol>
+<p>You are probably wondering what happens if another process truncates the file we are transmitting with the sendfile system call. If we don’t register any signal handlers, the sendfile call simply returns with the number of bytes it transferred before it got interrupted, and the errno will be set to success.</p>
+<p>If we get a lease from the kernel on the file before we call sendfile, however, the behavior and the return status are exactly the same. We also get the RT_SIGNAL_LEASE signal before the sendfile call returns.</p>
+<p><strong>So far, we have been able to avoid having the kernel make several copies, but we are still left with one copy.</strong> Can that be avoided too? Absolutely, with a little help from the hardware. <strong>To eliminate all the data duplication done by the kernel, we need a network interface that supports gather operations. This simply means that data awaiting transmission doesn’t need to be in consecutive memory; it can be scattered through various memory locations.</strong> In kernel version 2.4, the socket buffer descriptor was modified to accommodate those requirements—what is known as zero copy under Linux. This approach not only reduces multiple context switches, it also eliminates data duplication done by the processor. For user-level applications nothing has changed, so the code still looks like this:</p>
+<p><code>sendfile(socket, file, len);</code><br>To get a better idea of the process involved, take a look at Figure 4.<br><img src="http://oqxil93b6.bkt.clouddn.com/images/IO/step-zero-copy-4.jpg" alt="zero-copy-4"></p>
+<p>Figure 4. Hardware that supports gather can assemble data from multiple memory locations, eliminating another copy.</p>
+<ol>
+<li><p>Step one: the sendfile system call causes the file contents to be copied into a kernel buffer by the DMA engine.</p>
+</li>
+<li><p>Step two: <strong>no data is copied into the socket buffer. Instead, only descriptors with information about the whereabouts and length of the data are appended to the socket buffer. The DMA engine passes data directly from the kernel buffer to the protocol engine, thus eliminating the remaining final copy.</strong></p>
+</li>
+</ol>
+<p><strong>Because data still is actually copied from the disk to the memory and from the memory to the wire, some might argue this is not a true zero copy.</strong><br><strong>This is zero copy from the operating system standpoint, though, because the data is not duplicated between kernel buffers.</strong><br>When using zero copy, other performance benefits can be had besides <strong>copy avoidance</strong>, such as <strong>fewer context switches</strong>, <strong>less CPU data cache pollution</strong> and <strong>no CPU checksum calculations</strong>.</p>
+<h1 id="practice"><a href="#practice" class="headerlink" title="practice"></a>practice</h1><p>Now that we know what zero copy is, let’s put theory into practice and write some code. You can download the full source code from <a href="www.xalien.org/articles/source/sfl-src.tgz">www.xalien.org/articles/source/sfl-src.tgz</a>. To unpack the source code, type <code>tar -zxvf sfl-src.tgz at the prompt</code>. To compile the code and create the random data file data.bin, run make.</p>
+<p>Looking at the code starting with header files:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* sfl.c sendfile example program</span></div><div class="line">Dragan Stancevic &lt;</div><div class="line">header name                 function / variable</div><div class="line">-------------------------------------------------*/</div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;          /* printf, perror */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;          /* open */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;         /* close */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;          /* errno */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;         /* memset */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;     /* socket */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt;     /* sockaddr_in */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/sendfile.h&gt;   /* sendfile */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;      /* inet_addr */</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> BUFF_SIZE (10*1024) <span class="comment">/* size of the tmp buffer */</span></span></div></pre></td></tr></table></figure></p>
+<p>Besides the regular <sys socket.h=""> and <netinet in.h=""> required for basic socket operation, we need a prototype definition of the sendfile system call. This can be found in the <sys sendfile.h=""> server flag:</sys></netinet></sys></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">/* are we sending or receiving */</div><div class="line">if(argv[1][0] == 's') is_server++;</div><div class="line">/* open descriptors */</div><div class="line">sd = socket(PF_INET, SOCK_STREAM, 0);</div><div class="line">if(is_server) fd = open("data.bin", O_RDONLY);</div><div class="line">The same program can act as either a server/sender or a client/receiver. We have to check one of the command-prompt parameters, and then set the flag is_server to run in sender mode. We also open a stream socket of the INET protocol family. As part of running in server mode we need some type of data to transmit to a client, so we open our data file. We are using the system call sendfile to transmit data, so we don't have to read the actual contents of the file and store it in our program memory buffer. Here's the server address:</div><div class="line">/* clear the memory */</div><div class="line">memset(&amp;sa, 0, sizeof(struct sockaddr_in));</div><div class="line">/* initialize structure */</div><div class="line">sa.sin_family = PF_INET;</div><div class="line">sa.sin_port = htons(1033);</div><div class="line">sa.sin_addr.s_addr = inet_addr(argv[2]);</div><div class="line">We clear the server address structure and assign the protocol family, port and IP address of the server. The address of the server is passed as a command-line parameter. The port number is hard coded to unassigned port 1033. This port number was chosen because it is above the port range requiring root access to the system.</div><div class="line">Here is the server execution branch:</div><div class="line"></div><div class="line">if(is_server)&#123;</div><div class="line">    int client; /* new client socket */</div><div class="line">    printf("Server binding to [%s]\n", argv[2]);</div><div class="line">    if(bind(sd, (struct sockaddr *)&amp;sa,</div><div class="line">                      sizeof(sa)) &lt; 0)&#123;</div><div class="line">        perror("bind");</div><div class="line">        exit(errno);</div><div class="line">    &#125;</div><div class="line">As a server, we need to assign an address to our socket descriptor. This is achieved by the system call bind, which assigns the socket descriptor (sd) a server address (sa):</div><div class="line"></div><div class="line">if(listen(sd,1) &lt; 0)&#123;</div><div class="line">    perror("listen");</div><div class="line">    exit(errno);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Because we are using a stream socket, we have to advertise our willingness to accept incoming connections and set the connection queue size. I’ve set the backlog queue to 1, but it is common to set the backlog a bit higher for established connections waiting to be accepted. In older versions of the kernel, the backlog queue was used to prevent syn flood attacks. Because the system call listen changed to set parameters for only established connections, the backlog queue feature has been deprecated for this call. The kernel parameter tcp_max_syn_backlog has taken over the role of protecting the system from syn flood attacks:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>((client = accept(sd, <span class="literal">NULL</span>, <span class="literal">NULL</span>)) &lt; <span class="number">0</span>)&#123;</div><div class="line">    perror(<span class="string">"accept"</span>);</div><div class="line">    <span class="built_in">exit</span>(errno);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>The system call accept creates a new connected socket from the first connection request on the pending connections queue. The return value from the call is a descriptor for a newly created connection; the socket is now ready for read, write or poll/select system calls:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>((cnt = sendfile(client,fd,&amp;off,</div><div class="line">                          BUFF_SIZE)) &lt; <span class="number">0</span>)&#123;</div><div class="line">    perror(<span class="string">"sendfile"</span>);</div><div class="line">    <span class="built_in">exit</span>(errno);</div><div class="line">&#125;</div><div class="line"><span class="built_in">printf</span>(<span class="string">"Server sent %d bytes.\n"</span>, cnt);</div><div class="line">close(client);</div></pre></td></tr></table></figure></p>
+<p>A connection is established on the client socket descriptor, so we can start transmitting data to the remote system. We do this by calling the sendfile system call, which is prototyped under Linux in the following manner:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">extern</span> ssize_t</span></div><div class="line"><span class="title">sendfile</span> <span class="params">(<span class="keyword">int</span> __out_fd, <span class="keyword">int</span> __in_fd, <span class="keyword">off_t</span> *offset,</span></div><div class="line">          <span class="keyword">size_t</span> __count) __THROW;</div></pre></td></tr></table></figure></p>
+<p>The first two parameters are file descriptors. The third parameter points to an offset from which sendfile should start sending data. The fourth parameter is the number of bytes we want to transmit. In order for the sendfile transmit to use zero-copy functionality, you need memory gather operation support from your networking card. You also need checksum capabilities for protocols that implement checksums, such as TCP or UDP. If your NIC is outdated and doesn’t support those features, you still can use sendfile to transmit files. The difference is the kernel will merge the buffers before transmitting them.</p>
+<h1 id="others"><a href="#others" class="headerlink" title="others"></a>others</h1><h2 id="Portability-Issues"><a href="#Portability-Issues" class="headerlink" title="Portability Issues"></a>Portability Issues</h2><ol>
+<li><p>One of the problems with the sendfile system call, in general, is the lack of a standard implementation, as there is for the open system call.<strong>Sendfile implementations in Linux, Solaris or HP-UX are quite different.</strong>  This poses a problem for developers who wish to use zero copy in their network data transmission code.</p>
+<ul>
+<li><strong>One of the implementation differences is Linux provides a sendfile that defines an interface for transmitting data between two file descriptors (file-to-file) and (file-to-socket).</strong> </li>
+<li><strong>HP-UX and Solaris, on the other hand, can be used only for file-to-socket submissions.</strong></li>
+</ul>
+</li>
+<li><p>The second difference is Linux doesn’t implement <strong>vectored transfers</strong>. Solaris sendfile and HP-UX sendfile have extra parameters that eliminate overhead associated with prepending headers to the data being transmitted.</p>
+<h2 id="Looking-Ahead"><a href="#Looking-Ahead" class="headerlink" title="Looking Ahead"></a>Looking Ahead</h2><p>The implementation of zero copy under Linux is far from finished and is likely to change in the near future. More functionality should be added. For example, <strong>the sendfile call doesn’t support vectored transfers</strong>, and servers such as Samba and Apache have to use multiple sendfile calls with the TCP_CORK flag set. This flag tells the system more data is coming through in the next sendfile calls. TCP_CORK also is incompatible with TCP_NODELAY and is used when we want to prepend or append headers to the data. This is a perfect example of where a vectored call would eliminate the need for multiple sendfile calls and delays mandated by the current implementation.</p>
+</li>
+</ol>
+<p><strong>One rather unpleasant limitation in the current sendfile is it cannot be used when transferring files greater than 2GB.</strong> Files of such size are not all that uncommon today, and it’s rather disappointing having to duplicate all that data on its way out. Because both sendfile and mmap methods are unusable in this case, a sendfile64 would be really handy in a future kernel version.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Despite some drawbacks, zero-copy sendfile is a useful feature, and I hope you have found this article informative enough to start using it in your programs. If you have a more in-depth interest in the subject, keep an eye out for my second article, titled “Zero Copy II: Kernel Perspective”, where I will dig a bit more into the kernel internals of zero copy.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/12/FileChannel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1651,415 +2130,6 @@ n</code>，执行<br>    <code>./java -version</code><br>    输出的java版本
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/04/Pro-Java-7-NIO-2读书笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yunzhu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YDDMAX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/04/Pro-Java-7-NIO-2读书笔记/" itemprop="url">
-                  Pro Java 7 NIO 2读书笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-04T11:44:38+08:00">
-                2017-06-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/technology/" itemprop="url" rel="index">
-                    <span itemprop="name">technology</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="http://www.tuicool.com/articles/IRfIJ3" target="_blank" rel="external">转自</a><br> <img src="http://oqxil93b6.bkt.clouddn.com/images/Pro%20Java%207%20NIO%202%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/pro-java7-nio.png" alt="Pro Java 7 NIO.2"><br>花了几天把这本书初略的看了一下， 之所以初略的看了一下，是因为这书里确实没啥内容。如果去了NIO 1的内容和大段大段的代码， 基本上压缩到50页应该没问题。 </p>
-<p>下面简单的罗列一下看到的内容： </p>
-<h1 id="Path"><a href="#Path" class="headerlink" title="Path"></a>Path</h1><p>这个类在java.nio.file，在NIO里对文件系统进行了进一步的抽象。 是用来替换原来的java.io.File。其中 FileSystems, Files, Path, PathMatcher 成为一个体系。 </p>
-<p>在java7里File和Path可以相互转换： File.toPath(), Path.toFile()<br>原来的File里包含了文件引用和文件，在Path系统里， Path里是文件的引用，而文件操作都放到了Files的静态方法里。这种方式究竟好不好用，我没啥感觉。不过我个人偏向于把操作放到另外一个类里面。 </p>
-<p>获得Path实例的方式：<br><code>File.toPath(), Paths.get(), FileSystem.getPath()</code></p>
-<p>注意： Path和File一样，能创建出实例不代表着这个文件一定在文件系统里真是存在。 </p>
-<p>Path和File相比使用上方便了的地方： </p>
-<p><strong>不用特意指定路径的separator：</strong><br><code>Paths.get(&quot;C:&quot;,&quot;folder1&quot;,&quot;subfolder&quot;,&quot;aa.txt&quot;)</code></p>
-<p>在windows系统了是C:\folder1\subfolder\aa.txt<br>在Mac下是C:/folder/subfolder/aa.txt<br>Java会根据当前操作系统来决定separator </p>
-<p><strong>重复利用基本路径：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//define the fixed path</span></div><div class="line">Path base = Paths.get(<span class="string">"C:/rafaelnadal/tournaments/2009"</span>);</div><div class="line"><span class="comment">//resolve BNP.txt file</span></div><div class="line">Path path_1 = base.resolve(<span class="string">"BNP.txt"</span>);</div><div class="line"><span class="comment">//output: C:\rafaelnadal\tournaments\2009\BNP.txt</span></div><div class="line">System.out.println(path_1.toString());</div><div class="line"><span class="comment">//resolve AEGON.txt file</span></div><div class="line">Path path_2 = base.resolve(<span class="string">"AEGON.txt"</span>);</div><div class="line"><span class="comment">//output: C:\rafaelnadal\tournaments\2009\AEGON.txt</span></div><div class="line">System.out.println(path_2.toString());</div></pre></td></tr></table></figure></p>
-<p><strong>而resolveSibling方法更加好用：可以直接获取相同目录下的其他文件：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//define the fixed path</span></div><div class="line">Path base = Paths.get(<span class="string">"C:/rafaelnadal/tournaments/2009/BNP.txt"</span>);</div><div class="line"><span class="comment">//resolve sibling AEGON.txt file</span></div><div class="line">Path path = base.resolveSibling(<span class="string">"AEGON.txt"</span>);</div><div class="line"><span class="comment">//output: C:\rafaelnadal\tournaments\2009\AEGON.txt</span></div><div class="line">System.out.println(path.toString());</div></pre></td></tr></table></figure></p>
-<p><strong>取得相对路径：</strong><br>假设BNP.txt和AEGON.txt在同一目录下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Path path01 = Paths.get(<span class="string">"BNP.txt"</span>);</div><div class="line">Path path02 = Paths.get(<span class="string">"AEGON.txt"</span>);</div><div class="line"></div><div class="line"><span class="comment">//output: ..\AEGON.txt</span></div><div class="line">Path path01_to_path02 = path01.relativize(path02);</div><div class="line">System.out.println(path01_to_path02);</div><div class="line"><span class="comment">//output: ..\BNP.txt</span></div><div class="line">Path path02_to_path01 = path02.relativize(path01);</div><div class="line">System.out.println(path02_to_path01);</div></pre></td></tr></table></figure></p>
-<p>假设：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Path path01 = Paths.get(<span class="string">"/tournaments/2009/BNP.txt"</span>);</div><div class="line">Path path02 = Paths.get(<span class="string">"/tournaments/2011"</span>);</div></pre></td></tr></table></figure></p>
-<p>那么：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//output: ..\..\2011</span></div><div class="line">Path path01_to_path02 = path01.relativize(path02);</div><div class="line">System.out.println(path01_to_path02);</div><div class="line"><span class="comment">//output: ..\2009\BNP.txt</span></div><div class="line">Path path02_to_path01 = path02.relativize(path01);</div><div class="line">System.out.println(path02_to_path01);</div></pre></td></tr></table></figure></p>
-<p><strong>遍历：</strong><br>Path实现了Iterable<path></path>接口，也就是说我们可以这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Path path = Paths.get(<span class="string">"C:"</span>, <span class="string">"rafaelnadal/tournaments/2009"</span>, <span class="string">"BNP.txt"</span>);</div><div class="line"><span class="keyword">for</span> (Path name : path) &#123;</div><div class="line">    System.out.println(name);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>猜猜结果是什么？<br>我一开始以为是吧目录下的文件遍历出来呢。结果是这样的：<br>rafaelnadal<br>tournaments<br>2009<br>BNP.txt<br>说实话，我觉得这个比较坑爹！ </p>
-<h1 id="文件属性"><a href="#文件属性" class="headerlink" title="文件属性"></a>文件属性</h1><p>java.nio.file.attribute包下的类提供了获取文件属性的类，针对不同操作系统使用的类不太一样，当然也有所有操作系统通用的属性。 </p>
-<p>属性分类有一些几种：<br>BasicFileAttributeView<br>DosFileAttributeView<br>PosixFileAttributeView<br>FileOwnerAttributeView<br>AclFileAttributeView<br>UserDefinedFileAttributeView</p>
-<p><strong>获取属性：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">BasicFileAttributes attr = <span class="keyword">null</span>;</div><div class="line">Path path = Paths.get(<span class="string">"C:/rafaelnadal/tournaments/2009"</span>, <span class="string">"BNP.txt"</span>);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    attr = Files.readAttributes(path, BasicFileAttributes.class);</div><div class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">    System.err.println(e);</div><div class="line">&#125;</div><div class="line">System.out.println(<span class="string">"File size: "</span> + attr.size());</div><div class="line">System.out.println(<span class="string">"File creation time: "</span> + attr.creationTime());</div><div class="line">System.out.println(<span class="string">"File was last accessed at: "</span> + attr.lastAccessTime());</div><div class="line">System.out.println(<span class="string">"File was last modified at: "</span> + attr.lastModifiedTime());</div><div class="line">System.out.println(<span class="string">"Is directory? "</span> + attr.isDirectory());</div><div class="line">System.out.println(<span class="string">"Is regular file? "</span> + attr.isRegularFile());</div><div class="line">System.out.println(<span class="string">"Is symbolic link? "</span> + attr.isSymbolicLink());</div><div class="line">System.out.println(<span class="string">"Is other? "</span> + attr.isOther());</div></pre></td></tr></table></figure></p>
-<p>或 </p>
-<p><code>long size = (Long)Files.getAttribute(path, &quot;basic:size&quot;, NOFOLLOW_LINKS);</code></p>
-<p><strong>设置属性：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Path path = Paths.get(<span class="string">"C:/rafaelnadal/tournaments/2009"</span>, <span class="string">"BNP.txt"</span>);</div><div class="line"><span class="keyword">long</span> time = System.currentTimeMillis();</div><div class="line">FileTime fileTime = FileTime.fromMillis(time);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    Files.getFileAttributeView(path,</div><div class="line">        BasicFileAttributeView.class).setTimes(fileTime, fileTime, fileTime);</div><div class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">    System.err.println(e);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>或<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">long</span> time = System.currentTimeMillis();</div><div class="line">FileTime fileTime = FileTime.fromMillis(time);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    Files.setLastModifiedTime(path, fileTime);</div><div class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">    System.err.println(e);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><strong>Symbolic和Hard Links</strong><br>相同于用Java程序实现linux下的 ln命令。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Path link = FileSystems.getDefault().getPath(<span class="string">"rafael.nadal.1"</span>);</div><div class="line">Path target= FileSystems.getDefault().getPath(<span class="string">"C:/rafaelnadal/photos"</span>, <span class="string">"rafa_winner.jpg"</span>);</div><div class="line">Files.createSymbolicLink(link, target);</div></pre></td></tr></table></figure></p>
-<h1 id="DirectoryStream"><a href="#DirectoryStream" class="headerlink" title="DirectoryStream"></a>DirectoryStream</h1><p>这也是一个比较有用的类：用来遍历路径下的子路径或文件，而且支持通配符过滤。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Path path = Paths.get(<span class="string">"C:/rafaelnadal/tournaments/2009"</span>);</div><div class="line">…</div><div class="line"><span class="comment">//glob pattern applied</span></div><div class="line">System.out.println(<span class="string">"\nGlob pattern applied:"</span>);</div><div class="line"><span class="keyword">try</span> (DirectoryStream&lt;Path&gt; ds = Files.newDirectoryStream(path, <span class="string">"*.&#123;png,jpg,bmp&#125;"</span>)) &#123;</div><div class="line">    <span class="keyword">for</span> (Path file : ds) &#123;</div><div class="line">        System.out.println(file.getFileName());</div><div class="line">    &#125;</div><div class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">    System.err.println(e);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h1 id="FileVisitor和Files-walkFileTree"><a href="#FileVisitor和Files-walkFileTree" class="headerlink" title="FileVisitor和Files.walkFileTree"></a>FileVisitor和Files.walkFileTree</h1><p>FileVisitor是一个接口，Files.walkFileTree是一个方法。 通过两者的配合可以遍历整个某个路径下的所有子路径和文件。没有这个之前我们用递归方法也能实现，有了这个不能说是现实更加容易， 只能说是现实更加规范， 如果大家都用这个，代码的可维护性会更好。我觉得仅此而已。 </p>
-<p>FileVisitor有四个方法 </p>
-<ul>
-<li><code>FileVisitResult postVisitDirectory(T dir, IOException exc)</code><br>Invoked for a directory after entries in the directory, and all of their descendants, have been visited.  </li>
-<li><code>FileVisitResult preVisitDirectory(T dir, BasicFileAttributes attrs)</code><br>  Invoked for a directory before entries in the directory are visited.<br>+<code>FileVisitResult visitFile(T file, BasicFileAttributes attrs)</code><br>  Invoked for a file in a directory.</li>
-<li><code>FileVisitResult visitFileFailed(T file, IOException exc)</code><br>  Invoked for a file that could not be visited.</li>
-</ul>
-<p>FileVisitResult枚举类型：<br>CONTINUE，SKIP_SIBLINGS，SKIP_SUBTREE，TERMINATE</p>
-<h1 id="Watch-Service-API"><a href="#Watch-Service-API" class="headerlink" title="Watch Service API"></a>Watch Service API</h1><p>这是NIO2里比较重要的一个新增功能， 以前直接用java监视文件系统的变化是不可能的，只能通过jni的方式调用操作系统的api来对文件系统进行监视。在java7里这部分被加到了标准库里，这样我们就不能在去寻找jni的结果方案了。但是事实上为了保持java的扩平台特性，<strong><em>监控的功能范围被定为各个操作系统的交集，所以没有特殊的情况还是需要直接调用操作系统的api来实现</em></strong>。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">watchRNDir</span><span class="params">(Path path)</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</div><div class="line">    <span class="keyword">try</span> (WatchService watchService = FileSystems.getDefault().newWatchService()) &#123;</div><div class="line">        path.register(watchService, StandardWatchEventKinds.ENTRY_CREATE,</div><div class="line">        StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_DELETE);</div><div class="line"></div><div class="line">        <span class="comment">//start an infinite loop</span></div><div class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">            <span class="comment">//retrieve and remove the next watch key</span></div><div class="line">            <span class="keyword">final</span> WatchKey key = watchService.take();</div><div class="line">            <span class="comment">//get list of pending events for the watch key</span></div><div class="line">            <span class="keyword">for</span> (WatchEvent&lt;?&gt; watchEvent : key.pollEvents()) &#123;</div><div class="line">                <span class="comment">//get the kind of event (create, modify, delete)</span></div><div class="line">                <span class="keyword">final</span> Kind&lt;?&gt; kind = watchEvent.kind();</div><div class="line">                <span class="comment">//handle OVERFLOW event</span></div><div class="line">                <span class="keyword">if</span> (kind == StandardWatchEventKinds.OVERFLOW) &#123;</div><div class="line">                    <span class="keyword">continue</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="comment">//get the filename for the event</span></div><div class="line">                <span class="keyword">final</span> WatchEvent&lt;Path&gt; watchEventPath = (WatchEvent&lt;Path&gt;) watchEvent;</div><div class="line">                <span class="keyword">final</span> Path filename = watchEventPath.context();</div><div class="line">                <span class="comment">//print it out</span></div><div class="line">                System.out.println(kind + <span class="string">" -&gt; "</span> + filename);</div><div class="line">            &#125;</div><div class="line">            <span class="comment">//reset the key</span></div><div class="line">            <span class="keyword">boolean</span> valid = key.reset();</div><div class="line">            <span class="comment">//exit loop if the key is not valid (if the directory was deleted, for example)</span></div><div class="line">            <span class="keyword">if</span> (!valid) &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h1 id="Random-Access-Files"><a href="#Random-Access-Files" class="headerlink" title="Random Access Files"></a>Random Access Files</h1><p>主要是提供了一个SeekableByteChannel接口，配合ByteBuffer使随机访问文件更加方便。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">Path path = Paths.get(<span class="string">"C:/rafaelnadal/tournaments/2009"</span>, <span class="string">"MovistarOpen.txt"</span>);</div><div class="line">ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1</span>);</div><div class="line">String encoding = System.getProperty(<span class="string">"file.encoding"</span>);</div><div class="line"><span class="keyword">try</span> (SeekableByteChannel seekableByteChannel = (Files.newByteChannel(path, EnumSet.of(StandardOpenOption.READ)))) &#123;</div><div class="line">    <span class="comment">//the initial position should be 0 anyway</span></div><div class="line">    seekableByteChannel.position(<span class="number">0</span>);</div><div class="line">    System.out.println(<span class="string">"Reading one character from position: "</span> + seekableByteChannel.position());</div><div class="line">    seekableByteChannel.read(buffer);</div><div class="line">    buffer.flip();</div><div class="line">    System.out.print(Charset.forName(encoding).decode(buffer));</div><div class="line">    buffer.rewind();</div><div class="line">    <span class="comment">//get into the middle</span></div><div class="line">    seekableByteChannel.position(seekableByteChannel.size()/<span class="number">2</span>);</div><div class="line">    System.out.println(<span class="string">"\nReading one character from position: "</span> + seekableByteChannel.position());</div><div class="line">    seekableByteChannel.read(buffer);</div><div class="line">    buffer.flip();</div><div class="line">    System.out.print(Charset.forName(encoding).decode(buffer));</div><div class="line">    buffer.rewind();</div><div class="line">    <span class="comment">//get to the end</span></div><div class="line">    seekableByteChannel.position(seekableByteChannel.size()-<span class="number">1</span>);</div><div class="line">    System.out.println(<span class="string">"\nReading one character from position: "</span> + seekableByteChannel.position());</div><div class="line">    seekableByteChannel.read(buffer);</div><div class="line">    buffer.flip();</div><div class="line">    System.out.print(Charset.forName(encoding).decode(buffer));</div><div class="line">    buffer.clear();</div><div class="line">&#125; <span class="keyword">catch</span> (IOException ex) &#123;</div><div class="line">    System.err.println(ex);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h1 id="Asynchronous-Channel-API"><a href="#Asynchronous-Channel-API" class="headerlink" title="Asynchronous Channel API"></a>Asynchronous Channel API</h1><p>这个是NIO2的较大的变化，有原来的Selecor方法变成方法回调模式。使用上更加方便。并且文件的读写也可以异步的方式实现了。 </p>
-<p><strong>异步读取文件 ：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">ByteBuffer buffer = ByteBuffer.allocate(<span class="number">100</span>);</div><div class="line">Path path = Paths.get(<span class="string">"C:/rafaelnadal/grandslam/RolandGarros"</span>, <span class="string">"story.txt"</span>);</div><div class="line"><span class="keyword">try</span> (AsynchronousFileChannel asynchronousFileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)) &#123;</div><div class="line">    current = Thread.currentThread();</div><div class="line">    asynchronousFileChannel.read(buffer, <span class="number">0</span>, <span class="string">"Read operation status ..."</span>, <span class="keyword">new</span> CompletionHandler&lt;Integer, Object&gt;() &#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completed</span><span class="params">(Integer result, Object attachment)</span> </span>&#123;</div><div class="line">            System.out.println(attachment);</div><div class="line">            System.out.print(<span class="string">"Read bytes: "</span> + result);</div><div class="line">            current.interrupt();</div><div class="line">        &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">failed</span><span class="params">(Throwable exc, Object attachment)</span> </span>&#123;</div><div class="line">            System.out.println(attachment);</div><div class="line">            System.out.println(<span class="string">"Error:"</span> + exc);</div><div class="line">            current.interrupt();</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    System.out.println(<span class="string">"\nWaiting for reading operation to end ...\n"</span>);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        current.join();</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//now the buffer contains the read bytes</span></div><div class="line">    System.out.println(<span class="string">"\n\nClose everything and leave! Bye, bye ..."</span>);</div><div class="line">&#125; <span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">    System.err.println(ex);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><strong>异步socket服务器</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncEchoServer</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> AsynchronousServerSocketChannel serverChannel;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        System.out.println(String.format(<span class="string">"start: name: %s"</span>, Thread.currentThread().getName()));</div><div class="line">        serverChannel = AsynchronousServerSocketChannel.open();</div><div class="line">        serverChannel.setOption(StandardSocketOptions.SO_REUSEADDR, <span class="keyword">true</span>);</div><div class="line">        serverChannel.bind(<span class="keyword">new</span> InetSocketAddress(<span class="number">8000</span>));</div><div class="line">        serverChannel.accept(serverChannel, <span class="keyword">new</span> Acceptor());</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Acceptor</span> <span class="keyword">implements</span> <span class="title">CompletionHandler</span>&lt;<span class="title">AsynchronousSocketChannel</span>, <span class="title">AsynchronousServerSocketChannel</span>&gt; </span>&#123;</div><div class="line">        </div><div class="line">        <span class="keyword">private</span> <span class="keyword">final</span> ByteBuffer buffer = ByteBuffer.allocate(<span class="number">1024</span>);</div><div class="line">        </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Acceptor</span><span class="params">()</span></span>&#123;</div><div class="line">            System.out.println(<span class="string">"an acceptor has created."</span>);</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completed</span><span class="params">(<span class="keyword">final</span> AsynchronousSocketChannel channel, AsynchronousServerSocketChannel serverChannel)</span> </span>&#123;</div><div class="line">            System.out.println(String.format(<span class="string">"write: name: %s"</span>, Thread.currentThread().getName()));</div><div class="line">            channel.read(buffer, channel, <span class="keyword">new</span> Reader(buffer));</div><div class="line">            serverChannel.accept(serverChannel, <span class="keyword">new</span> Acceptor());</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">failed</span><span class="params">(Throwable exception, AsynchronousServerSocketChannel serverChannel)</span> </span>&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(exception);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Reader</span> <span class="keyword">implements</span> <span class="title">CompletionHandler</span>&lt;<span class="title">Integer</span>, <span class="title">AsynchronousSocketChannel</span>&gt; </span>&#123;</div><div class="line">        </div><div class="line">        <span class="keyword">private</span> ByteBuffer buffer;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Reader</span><span class="params">(ByteBuffer buffer)</span></span>&#123;</div><div class="line">            <span class="keyword">this</span>.buffer = buffer;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completed</span><span class="params">(Integer result, AsynchronousSocketChannel channel)</span></span>&#123;</div><div class="line">            System.out.println(String.format(<span class="string">"read: name: %s"</span>, Thread.currentThread().getName()));</div><div class="line">            <span class="keyword">if</span>(result != <span class="keyword">null</span> &amp;&amp; result &lt; <span class="number">0</span>)&#123;</div><div class="line">                <span class="keyword">try</span>&#123;</div><div class="line">                  channel.close();</div><div class="line">                  <span class="keyword">return</span>;</div><div class="line">                &#125;<span class="keyword">catch</span>(IOException ignore)&#123;&#125;</div><div class="line">            &#125;</div><div class="line">            buffer.flip();</div><div class="line">            channel.write(buffer, channel, <span class="keyword">new</span> Writer(buffer));</div><div class="line">        &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">failed</span><span class="params">(Throwable exception, AsynchronousSocketChannel channel)</span></span>&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(exception);</div><div class="line">        &#125;                    </div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Writer</span> <span class="keyword">implements</span> <span class="title">CompletionHandler</span>&lt;<span class="title">Integer</span>, <span class="title">AsynchronousSocketChannel</span>&gt; </span>&#123;</div><div class="line">    </div><div class="line">        <span class="keyword">private</span> ByteBuffer buffer;</div><div class="line">        </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Writer</span><span class="params">(ByteBuffer buffer)</span></span>&#123;</div><div class="line">            <span class="keyword">this</span>.buffer = buffer;</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completed</span><span class="params">(Integer result, AsynchronousSocketChannel channel)</span> </span>&#123;</div><div class="line">            System.out.println(String.format(<span class="string">"write: name: %s"</span>, Thread.currentThread().getName()));</div><div class="line">            buffer.clear();</div><div class="line">            channel.read(buffer, channel, <span class="keyword">new</span> Reader(buffer));</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">failed</span><span class="params">(Throwable exception, AsynchronousSocketChannel channel)</span> </span>&#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(exception);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, InterruptedException</span>&#123;</div><div class="line">        <span class="keyword">new</span> AsyncEchoServer().start();</div><div class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</div><div class="line">            Thread.sleep(<span class="number">1000L</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://YDDMAX.github.io/2017/06/03/负载均衡/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="yunzhu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YDDMAX">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/03/负载均衡/" itemprop="url">
-                  负载均衡
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-03T21:15:10+08:00">
-                2017-06-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/technology/" itemprop="url" rel="index">
-                    <span itemprop="name">technology</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h1><blockquote>
-<p>DNS负责提供域名解析服务，当访问某个站点时，实际上首先需要通过该站点域名的DNS服务器来获取域名指向的IP地址，在这一过程中，DNS服务器完成了域名到IP地址的映射，同样，这样映射也可以是一对多的，这时候，DNS服务器便充当了负载均衡调度器，它就像http重定向转换策略一样，将用户的请求分散到多台服务器上，但是它的实现机制完全不同。</p>
-</blockquote>
-<p>下图展示百度有三个IP地址：<br><img src="http://oqxil93b6.bkt.clouddn.com/images/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/baidu-dns.png" alt="百度DNS"></p>
-<ul>
-<li><strong>优点:</strong></li>
-</ul>
-<ol>
-<li>可以根据用户IP来进行智能解析。DNS服务器可以在所有可用的A记录中寻找离用记最近的一台服务器。</li>
-<li>动态DNS：在每次IP地址变更时，及时更新DNS服务器。当然，因为缓存，一定的延迟不可避免。</li>
-</ol>
-<ul>
-<li><strong>缺点:</strong></li>
-</ul>
-<ol>
-<li>没有用户能直接看到DNS解析到了哪一台实际服务器，加服务器运维人员的调试带来了不便。</li>
-<li>策略的局限性。例如你无法将HTTP请求的上下文引入到调度策略中，而在前面介绍的基于HTTP重定向的负载均衡系统中，调度器工作在HTTP层面，它可以充分理解HTTP请求后根据站点的应用逻辑来设计调度策略，比如根据请求不同的URL来进行合理的过滤和转移。</li>
-<li>如果要根据实际服务器的实时负载差异来调整调度策略，这需要DNS服务器在每次解析操作时分析各服务器的健康状态，对于DNS服务器来说，这种自定义开发存在较高的门槛，更何况大多数站点只是使用第三方DNS服务。</li>
-<li>DNS记录缓存，各级节点的DNS服务器不同程序的缓存会让你晕头转向。</li>
-<li>基于以上几点，DNS服务器并不能很好地完成工作量均衡分配，最后，是否选择基于DNS的负载均衡方式完全取决于你的需要。</li>
-</ol>
-<h1 id="HTTP重定向"><a href="#HTTP重定向" class="headerlink" title="HTTP重定向"></a>HTTP重定向</h1><blockquote>
-<p>当http代理（比如浏览器）向web服务器请求某个URL后，web服务器可以通过http响应头信息中的Location标记来返回一个新的URL。这意味着HTTP代理需要继续请求这个新的URL，完成自动跳转。</p>
-</blockquote>
-<ol>
-<li>吞吐率限制<br>主站点服务器的吞吐率平均分配到了被转移的服务器。现假设使用RR（Round Robin）调度策略，子服务器的最大吞吐率为1000reqs/s，那么主服务器的吞吐率要达到3000reqs/s才能完全发挥三台子服务器的作用，那么如果有100台子服务器，那么主服务器的吞吐率可想而知得有大？相反，如果主服务的最大吞吐率为6000reqs/s，那么平均分配到子服务器的吞吐率为2000reqs/s，而现子服务器的最大吞吐率为1000reqs/s，因此就得增加子服务器的数量，增加到6个才能满足。</li>
-<li>重定向访问深度不同<br>有的重定向一个静态页面，有的重定向相比复杂的动态页面，那么实际服务器的负载差异是不可预料的，而主站服务器却一无所知。因此整站使用重定向方法做负载均衡不太好。</li>
-</ol>
-<p>我们需要权衡转移请求的开销和处理实际请求的开销，前者相对于后者越小，那么重定向的意义就越大，例如下载。你可以去很多镜像下载网站试下，会发现基本下载都使用了Location做了重定向。</p>
-<h1 id="LVS（四层）"><a href="#LVS（四层）" class="headerlink" title="LVS（四层）"></a>LVS（四层）</h1><p>以下内容参考自<a href="http://www.tuicool.com/articles/vQzmi2" target="_blank" rel="external">LVS</a></p>
-<h2 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h2><p>通过将请求报文的目标地址和目标端口修改为挑选出的某RS的RIP和PORT实现转发；<br>特点：</p>
-<ol>
-<li><strong>RIP和DIP必须在同一IP网络,且使用私网地址RS的网关应该指向DIP(保证响应报文必须经由VS)</strong></li>
-<li><strong>请求和响应报文都要经由director转发；极高负载的场景中，Director可能会成为系统性能瓶颈</strong></li>
-<li>支持端口映射</li>
-<li>VS必须为Linux，RS可以是任意的OS</li>
-<li><strong>调度器上需要两块网卡,一个配置vip 一个配置dip</strong></li>
-</ol>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/nat.png" alt="NAT"></p>
-<h2 id="FULLNAT"><a href="#FULLNAT" class="headerlink" title="FULLNAT"></a>FULLNAT</h2><p>非标准模型, ipvs默认不支持,ipvsadm也不支持。<br>NAT模式的扩展（阿里云的四层SLB使用的是此方式，因为此种方式下负载均衡器和后端服务器的部署不需要部署在同一网络内）<br>通过同时修改请求报文的源IP地址（cip–&gt;dip）和目标IP地址（vip –&gt; rip）实现转发<br>特点：</p>
-<ol>
-<li>调度器和后端服务器可以不在同一IP网络中</li>
-<li>RS收到的请求报文的源IP为DIP，因此其响应报文将发送给DIP；</li>
-<li>请求报文和响应报文都必须经由director；</li>
-<li>支持端口映射；</li>
-<li>RS可使用任意OS；    </li>
-</ol>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/fullNAT.png" alt="fullNAT"></p>
-<h2 id="DR"><a href="#DR" class="headerlink" title="DR"></a>DR</h2><p>直接路由<br>通过为请求报文重新封装一个MAC首部进行转发,源MAC是DIP所在接口的MAC,目标MAC是挑选出的某RS的RIP所在接口的MAC地址；IP首部不会发生变化（源IP为CIP，目标IP始终为VIP） </p>
-<ol>
-<li>RS跟Director必须在同一物理网络中；RS的网关必须不能指向DIP</li>
-<li><strong>请求报文必须由Director调度，但响应报文必须不能经由Director</strong></li>
-<li><strong>不支持端口映射</strong></li>
-<li>各RS可以使用大多数的OS；一般是linux</li>
-</ol>
-<p>情形1: RIP DIP VIP 都在一个网络, 都是公网IP 地址</p>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/dr-same.png" alt="dr-same"></p>
-<p>情形2: VIP 是公网ip地址, RIP,DIP是私有地址, 情况要复制些, RS要通过另一个路由出去</p>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/dr-no-same.png" alt="dr-nosame"></p>
-<p>注意:<br>一个路由其可以有多个网络接口<br>一个交换机可以承载多个ip网络<br>所以路由器1和路由器2可以使用同一个<br>私网交换机和公网交换机也可以用同一个</p>
-<h2 id="TUN"><a href="#TUN" class="headerlink" title="TUN"></a>TUN</h2><p>ip tunnel，ip隧道<br>转发方式：不修改请求报文的IP首部（源IP为CIP，目标IP为VIP），而是在原有的IP首部之外再次封装一个IP首部（源IP为DIP，目标IP为RIP）</p>
-<ol>
-<li>RIP，DIP，VIP全得是公网地址</li>
-<li>RS的网关不能也不可能指向DIP</li>
-<li>请求报文经由Director调度，但响应报文将直接发给CIP</li>
-<li>不支持端口映射</li>
-<li>RS的OS必须支持IP隧道功能；</li>
-<li><strong>容易超出MTU,  弊端比较大</strong></li>
-</ol>
-<p><img src="http://oqxil93b6.bkt.clouddn.com/tunnel.png" alt="tunnel"></p>
-<h1 id="反向代理（七层）"><a href="#反向代理（七层）" class="headerlink" title="反向代理（七层）"></a>反向代理（七层）</h1><p>这个肯定大家都有所接触，因为几乎所有主流的Web服务器都热衷于支持基于反向代理的负载均衡。<br>相比前面的HTTP重定向和DNS解析，反向代理的调度器扮演的是用户和实际服务器中间人的角色：</p>
-<ol>
-<li>任何对于实际服务器的HTTP请求都必须经过调度器</li>
-<li>调度器必须等待实际服务器的HTTP响应，并将它反馈给用户（前两种方式不需要经过调度反馈，是实际服务器直接发送给用户）</li>
-</ol>
-<ul>
-<li><strong>优点：</strong></li>
-</ul>
-<ol>
-<li>调度策略丰富。例如可以为不同的实际服务器设置不同的权重，以达到能者多劳的效果。</li>
-<li>对反向代理服务器的并发处理能力要求高，因为它工作在HTTP层面。</li>
-<li>反向代理服务器可以监控后端服务器，比如系统负载、响应时间、是否可用、TCP连接数、流量等，从而根据这些数据调整负载均衡的策略。</li>
-<li>反射代理服务器可以让用户在一次会话周期内的所有请求始终转发到一台特定的后端服务器上（粘滞会话），这样的好处一是保持session的本地访问，二是防止后端服务器的动态内存缓存的资源浪费。</li>
-</ol>
-<ul>
-<li><strong>缺点：</strong><br>反向代理服务器进行转发操作本身是需要一定开销的，比如创建线程、与后端服务器建立TCP连接、接收后端服务器返回的处理结果、分析HTTP头部信息、用户空间和内核空间的频繁切换等，虽然这部分时间并不长，但是当后端服务器处理请求的时间非常短时，转发的开销就显得尤为突出。例如请求静态文件，更适合使用前面介绍的基于DNS的负载均衡方式。<h1 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h1>一般工作在四层。<br>性能较高，但是价格昂贵。</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2109,7 +2179,7 @@ n</code>，执行<br>    <code>./java -version</code><br>    输出的java版本
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2120,7 +2190,7 @@ n</code>，执行<br>    <code>./java -version</code><br>    输出的java版本
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2131,7 +2201,7 @@ n</code>，执行<br>    <code>./java -version</code><br>    输出的java版本
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
